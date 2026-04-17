@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SignPath Test Page</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #12131a;
+    color: #e4e4ea;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ── Top bar ─────────────────────────────────────────────── */
+  .topbar {
+    background: #1b1d29;
+    padding: 10px 16px;
+    display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+    border-bottom: 1px solid #2a2d3c;
+  }
+  .topbar h1 { font-size: 14px; font-weight: 700; color: #e94560; }
+  .topbar input[type="text"], .topbar select {
+    background: #0f1017; color: #e4e4ea;
+    border: 1px solid #333648; border-radius: 6px;
+    padding: 6px 10px; font-size: 13px;
+  }
+  .topbar input[type="text"] { width: 180px; }
+  .topbar select { min-width: 220px; max-width: 300px; }
+  .status { font-size: 11px; padding: 4px 10px; border-radius: 12px; background: #2a2d3c; }
+  .status.ok { background: #1b4332; color: #95d5b2; }
+  .status.err { background: #4a1010; color: #f88; }
+  .status.warn { background: #4a3a10; color: #f8d870; }
+  .coverage { font-size: 11px; color: #9da0b3; }
+
+  /* ── Banner ──────────────────────────────────────────────── */
+  .banner {
+    display: none;
+    background: #3a2010; color: #f8d870; padding: 8px 16px;
+    border-bottom: 1px solid #5a3a20; font-size: 12px;
+  }
+  .banner.show { display: block; }
+
+  /* ── Main grid ───────────────────────────────────────────── */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 12px;
+    min-height: 500px;
+  }
+
+  .panel {
+    background: #1b1d29;
+    border: 1px solid #2a2d3c;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex; flex-direction: column;
+    min-height: 460px;
+  }
+  .panel h2 {
+    font-size: 12px; font-weight: 700; color: #9da0b3;
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .panel h2 .sub { text-transform: none; letter-spacing: 0; color: #6d6f82; margin-left: 6px; font-weight: 400; }
+
+  /* ── Reference panel ─────────────────────────────────────── */
+  .video-wrap { position: relative; background: #000; border-radius: 6px; aspect-ratio: 4/3; overflow: hidden; }
+  .video-wrap video { width: 100%; height: 100%; object-fit: contain; }
+  .ref-placeholder {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #6d6f82; font-size: 13px; text-align: center; padding: 24px;
+  }
+  .speed-row {
+    display: flex; gap: 6px; margin-top: 10px; align-items: center;
+  }
+  .speed-row .label { color: #9da0b3; font-size: 11px; margin-right: 4px; }
+  .speed-btn {
+    background: #2a2d3c; color: #e4e4ea; border: 1px solid #333648;
+    border-radius: 4px; padding: 4px 10px; font-size: 12px; cursor: pointer;
+  }
+  .speed-btn:hover { background: #343750; }
+  .speed-btn.active { background: #e94560; border-color: #e94560; color: #fff; }
+  .ref-instruction { color: #9da0b3; font-size: 12px; margin-top: 10px; font-style: italic; }
+
+  /* ── Webcam panel ────────────────────────────────────────── */
+  .cam-wrap { position: relative; background: #000; border-radius: 6px; aspect-ratio: 4/3; overflow: hidden; }
+  .cam-wrap video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+  .score-overlay {
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(0,0,0,0.65); padding: 8px 14px;
+    border-radius: 8px; backdrop-filter: blur(6px);
+    display: flex; flex-direction: column; align-items: center; min-width: 70px;
+  }
+  .score-num { font-size: 32px; font-weight: 800; line-height: 1; }
+  .score-label { font-size: 9px; color: #9da0b3; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+  .hand-dot {
+    position: absolute; bottom: 10px; left: 10px;
+    font-size: 11px; padding: 4px 10px; border-radius: 8px;
+    background: rgba(74,16,16,0.75); color: #f88;
+  }
+  .hand-dot.yes { background: rgba(27,67,50,0.75); color: #95d5b2; }
+
+  .coach-box {
+    margin-top: 10px; padding: 8px 12px;
+    background: #15202b; border-left: 2px solid #4a8; border-radius: 4px;
+    color: #c0d8cc; font-size: 12px; min-height: 44px;
+  }
+
+  .record-row { margin-top: 10px; display: flex; align-items: center; gap: 10px; }
+  .record-btn {
+    background: #e94560; color: #fff; border: none;
+    padding: 10px 20px; font-size: 14px; font-weight: 600;
+    border-radius: 6px; cursor: pointer; flex-shrink: 0;
+  }
+  .record-btn:hover:not(:disabled) { background: #f25a75; }
+  .record-btn:disabled { background: #4a1d27; color: #8c6570; cursor: not-allowed; }
+  .progress-wrap { flex: 1; height: 6px; background: #2a2d3c; border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #e94560; width: 0; transition: width 100ms linear; }
+
+  /* ── Result panel ────────────────────────────────────────── */
+  .result-panel {
+    display: none;
+    margin: 0 12px 12px;
+    background: #1b1d29;
+    border: 1px solid #2a2d3c;
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .result-panel.show { display: block; }
+  .result-header {
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+    padding-bottom: 12px; border-bottom: 1px solid #2a2d3c; margin-bottom: 12px;
+  }
+  .result-score { font-size: 48px; font-weight: 900; line-height: 1; }
+  .result-stars { font-size: 28px; color: #f0c040; }
+  .result-stat { display: flex; flex-direction: column; }
+  .result-stat .n { font-size: 20px; font-weight: 700; }
+  .result-stat .k { font-size: 10px; color: #9da0b3; text-transform: uppercase; letter-spacing: 1px; }
+  .result-advice { color: #c0d8cc; font-size: 13px; margin-bottom: 14px; }
+  .finger-chart { display: grid; grid-template-columns: 70px 1fr 40px; gap: 4px 10px; align-items: center; margin-bottom: 14px; }
+  .finger-chart .fname { font-size: 11px; color: #9da0b3; }
+  .finger-chart .fbar { height: 10px; background: #2a2d3c; border-radius: 4px; overflow: hidden; }
+  .finger-chart .fbar > span { display: block; height: 100%; }
+  .finger-chart .fscore { font-size: 11px; color: #9da0b3; text-align: right; }
+  .result-actions { display: flex; gap: 10px; }
+  .btn {
+    background: #2a2d3c; color: #e4e4ea; border: 1px solid #333648;
+    padding: 8px 16px; font-size: 13px; border-radius: 6px; cursor: pointer;
+  }
+  .btn:hover { background: #343750; }
+  .btn-primary { background: #e94560; border-color: #e94560; color: #fff; }
+  .btn-primary:hover { background: #f25a75; }
+
+  /* ── Event log ───────────────────────────────────────────── */
+  .log-section { margin: 0 12px 12px; }
+  .log-summary {
+    cursor: pointer; background: #1b1d29; border: 1px solid #2a2d3c;
+    padding: 8px 12px; border-radius: 6px;
+    font-size: 12px; color: #9da0b3; user-select: none;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .log-summary .caret { transition: transform 150ms; }
+  .log-section[open] .caret { transform: rotate(90deg); }
+  .log {
+    background: #0f1017; border: 1px solid #2a2d3c; border-top: none;
+    border-radius: 0 0 6px 6px;
+    max-height: 280px; overflow-y: auto;
+    padding: 8px;
+    font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+    font-size: 11px; line-height: 1.5;
+  }
+  .log-entry { padding: 1px 0; border-bottom: 1px solid #181a22; }
+  .log-entry .ts { color: #4a4d5e; }
+  .log-entry .ev { color: #e94560; font-weight: 600; margin: 0 6px; }
+  .log-entry .data { color: #9da0b3; }
+  .log-clear { font-size: 10px; color: #6d6f82; background: none; border: 1px solid #333648; padding: 3px 8px; border-radius: 3px; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>SignPath Test</h1>
+  <input id="searchBox" type="text" placeholder="Search signs…">
+  <select id="signSelect"><option value="">— select a sign —</option></select>
+  <span class="coverage" id="coverageText">—</span>
+  <span class="status" id="status">Loading…</span>
+</div>
+
+<div id="banner" class="banner"></div>
+
+<div class="main">
+  <!-- Reference video -->
+  <div class="panel">
+    <h2>Reference <span class="sub" id="refHeader">(pick a sign)</span></h2>
+    <div class="video-wrap">
+      <video id="refVideo" autoplay loop muted playsinline></video>
+      <div id="refPlaceholder" class="ref-placeholder">Select a sign to load its reference video.</div>
+    </div>
+    <div class="speed-row">
+      <span class="label">Speed:</span>
+      <button class="speed-btn" data-speed="0.5">0.5×</button>
+      <button class="speed-btn active" data-speed="0.75">0.75×</button>
+      <button class="speed-btn" data-speed="1">1×</button>
+      <button class="speed-btn" data-speed="1.5">1.5×</button>
+    </div>
+    <div class="ref-instruction">Watch the reference, then sign when ready.</div>
+  </div>
+
+  <!-- Webcam + live score -->
+  <div class="panel">
+    <h2>You <span class="sub" id="camHeader">webcam + live score</span></h2>
+    <div class="cam-wrap">
+      <video id="camVideo" playsinline muted autoplay></video>
+      <div class="score-overlay">
+        <div class="score-num" id="scoreNum" style="color:#6d6f82">—</div>
+        <div class="score-label">score</div>
+      </div>
+      <div id="handDot" class="hand-dot">No hand</div>
+    </div>
+    <div class="coach-box" id="coachBox">Select a sign, then press Record to practice.</div>
+    <div class="record-row">
+      <button id="recordBtn" class="record-btn" disabled>Record Attempt</button>
+      <div class="progress-wrap"><div id="progressFill" class="progress-fill"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Attempt result panel (hidden until attempt:end) -->
+<div id="resultPanel" class="result-panel">
+  <div class="result-header">
+    <div class="result-stat"><span class="n result-score" id="rScore">—</span><span class="k">final score</span></div>
+    <div class="result-stat"><span class="n result-stars" id="rStars">—</span><span class="k">stars</span></div>
+    <div class="result-stat"><span class="n" id="rXp">—</span><span class="k">xp gained</span></div>
+    <div class="result-stat"><span class="n" id="rAvg">—</span><span class="k">avg score</span></div>
+    <div class="result-stat"><span class="n" id="rPeak">—</span><span class="k">time to peak</span></div>
+  </div>
+  <div class="result-advice" id="rAdvice"></div>
+  <div class="finger-chart" id="rFingers"></div>
+  <div class="result-actions">
+    <button id="againBtn" class="btn btn-primary">Try Again</button>
+    <button id="pickBtn" class="btn">Pick Another</button>
+  </div>
+</div>
+
+<!-- Collapsible developer event log -->
+<details class="log-section" open>
+  <summary class="log-summary">
+    <span><span class="caret">▸</span> Event log (dev-only)</span>
+    <button class="log-clear" onclick="document.getElementById('log').innerHTML=''">clear</button>
+  </summary>
+  <div class="log" id="log"></div>
+</details>
+
+<!-- Dependencies — loaded in strict dependency order -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic/holistic.js" crossorigin="anonymous"></script>
+<script src="signpath-engine.js"></script>
+<script src="signpath-coach.js"></script>
+<script src="signpath-session.js"></script>
+<script src="signpath-progression.js"></script>
+<script src="signpath-review.js"></script>
+<script src="signpath-audio.js"></script>
+<script src="signpath-api.js"></script>
+
+<script>
+(function() {
+  'use strict'
+
+  // ── DOM handles ─────────────────────────────────────────────
+  const $ = id => document.getElementById(id)
+  const log = $('log')
+  const statusEl = $('status')
+  const bannerEl = $('banner')
+  const coverageEl = $('coverageText')
+  const signSelect = $('signSelect')
+  const searchBox = $('searchBox')
+  const refVideo = $('refVideo')
+  const refPlaceholder = $('refPlaceholder')
+  const refHeader = $('refHeader')
+  const scoreNum = $('scoreNum')
+  const handDot = $('handDot')
+  const coachBox = $('coachBox')
+  const recordBtn = $('recordBtn')
+  const progressFill = $('progressFill')
+  const resultPanel = $('resultPanel')
+
+  // ── Event log ───────────────────────────────────────────────
+  function addLog(event, data) {
+    const ts = new Date().toLocaleTimeString('en', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' })
+    const short = typeof data === 'object' ? JSON.stringify(data).slice(0, 180) : String(data)
+    const entry = document.createElement('div')
+    entry.className = 'log-entry'
+    entry.innerHTML = '<span class="ts"></span><span class="ev"></span><span class="data"></span>'
+    entry.children[0].textContent = ts
+    entry.children[1].textContent = event
+    entry.children[2].textContent = short
+    log.appendChild(entry)
+    while (log.children.length > 400) log.removeChild(log.firstChild)
+    log.scrollTop = log.scrollHeight
+  }
+
+  // ── Manifest for reference videos ───────────────────────────
+  let manifest = { signs: {}, missing: [] }
+  async function loadManifest() {
+    try {
+      const r = await fetch('reference_videos/manifest.json', { cache: 'no-store' })
+      if (!r.ok) throw new Error('not-ok ' + r.status)
+      manifest = await r.json()
+      addLog('manifest', `${Object.keys(manifest.signs).length} signs have videos`)
+      return true
+    } catch (e) {
+      bannerEl.classList.add('show')
+      bannerEl.textContent =
+        'No reference videos found — run  python prep_reference_videos.py  first. Webcam + scoring will still work.'
+      addLog('manifest', 'missing — banner shown')
+      return false
+    }
+  }
+
+  // ── Search filter ──────────────────────────────────────────
+  function applySearch(needle) {
+    const n = (needle || '').trim().toLowerCase()
+    let shown = 0
+    for (const g of signSelect.querySelectorAll('optgroup')) {
+      let groupVisible = 0
+      for (const o of g.querySelectorAll('option')) {
+        const match = !n || o.textContent.toLowerCase().includes(n) || o.value.toLowerCase().includes(n)
+        o.hidden = !match
+        if (match) { groupVisible++; shown++ }
+      }
+      g.hidden = groupVisible === 0
+    }
+    return shown
+  }
+
+  // ── Reference video swap ────────────────────────────────────
+  function swapReference(signKey, enName) {
+    refHeader.textContent = signKey ? `— ${signKey}${enName ? ' (' + enName + ')' : ''}` : '(pick a sign)'
+    if (!signKey) {
+      refVideo.removeAttribute('src')
+      refVideo.load()
+      refPlaceholder.style.display = 'flex'
+      refPlaceholder.textContent = 'Select a sign to load its reference video.'
+      return
+    }
+    const entry = manifest.signs && manifest.signs[signKey]
+    if (!entry) {
+      refVideo.removeAttribute('src')
+      refVideo.load()
+      refPlaceholder.style.display = 'flex'
+      refPlaceholder.textContent = 'No reference video available for this sign yet.'
+      return
+    }
+    refPlaceholder.style.display = 'none'
+    refVideo.src = 'reference_videos/' + encodeURIComponent(entry.file)
+    refVideo.load()
+    refVideo.play().catch(() => {})
+  }
+
+  // ── Playback speed buttons ──────────────────────────────────
+  const DEFAULT_SPEED = 0.75
+  refVideo.playbackRate = DEFAULT_SPEED
+  document.querySelectorAll('.speed-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'))
+      btn.classList.add('active')
+      refVideo.playbackRate = parseFloat(btn.dataset.speed)
+    })
+  })
+
+  // ── Score color ─────────────────────────────────────────────
+  function scoreColor(score) {
+    if (score >= 80) return '#95d5b2'
+    if (score >= 60) return '#f0c040'
+    if (score >= 30) return '#e94560'
+    return '#6d6f82'
+  }
+
+  // ── Stars render ────────────────────────────────────────────
+  function starsStr(n) {
+    return '★'.repeat(n) + '☆'.repeat(3 - n)
+  }
+
+  // ── Result panel ────────────────────────────────────────────
+  function renderResult(r) {
+    resultPanel.classList.add('show')
+    $('rScore').textContent = r.finalScore
+    $('rScore').style.color = scoreColor(r.finalScore)
+    $('rStars').textContent = starsStr(r.stars)
+    $('rXp').textContent = r.progression ? '+' + r.progression.xpGained : '—'
+    $('rAvg').textContent = r.avgScore != null ? r.avgScore : '—'
+    $('rPeak').textContent = (r.durations && r.durations.toPeakMs != null)
+      ? (r.durations.toPeakMs + ' ms') : '—'
+    $('rAdvice').textContent = r.advice || '(no advice)'
+
+    const fingers = $('rFingers')
+    fingers.innerHTML = ''
+    const data = (r.deviations && r.deviations.fingers) ||
+      (window._app && window._app.engine && /* fallback via last live scoring */ []) || []
+    if (data.length) {
+      for (const f of data) {
+        const name = document.createElement('div'); name.className = 'fname'; name.textContent = f.name
+        const bar = document.createElement('div'); bar.className = 'fbar'
+        const fill = document.createElement('span')
+        fill.style.width = Math.max(0, Math.min(100, f.score)) + '%'
+        fill.style.background = scoreColor(f.score)
+        bar.appendChild(fill)
+        const score = document.createElement('div'); score.className = 'fscore'; score.textContent = f.score + '%'
+        fingers.append(name, bar, score)
+      }
+    } else {
+      const msg = document.createElement('div')
+      msg.style.gridColumn = '1 / -1'
+      msg.style.color = '#6d6f82'
+      msg.style.fontSize = '11px'
+      msg.textContent = '(no per-finger breakdown for this attempt)'
+      fingers.appendChild(msg)
+    }
+  }
+  function hideResult() { resultPanel.classList.remove('show') }
+
+  // ── Boot ────────────────────────────────────────────────────
+  async function boot() {
+    // 1. Manifest first so the coverage count is correct as soon as the dropdown populates.
+    await loadManifest()
+
+    // 2. Spin up the backend facade.
+    const app = new SignPathApp()
+    window._app = app
+
+    // 3. Wire app events.
+    app.on('ready', data => {
+      addLog('ready', data)
+      statusEl.textContent = `✓ ${data.signs} signs, ${data.lessons} lessons`
+      statusEl.className = 'status ok'
+
+      // Populate the dropdown grouped by lesson.
+      const lessons = app.engine.getLessons()
+      for (const lesson of lessons) {
+        const group = document.createElement('optgroup')
+        group.label = `${lesson.icon} ${lesson.goal.vi} (${lesson.signs.length})`
+        for (const s of lesson.signs) {
+          const opt = document.createElement('option')
+          opt.value = s.key
+          opt.textContent = `${s.vi} — ${s.en}`
+          if (!(manifest.signs && manifest.signs[s.key])) opt.textContent += ' ·'
+          group.appendChild(opt)
+        }
+        signSelect.appendChild(group)
+      }
+
+      // Coverage counter
+      const totalSigns = Object.values(lessons).reduce((a, l) => a + l.signs.length, 0)
+      const withVideo = Object.keys(manifest.signs || {}).length
+      coverageEl.textContent = `${withVideo} of ${totalSigns} signs have reference videos`
+
+      recordBtn.disabled = false
+      recordBtn.textContent = 'Pick a sign first'
+    })
+
+    app.on('error', data => {
+      addLog('ERROR', data)
+      statusEl.textContent = `✗ ${data.message}`
+      statusEl.className = 'status err'
+    })
+
+    app.on('tracking', data => {
+      handDot.textContent = data.detected ? 'Hand detected' : 'No hand'
+      handDot.classList.toggle('yes', !!data.detected)
+    })
+
+    // Live score updates — only meaningful outside an attempt (the session
+    // takes over the coaching text while one is running).
+    app.on('score', data => {
+      if (data.prediction === null) {
+        scoreNum.textContent = '—'
+        scoreNum.style.color = '#6d6f82'
+        if (!app.session.isActive()) coachBox.textContent = 'Show your hand to the camera.'
+        return
+      }
+      scoreNum.textContent = data.score
+      scoreNum.style.color = scoreColor(data.score)
+      if (!app.session.isActive() && data.deviations) {
+        const advice = app.coach.getLocalAdvice(data.deviations, data.score, app.engine.getLang())
+        if (advice) coachBox.textContent = advice
+      }
+    })
+
+    // Session lifecycle — progress bar is driven off attempt:tick so the UI
+    // stays in sync with the actual session duration (no parallel timer).
+    let activeDurationMs = 0
+    app.on('attempt:start', d => {
+      addLog('attempt:start', { id: d.attemptId.slice(-6), sign: d.signKey })
+      hideResult()
+      activeDurationMs = d.durationMs || 4000
+      progressFill.style.width = '0%'
+      recordBtn.disabled = true
+      recordBtn.textContent = 'Recording…'
+      coachBox.textContent = 'Recording — sign now.'
+    })
+    app.on('attempt:tick', d => {
+      const pct = Math.max(0, Math.min(100, 100 * d.elapsedMs / (activeDurationMs || 1)))
+      progressFill.style.width = pct + '%'
+    })
+    app.on('attempt:abort', d => {
+      addLog('attempt:abort', d)
+      progressFill.style.width = '0%'
+      recordBtn.disabled = false
+      recordBtn.textContent = 'Record Attempt'
+      coachBox.textContent = d.reason === 'no_signing_detected'
+        ? 'Could not detect signing — make sure your hand is visible, then try again.'
+        : 'Attempt cancelled.'
+    })
+    app.on('attempt:end', d => {
+      addLog('attempt:end', {
+        id: d.attemptId.slice(-6), score: d.finalScore, stars: d.stars,
+        avg: d.avgScore, reason: d.reason,
+      })
+      progressFill.style.width = '100%'
+    })
+    app.on('attempt:coach-update', d => {
+      addLog('coach:remote', d.advice.slice(0, 80))
+      $('rAdvice').textContent = d.advice
+    })
+
+    // Progression side effects
+    app.on('xp:gained', d => addLog('xp', `+${d.amount} (total ${d.totalXp})`))
+    app.on('level:up', d => addLog('LEVEL UP', `${d.prevLevel} → ${d.newLevel}`))
+    app.on('streak:updated', d => addLog('streak', `current=${d.currentStreak} longest=${d.longestStreak}`))
+    app.on('mastery:gained', d => addLog('mastery', `${d.signKey} → L${d.masteryLevel}`))
+    app.on('lesson:unlocked', d => addLog('lesson:unlocked', d.lessonId))
+    app.on('lesson:completed', d => addLog('lesson:completed', d.lessonId))
+    app.on('progress', d => addLog('progress', d))
+
+    // ── Sign selection ──────────────────────────────────────
+    let currentSign = null
+    signSelect.addEventListener('change', () => {
+      const key = signSelect.value
+      currentSign = key || null
+      hideResult()
+      if (!key) {
+        swapReference(null)
+        app.engine.clearSign()
+        recordBtn.disabled = true
+        recordBtn.textContent = 'Pick a sign first'
+        coachBox.textContent = 'Select a sign, then press Record to practice.'
+        return
+      }
+      const sign = app.engine.getSign(key)
+      swapReference(key, sign && sign.en)
+      app.engine.selectSign(key)  // so live scoring targets this sign even before Record
+      addLog('selectSign', key)
+      recordBtn.disabled = false
+      recordBtn.textContent = 'Record Attempt'
+      coachBox.textContent = 'Watch the reference, then press Record to practice.'
+    })
+
+    // Search filter
+    searchBox.addEventListener('input', () => applySearch(searchBox.value))
+
+    // ── Record + replay ──────────────────────────────────────
+    async function runAttempt() {
+      if (!currentSign || app.session.isActive()) return
+      const ATTEMPT_MS = 4000
+      addLog('practiceSign', `${currentSign} (${ATTEMPT_MS}ms)`)
+      try {
+        const result = await app.practiceSign(currentSign, ATTEMPT_MS)
+        if (result.aborted) {
+          addLog('result', `ABORTED: ${result.reason}`)
+        } else {
+          renderResult(result)
+          coachBox.textContent = result.advice || 'Good attempt!'
+        }
+      } catch (e) {
+        addLog('result', `ERROR: ${e.message}`)
+      } finally {
+        recordBtn.disabled = !currentSign
+        recordBtn.textContent = 'Record Attempt'
+      }
+    }
+    recordBtn.addEventListener('click', runAttempt)
+    $('againBtn').addEventListener('click', () => { hideResult(); runAttempt() })
+    $('pickBtn').addEventListener('click', () => {
+      hideResult()
+      signSelect.value = ''
+      signSelect.dispatchEvent(new Event('change'))
+    })
+
+    // Boot engine (requires camera + MediaPipe). Kicks off `ready`.
+    addLog('init', 'Starting engine…')
+    await app.init($('camVideo'))
+  }
+
+  boot().catch(e => {
+    addLog('FATAL', e.message)
+    statusEl.textContent = '✗ ' + e.message
+    statusEl.className = 'status err'
+  })
+})()
+</script>
+</body>
+</html>

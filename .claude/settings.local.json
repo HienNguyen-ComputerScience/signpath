@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node signpath-session.test.js)",
+      "Bash(node signpath-progression.test.js)",
+      "Bash(node signpath-review.test.js)",
+      "Bash(node signpath-audio.test.js)",
+      "Bash(node signpath-api.test.js)",
+      "Bash(node test.js)",
+      "Bash(ffmpeg -version)",
+      "Read(//c//**)",
+      "Read(//c/Program Files/**)",
+      "Bash(ls \"/c/ffmpeg*\")",
+      "Bash(cmd //c \"ffmpeg -version\")",
+      "Bash(powershell.exe -Command \"ffmpeg -version 2>&1 | Select-Object -First 3\")",
+      "Bash(cmd //c \"winget list --name ffmpeg\")",
+      "Bash(winget install *)",
+      "Bash(\"C:/Users/Hien/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-8.1-full_build/bin/ffmpeg.exe\" -version)",
+      "Bash(python prep_reference_videos.py)",
+      "Bash(tee prep_reference_videos.log)",
+      "Bash(grep -c \"KB$\" \"C:/Users/Hien/AppData/Local/Temp/claude/C--SignPath/9b96e7ae-13dd-46a2-b58d-8ee64d2d365d/tasks/bx21anw9z.output\")",
+      "Bash(python -c \"import json; m=json.load\\(open\\('C:/SignPath/signpath-test/reference_videos/manifest.json',encoding='utf-8'\\)\\); print\\('Chào' in m['signs'], repr\\([k for k in m['signs'] if k.startswith\\('Ch'\\)][:5]\\)\\)\")",
+      "Bash(xargs stat *)",
+      "Bash(node signpath-engine-quality.test.js)"
+    ]
+  }
+}

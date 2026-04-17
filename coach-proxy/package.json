@@ -1,0 +1,15 @@
+{
+  "name": "signpath-coach-proxy",
+  "version": "1.0.0",
+  "description": "Small HTTP proxy that lets the SignPath browser coach call Gemini without shipping the API key.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "private": true,
+  "license": "UNLICENSED"
+}

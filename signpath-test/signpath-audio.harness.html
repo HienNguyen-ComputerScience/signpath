@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SignPath Audio — Browser Harness</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; }
+  button { margin: 0.25rem; padding: 0.5rem 1rem; font-size: 14px; cursor: pointer; }
+  .row { margin: 1rem 0; padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px; }
+  h2 { margin-top: 0; font-size: 14px; color: #444; text-transform: uppercase; letter-spacing: 1px; }
+  code { background: #f4f4f4; padding: 1px 4px; border-radius: 3px; }
+  select, input { font-size: 14px; padding: 0.25rem; }
+</style>
+</head>
+<body>
+<h1>SignPath Audio Harness</h1>
+<p>Manual smoke test for tones + TTS. Check each category.</p>
+
+<div class="row">
+  <h2>Tones</h2>
+  <button onclick="app.playTone('success')">success</button>
+  <button onclick="app.playTone('good')">good</button>
+  <button onclick="app.playTone('fail')">fail</button>
+  <button onclick="app.playTone('star')">star</button>
+</div>
+
+<div class="row">
+  <h2>Speech</h2>
+  <input id="text" value="Xin chào" style="width: 200px">
+  <select id="lang">
+    <option value="vi">vi</option>
+    <option value="en">en</option>
+  </select>
+  <button onclick="app.speak(document.getElementById('text').value, document.getElementById('lang').value)">speak</button>
+</div>
+
+<div class="row">
+  <h2>Voices</h2>
+  <button onclick="listVoices()">list vi voices</button>
+  <pre id="voicesOut" style="font-size: 11px"></pre>
+</div>
+
+<div class="row">
+  <h2>Controls</h2>
+  <button onclick="app.setEnabled(!app.isEnabled()); render()">toggle enabled</button>
+  <span id="state"></span>
+</div>
+
+<script src="signpath-audio.js"></script>
+<script>
+  const app = new SignPathAudio()
+  const stateEl = document.getElementById('state')
+
+  function render() { stateEl.textContent = app.isEnabled() ? 'ENABLED' : 'DISABLED' }
+
+  function listVoices() {
+    const voices = app.getAvailableVoices('vi')
+    document.getElementById('voicesOut').textContent = JSON.stringify(voices, null, 2)
+  }
+
+  render()
+  // Voices often load asynchronously; re-list after a short delay.
+  if ('speechSynthesis' in window) {
+    speechSynthesis.onvoiceschanged = listVoices
+    setTimeout(listVoices, 300)
+  }
+</script>
+</body>
+</html>

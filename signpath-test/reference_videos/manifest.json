@@ -1,0 +1,2409 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-17T05:35:10+00:00",
+  "total": 400,
+  "produced": 400,
+  "signs": {
+    "Anh": {
+      "file": "Anh.mp4",
+      "bytes": 50297,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000000.mp4"
+    },
+    "Ba lô": {
+      "file": "Ba lô.mp4",
+      "bytes": 56366,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000300.mp4"
+    },
+    "Bia": {
+      "file": "Bia.mp4",
+      "bytes": 50173,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000268.mp4"
+    },
+    "Buổi chiều": {
+      "file": "Buổi chiều.mp4",
+      "bytes": 61532,
+      "durationMs": 2467,
+      "sourceClip": "Part_1/split_1/front_view/000194.mp4"
+    },
+    "Buổi sáng": {
+      "file": "Buổi sáng.mp4",
+      "bytes": 69664,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000190.mp4"
+    },
+    "Buổi trưa": {
+      "file": "Buổi trưa.mp4",
+      "bytes": 63355,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000192.mp4"
+    },
+    "Buổi tối": {
+      "file": "Buổi tối.mp4",
+      "bytes": 79360,
+      "durationMs": 2733,
+      "sourceClip": "Part_1/split_1/front_view/000196.mp4"
+    },
+    "Bà ngoại": {
+      "file": "Bà ngoại.mp4",
+      "bytes": 55617,
+      "durationMs": 3000,
+      "sourceClip": "Part_1/split_1/front_view/000732.mp4"
+    },
+    "Bà nội": {
+      "file": "Bà nội.mp4",
+      "bytes": 55266,
+      "durationMs": 2933,
+      "sourceClip": "Part_1/split_1/front_view/000728.mp4"
+    },
+    "Bàn phím": {
+      "file": "Bàn phím.mp4",
+      "bytes": 57736,
+      "durationMs": 3033,
+      "sourceClip": "Part_1/split_1/front_view/000286.mp4"
+    },
+    "Bác": {
+      "file": "Bác.mp4",
+      "bytes": 45177,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000010.mp4"
+    },
+    "Bác sĩ": {
+      "file": "Bác sĩ.mp4",
+      "bytes": 63502,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000365.mp4"
+    },
+    "Bánh bao": {
+      "file": "Bánh bao.mp4",
+      "bytes": 55045,
+      "durationMs": 2267,
+      "sourceClip": "Part_1/split_1/front_view/000253.mp4"
+    },
+    "Bánh chưng": {
+      "file": "Bánh chưng.mp4",
+      "bytes": 43294,
+      "durationMs": 2233,
+      "sourceClip": "Part_1/split_1/front_view/000263.mp4"
+    },
+    "Bánh tét": {
+      "file": "Bánh tét.mp4",
+      "bytes": 57386,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000264.mp4"
+    },
+    "Bánh xèo": {
+      "file": "Bánh xèo.mp4",
+      "bytes": 60739,
+      "durationMs": 2733,
+      "sourceClip": "Part_1/split_1/front_view/000257.mp4"
+    },
+    "Báo cáo": {
+      "file": "Báo cáo.mp4",
+      "bytes": 52876,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000780.mp4"
+    },
+    "Bây giờ": {
+      "file": "Bây giờ.mp4",
+      "bytes": 44660,
+      "durationMs": 1933,
+      "sourceClip": "Part_1/split_1/front_view/000198.mp4"
+    },
+    "Bình minh": {
+      "file": "Bình minh.mp4",
+      "bytes": 75014,
+      "durationMs": 3266,
+      "sourceClip": "Part_1/split_1/front_view/000185.mp4"
+    },
+    "Bóng bàn": {
+      "file": "Bóng bàn.mp4",
+      "bytes": 55083,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000220.mp4"
+    },
+    "Bóng chuyền": {
+      "file": "Bóng chuyền.mp4",
+      "bytes": 59689,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000218.mp4"
+    },
+    "Bóng rổ": {
+      "file": "Bóng rổ.mp4",
+      "bytes": 67972,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000222.mp4"
+    },
+    "Bóng đá": {
+      "file": "Bóng đá.mp4",
+      "bytes": 62790,
+      "durationMs": 2467,
+      "sourceClip": "Part_1/split_1/front_view/000214.mp4"
+    },
+    "Bún": {
+      "file": "Bún.mp4",
+      "bytes": 43763,
+      "durationMs": 2167,
+      "sourceClip": "Part_1/split_1/front_view/000247.mp4"
+    },
+    "Bút bi": {
+      "file": "Bút bi.mp4",
+      "bytes": 41172,
+      "durationMs": 2367,
+      "sourceClip": "Part_1/split_1/front_view/000288.mp4"
+    },
+    "Bút chì": {
+      "file": "Bút chì.mp4",
+      "bytes": 43010,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000296.mp4"
+    },
+    "Bơi lội": {
+      "file": "Bơi lội.mp4",
+      "bytes": 79659,
+      "durationMs": 2867,
+      "sourceClip": "Part_1/split_1/front_view/000224.mp4"
+    },
+    "Bảng": {
+      "file": "Bảng.mp4",
+      "bytes": 48579,
+      "durationMs": 2033,
+      "sourceClip": "Part_1/split_1/front_view/000292.mp4"
+    },
+    "Bảo vệ": {
+      "file": "Bảo vệ.mp4",
+      "bytes": 48964,
+      "durationMs": 2000,
+      "sourceClip": "Part_1/split_1/front_view/000367.mp4"
+    },
+    "Bận": {
+      "file": "Bận.mp4",
+      "bytes": 56080,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000758.mp4"
+    },
+    "Bắt buộc": {
+      "file": "Bắt buộc.mp4",
+      "bytes": 51537,
+      "durationMs": 2267,
+      "sourceClip": "Part_1/split_1/front_view/000778.mp4"
+    },
+    "Bắt chước": {
+      "file": "Bắt chước.mp4",
+      "bytes": 52323,
+      "durationMs": 2567,
+      "sourceClip": "Part_1/split_1/front_view/000776.mp4"
+    },
+    "Bệnh viện": {
+      "file": "Bệnh viện.mp4",
+      "bytes": 70413,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000090.mp4"
+    },
+    "Bố": {
+      "file": "Bố.mp4",
+      "bytes": 42180,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000713.mp4"
+    },
+    "Ca sĩ": {
+      "file": "Ca sĩ.mp4",
+      "bytes": 49180,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000375.mp4"
+    },
+    "Cao (người)": {
+      "file": "Cao (người).mp4",
+      "bytes": 55461,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000826.mp4"
+    },
+    "Cao (đồ vật)": {
+      "file": "Cao (đồ vật).mp4",
+      "bytes": 54671,
+      "durationMs": 2567,
+      "sourceClip": "Part_1/split_1/front_view/000547.mp4"
+    },
+    "Cay": {
+      "file": "Cay.mp4",
+      "bytes": 48568,
+      "durationMs": 2567,
+      "sourceClip": "Part_1/split_1/front_view/000799.mp4"
+    },
+    "Cho": {
+      "file": "Cho.mp4",
+      "bytes": 45983,
+      "durationMs": 2366,
+      "sourceClip": "Part_1/split_1/front_view/000500.mp4"
+    },
+    "Chua": {
+      "file": "Chua.mp4",
+      "bytes": 46985,
+      "durationMs": 2366,
+      "sourceClip": "Part_1/split_1/front_view/000523.mp4"
+    },
+    "Cháu": {
+      "file": "Cháu.mp4",
+      "bytes": 56060,
+      "durationMs": 2366,
+      "sourceClip": "Part_1/split_1/front_view/000016.mp4"
+    },
+    "Chìa khóa": {
+      "file": "Chìa khóa.mp4",
+      "bytes": 49438,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000045.mp4"
+    },
+    "Chú": {
+      "file": "Chú.mp4",
+      "bytes": 43156,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000006.mp4"
+    },
+    "Chú ý": {
+      "file": "Chú ý.mp4",
+      "bytes": 51260,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000472.mp4"
+    },
+    "Chăm chỉ": {
+      "file": "Chăm chỉ.mp4",
+      "bytes": 58477,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000847.mp4"
+    },
+    "Chơi cờ": {
+      "file": "Chơi cờ.mp4",
+      "bytes": 57149,
+      "durationMs": 2566,
+      "sourceClip": "Part_1/split_1/front_view/000228.mp4"
+    },
+    "Chạy": {
+      "file": "Chạy.mp4",
+      "bytes": 58846,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000756.mp4"
+    },
+    "Chậm chạp": {
+      "file": "Chậm chạp.mp4",
+      "bytes": 57933,
+      "durationMs": 2566,
+      "sourceClip": "Part_1/split_1/front_view/000553.mp4"
+    },
+    "Chật": {
+      "file": "Chật.mp4",
+      "bytes": 54948,
+      "durationMs": 2467,
+      "sourceClip": "Part_1/split_1/front_view/000813.mp4"
+    },
+    "Chết": {
+      "file": "Chết.mp4",
+      "bytes": 48916,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000752.mp4"
+    },
+    "Chị": {
+      "file": "Chị.mp4",
+      "bytes": 47620,
+      "durationMs": 2466,
+      "sourceClip": "Part_1/split_1/front_view/000002.mp4"
+    },
+    "Chồng": {
+      "file": "Chồng.mp4",
+      "bytes": 53672,
+      "durationMs": 2266,
+      "sourceClip": "Part_1/split_1/front_view/000724.mp4"
+    },
+    "Chợ": {
+      "file": "Chợ.mp4",
+      "bytes": 58667,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000092.mp4"
+    },
+    "Chụp hình": {
+      "file": "Chụp hình.mp4",
+      "bytes": 66601,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000498.mp4"
+    },
+    "Chủ nhật": {
+      "file": "Chủ nhật.mp4",
+      "bytes": 59391,
+      "durationMs": 2566,
+      "sourceClip": "Part_1/split_1/front_view/000137.mp4"
+    },
+    "Chủ tịch": {
+      "file": "Chủ tịch.mp4",
+      "bytes": 63465,
+      "durationMs": 2367,
+      "sourceClip": "Part_1/split_1/front_view/000385.mp4"
+    },
+    "Con bò": {
+      "file": "Con bò.mp4",
+      "bytes": 73108,
+      "durationMs": 2367,
+      "sourceClip": "Part_1/split_1/front_view/000665.mp4"
+    },
+    "Con chó": {
+      "file": "Con chó.mp4",
+      "bytes": 80200,
+      "durationMs": 2766,
+      "sourceClip": "Part_1/split_1/front_view/000649.mp4"
+    },
+    "Con dê": {
+      "file": "Con dê.mp4",
+      "bytes": 77126,
+      "durationMs": 2766,
+      "sourceClip": "Part_1/split_1/front_view/000667.mp4"
+    },
+    "Con gà": {
+      "file": "Con gà.mp4",
+      "bytes": 54200,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000655.mp4"
+    },
+    "Con gái": {
+      "file": "Con gái.mp4",
+      "bytes": 47834,
+      "durationMs": 2467,
+      "sourceClip": "Part_1/split_1/front_view/000720.mp4"
+    },
+    "Con heo": {
+      "file": "Con heo.mp4",
+      "bytes": 48433,
+      "durationMs": 2733,
+      "sourceClip": "Part_1/split_1/front_view/000669.mp4"
+    },
+    "Con mèo": {
+      "file": "Con mèo.mp4",
+      "bytes": 60772,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000652.mp4"
+    },
+    "Con rùa": {
+      "file": "Con rùa.mp4",
+      "bytes": 51703,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000659.mp4"
+    },
+    "Con thỏ": {
+      "file": "Con thỏ.mp4",
+      "bytes": 70997,
+      "durationMs": 2633,
+      "sourceClip": "Part_1/split_1/front_view/000661.mp4"
+    },
+    "Con trai": {
+      "file": "Con trai.mp4",
+      "bytes": 43002,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000718.mp4"
+    },
+    "Con trâu": {
+      "file": "Con trâu.mp4",
+      "bytes": 80858,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000663.mp4"
+    },
+    "Con vịt": {
+      "file": "Con vịt.mp4",
+      "bytes": 48102,
+      "durationMs": 2467,
+      "sourceClip": "Part_1/split_1/front_view/000657.mp4"
+    },
+    "Cung cấp": {
+      "file": "Cung cấp.mp4",
+      "bytes": 47358,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000774.mp4"
+    },
+    "Cà phê": {
+      "file": "Cà phê.mp4",
+      "bytes": 53447,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000272.mp4"
+    },
+    "Cái bàn": {
+      "file": "Cái bàn.mp4",
+      "bytes": 50770,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000024.mp4"
+    },
+    "Cái chảo": {
+      "file": "Cái chảo.mp4",
+      "bytes": 57402,
+      "durationMs": 2633,
+      "sourceClip": "Part_1/split_1/front_view/000030.mp4"
+    },
+    "Cái cửa": {
+      "file": "Cái cửa.mp4",
+      "bytes": 61069,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000040.mp4"
+    },
+    "Cái ghế": {
+      "file": "Cái ghế.mp4",
+      "bytes": 64077,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000026.mp4"
+    },
+    "Cái kéo": {
+      "file": "Cái kéo.mp4",
+      "bytes": 42228,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000311.mp4"
+    },
+    "Cái nồi": {
+      "file": "Cái nồi.mp4",
+      "bytes": 43827,
+      "durationMs": 1933,
+      "sourceClip": "Part_1/split_1/front_view/000028.mp4"
+    },
+    "Cái quần": {
+      "file": "Cái quần.mp4",
+      "bytes": 49756,
+      "durationMs": 2267,
+      "sourceClip": "Part_1/split_1/front_view/000320.mp4"
+    },
+    "Cái áo": {
+      "file": "Cái áo.mp4",
+      "bytes": 45962,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000318.mp4"
+    },
+    "Cái đèn": {
+      "file": "Cái đèn.mp4",
+      "bytes": 50863,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000035.mp4"
+    },
+    "Có": {
+      "file": "Có.mp4",
+      "bytes": 39276,
+      "durationMs": 1933,
+      "sourceClip": "Part_1/split_1/front_view/000518.mp4"
+    },
+    "Cô": {
+      "file": "Cô.mp4",
+      "bytes": 45206,
+      "durationMs": 2466,
+      "sourceClip": "Part_1/split_1/front_view/000014.mp4"
+    },
+    "Công ty": {
+      "file": "Công ty.mp4",
+      "bytes": 57547,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000076.mp4"
+    },
+    "Công viên": {
+      "file": "Công viên.mp4",
+      "bytes": 57995,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000078.mp4"
+    },
+    "Cũ": {
+      "file": "Cũ.mp4",
+      "bytes": 48498,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000581.mp4"
+    },
+    "Cười": {
+      "file": "Cười.mp4",
+      "bytes": 48077,
+      "durationMs": 2566,
+      "sourceClip": "Part_1/split_1/front_view/000746.mp4"
+    },
+    "Cảm thấy": {
+      "file": "Cảm thấy.mp4",
+      "bytes": 52244,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000478.mp4"
+    },
+    "Cảm ơn": {
+      "file": "Cảm ơn.mp4",
+      "bytes": 57291,
+      "durationMs": 2367,
+      "sourceClip": "Part_1/split_1/front_view/000484.mp4"
+    },
+    "Cần": {
+      "file": "Cần.mp4",
+      "bytes": 55799,
+      "durationMs": 2467,
+      "sourceClip": "Part_1/split_1/front_view/000480.mp4"
+    },
+    "Cầu lông": {
+      "file": "Cầu lông.mp4",
+      "bytes": 67252,
+      "durationMs": 2066,
+      "sourceClip": "Part_1/split_1/front_view/000216.mp4"
+    },
+    "Cậu": {
+      "file": "Cậu.mp4",
+      "bytes": 46630,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000008.mp4"
+    },
+    "Cắm trại": {
+      "file": "Cắm trại.mp4",
+      "bytes": 60556,
+      "durationMs": 2767,
+      "sourceClip": "Part_1/split_1/front_view/000772.mp4"
+    },
+    "Cục tẩy": {
+      "file": "Cục tẩy.mp4",
+      "bytes": 54733,
+      "durationMs": 2633,
+      "sourceClip": "Part_1/split_1/front_view/000290.mp4"
+    },
+    "Cứng": {
+      "file": "Cứng.mp4",
+      "bytes": 64608,
+      "durationMs": 2733,
+      "sourceClip": "Part_1/split_1/front_view/000618.mp4"
+    },
+    "Cửa sổ": {
+      "file": "Cửa sổ.mp4",
+      "bytes": 51022,
+      "durationMs": 2267,
+      "sourceClip": "Part_1/split_1/front_view/000042.mp4"
+    },
+    "Diễn viên": {
+      "file": "Diễn viên.mp4",
+      "bytes": 56493,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000387.mp4"
+    },
+    "Dài": {
+      "file": "Dài.mp4",
+      "bytes": 61574,
+      "durationMs": 2733,
+      "sourceClip": "Part_1/split_1/front_view/000823.mp4"
+    },
+    "Dây chuyền": {
+      "file": "Dây chuyền.mp4",
+      "bytes": 65033,
+      "durationMs": 2567,
+      "sourceClip": "Part_1/split_1/front_view/000340.mp4"
+    },
+    "Dép": {
+      "file": "Dép.mp4",
+      "bytes": 65703,
+      "durationMs": 2667,
+      "sourceClip": "Part_1/split_1/front_view/000330.mp4"
+    },
+    "Dì": {
+      "file": "Dì.mp4",
+      "bytes": 44975,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000012.mp4"
+    },
+    "Dũng cảm": {
+      "file": "Dũng cảm.mp4",
+      "bytes": 52562,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000857.mp4"
+    },
+    "Dơ": {
+      "file": "Dơ.mp4",
+      "bytes": 44503,
+      "durationMs": 2466,
+      "sourceClip": "Part_1/split_1/front_view/000570.mp4"
+    },
+    "Dễ": {
+      "file": "Dễ.mp4",
+      "bytes": 45330,
+      "durationMs": 2233,
+      "sourceClip": "Part_1/split_1/front_view/000620.mp4"
+    },
+    "Dỗi": {
+      "file": "Dỗi.mp4",
+      "bytes": 58615,
+      "durationMs": 2833,
+      "sourceClip": "Part_1/split_1/front_view/000750.mp4"
+    },
+    "Dở": {
+      "file": "Dở.mp4",
+      "bytes": 53094,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000611.mp4"
+    },
+    "Dụng cụ học tập": {
+      "file": "Dụng cụ học tập.mp4",
+      "bytes": 75473,
+      "durationMs": 3033,
+      "sourceClip": "Part_1/split_1/front_view/000279.mp4"
+    },
+    "Dừng lại": {
+      "file": "Dừng lại.mp4",
+      "bytes": 54583,
+      "durationMs": 1967,
+      "sourceClip": "Part_1/split_1/front_view/000452.mp4"
+    },
+    "Dữ": {
+      "file": "Dữ.mp4",
+      "bytes": 45651,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000629.mp4"
+    },
+    "Em": {
+      "file": "Em.mp4",
+      "bytes": 51050,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000004.mp4"
+    },
+    "Ghét": {
+      "file": "Ghét.mp4",
+      "bytes": 50510,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000442.mp4"
+    },
+    "Già": {
+      "file": "Già.mp4",
+      "bytes": 42203,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000560.mp4"
+    },
+    "Giàu": {
+      "file": "Giàu.mp4",
+      "bytes": 44221,
+      "durationMs": 2366,
+      "sourceClip": "Part_1/split_1/front_view/000583.mp4"
+    },
+    "Giày": {
+      "file": "Giày.mp4",
+      "bytes": 59453,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000322.mp4"
+    },
+    "Giám đốc": {
+      "file": "Giám đốc.mp4",
+      "bytes": 42004,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000381.mp4"
+    },
+    "Giáng sinh": {
+      "file": "Giáng sinh.mp4",
+      "bytes": 79980,
+      "durationMs": 3000,
+      "sourceClip": "Part_1/split_1/front_view/000206.mp4"
+    },
+    "Giây": {
+      "file": "Giây.mp4",
+      "bytes": 51802,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000183.mp4"
+    },
+    "Gió": {
+      "file": "Gió.mp4",
+      "bytes": 65190,
+      "durationMs": 2667,
+      "sourceClip": "Part_1/split_1/front_view/000123.mp4"
+    },
+    "Giúp đỡ": {
+      "file": "Giúp đỡ.mp4",
+      "bytes": 65542,
+      "durationMs": 2666,
+      "sourceClip": "Part_1/split_1/front_view/000506.mp4"
+    },
+    "Giường": {
+      "file": "Giường.mp4",
+      "bytes": 52637,
+      "durationMs": 2233,
+      "sourceClip": "Part_1/split_1/front_view/000049.mp4"
+    },
+    "Giấy nháp": {
+      "file": "Giấy nháp.mp4",
+      "bytes": 66974,
+      "durationMs": 3067,
+      "sourceClip": "Part_1/split_1/front_view/000307.mp4"
+    },
+    "Giặt đồ": {
+      "file": "Giặt đồ.mp4",
+      "bytes": 59747,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000455.mp4"
+    },
+    "Giỏi": {
+      "file": "Giỏi.mp4",
+      "bytes": 49787,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000845.mp4"
+    },
+    "Giới thiệu": {
+      "file": "Giới thiệu.mp4",
+      "bytes": 57378,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000430.mp4"
+    },
+    "Giờ": {
+      "file": "Giờ.mp4",
+      "bytes": 54602,
+      "durationMs": 2167,
+      "sourceClip": "Part_1/split_1/front_view/000178.mp4"
+    },
+    "Gạo": {
+      "file": "Gạo.mp4",
+      "bytes": 57319,
+      "durationMs": 2633,
+      "sourceClip": "Part_1/split_1/front_view/000241.mp4"
+    },
+    "Gần": {
+      "file": "Gần.mp4",
+      "bytes": 58676,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000627.mp4"
+    },
+    "Gọi": {
+      "file": "Gọi.mp4",
+      "bytes": 61913,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000470.mp4"
+    },
+    "Gối (đầu)": {
+      "file": "Gối (đầu).mp4",
+      "bytes": 70190,
+      "durationMs": 2366,
+      "sourceClip": "Part_1/split_1/front_view/000051.mp4"
+    },
+    "Gội đầu": {
+      "file": "Gội đầu.mp4",
+      "bytes": 77394,
+      "durationMs": 2733,
+      "sourceClip": "Part_1/split_1/front_view/000508.mp4"
+    },
+    "Hay (khen)": {
+      "file": "Hay (khen).mp4",
+      "bytes": 43525,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000589.mp4"
+    },
+    "Hiền": {
+      "file": "Hiền.mp4",
+      "bytes": 49016,
+      "durationMs": 2566,
+      "sourceClip": "Part_1/split_1/front_view/000631.mp4"
+    },
+    "Hiệu trưởng": {
+      "file": "Hiệu trưởng.mp4",
+      "bytes": 57381,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000369.mp4"
+    },
+    "Hoàng hôn": {
+      "file": "Hoàng hôn.mp4",
+      "bytes": 83779,
+      "durationMs": 3667,
+      "sourceClip": "Part_1/split_1/front_view/000188.mp4"
+    },
+    "Hy vọng": {
+      "file": "Hy vọng.mp4",
+      "bytes": 43886,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000432.mp4"
+    },
+    "Hài hước": {
+      "file": "Hài hước.mp4",
+      "bytes": 46162,
+      "durationMs": 1866,
+      "sourceClip": "Part_1/split_1/front_view/000855.mp4"
+    },
+    "Hàn Quốc": {
+      "file": "Hàn Quốc.mp4",
+      "bytes": 53867,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000641.mp4"
+    },
+    "Hát": {
+      "file": "Hát.mp4",
+      "bytes": 50845,
+      "durationMs": 2667,
+      "sourceClip": "Part_1/split_1/front_view/000760.mp4"
+    },
+    "Hôi": {
+      "file": "Hôi.mp4",
+      "bytes": 44415,
+      "durationMs": 2366,
+      "sourceClip": "Part_1/split_1/front_view/000566.mp4"
+    },
+    "Hư": {
+      "file": "Hư.mp4",
+      "bytes": 52464,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000836.mp4"
+    },
+    "Hẹp": {
+      "file": "Hẹp.mp4",
+      "bytes": 57146,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000816.mp4"
+    },
+    "Họ hàng": {
+      "file": "Họ hàng.mp4",
+      "bytes": 55557,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000018.mp4"
+    },
+    "Học": {
+      "file": "Học.mp4",
+      "bytes": 54443,
+      "durationMs": 2367,
+      "sourceClip": "Part_1/split_1/front_view/000748.mp4"
+    },
+    "Học sinh": {
+      "file": "Học sinh.mp4",
+      "bytes": 57229,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000377.mp4"
+    },
+    "Hứa": {
+      "file": "Hứa.mp4",
+      "bytes": 45309,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000492.mp4"
+    },
+    "Kem": {
+      "file": "Kem.mp4",
+      "bytes": 50895,
+      "durationMs": 2366,
+      "sourceClip": "Part_1/split_1/front_view/000261.mp4"
+    },
+    "Khoe khoang": {
+      "file": "Khoe khoang.mp4",
+      "bytes": 49822,
+      "durationMs": 2467,
+      "sourceClip": "Part_1/split_1/front_view/000426.mp4"
+    },
+    "Khám bệnh": {
+      "file": "Khám bệnh.mp4",
+      "bytes": 42428,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000424.mp4"
+    },
+    "Khó": {
+      "file": "Khó.mp4",
+      "bytes": 56081,
+      "durationMs": 2733,
+      "sourceClip": "Part_1/split_1/front_view/000534.mp4"
+    },
+    "Khóc": {
+      "file": "Khóc.mp4",
+      "bytes": 54058,
+      "durationMs": 2466,
+      "sourceClip": "Part_1/split_1/front_view/000744.mp4"
+    },
+    "Khô": {
+      "file": "Khô.mp4",
+      "bytes": 60129,
+      "durationMs": 2633,
+      "sourceClip": "Part_1/split_1/front_view/000557.mp4"
+    },
+    "Không cho": {
+      "file": "Không cho.mp4",
+      "bytes": 44964,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000790.mp4"
+    },
+    "Không cần": {
+      "file": "Không cần.mp4",
+      "bytes": 53746,
+      "durationMs": 2366,
+      "sourceClip": "Part_1/split_1/front_view/000788.mp4"
+    },
+    "Không nghe lời": {
+      "file": "Không nghe lời.mp4",
+      "bytes": 69148,
+      "durationMs": 3000,
+      "sourceClip": "Part_1/split_1/front_view/000792.mp4"
+    },
+    "Không nên": {
+      "file": "Không nên.mp4",
+      "bytes": 65417,
+      "durationMs": 2766,
+      "sourceClip": "Part_1/split_1/front_view/000786.mp4"
+    },
+    "Không quen": {
+      "file": "Không quen.mp4",
+      "bytes": 46605,
+      "durationMs": 2666,
+      "sourceClip": "Part_1/split_1/front_view/000784.mp4"
+    },
+    "Khăn quàng cổ": {
+      "file": "Khăn quàng cổ.mp4",
+      "bytes": 72650,
+      "durationMs": 3200,
+      "sourceClip": "Part_1/split_1/front_view/000353.mp4"
+    },
+    "Khỏe": {
+      "file": "Khỏe.mp4",
+      "bytes": 55531,
+      "durationMs": 2066,
+      "sourceClip": "Part_1/split_1/front_view/000838.mp4"
+    },
+    "Kính lúp": {
+      "file": "Kính lúp.mp4",
+      "bytes": 75145,
+      "durationMs": 3233,
+      "sourceClip": "Part_1/split_1/front_view/000313.mp4"
+    },
+    "Kẹo": {
+      "file": "Kẹo.mp4",
+      "bytes": 61989,
+      "durationMs": 2366,
+      "sourceClip": "Part_1/split_1/front_view/000259.mp4"
+    },
+    "Kẹp tóc": {
+      "file": "Kẹp tóc.mp4",
+      "bytes": 50023,
+      "durationMs": 2267,
+      "sourceClip": "Part_1/split_1/front_view/000347.mp4"
+    },
+    "Kế toán": {
+      "file": "Kế toán.mp4",
+      "bytes": 58588,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000383.mp4"
+    },
+    "Laptop": {
+      "file": "Laptop.mp4",
+      "bytes": 59886,
+      "durationMs": 2633,
+      "sourceClip": "Part_1/split_1/front_view/000294.mp4"
+    },
+    "Luật sư": {
+      "file": "Luật sư.mp4",
+      "bytes": 53487,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000393.mp4"
+    },
+    "Làm bài tập": {
+      "file": "Làm bài tập.mp4",
+      "bytes": 55183,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000490.mp4"
+    },
+    "Làm việc": {
+      "file": "Làm việc.mp4",
+      "bytes": 57792,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000457.mp4"
+    },
+    "Lùn": {
+      "file": "Lùn.mp4",
+      "bytes": 51977,
+      "durationMs": 2733,
+      "sourceClip": "Part_1/split_1/front_view/000828.mp4"
+    },
+    "Lười biếng": {
+      "file": "Lười biếng.mp4",
+      "bytes": 46432,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000849.mp4"
+    },
+    "Lạnh": {
+      "file": "Lạnh.mp4",
+      "bytes": 66726,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000622.mp4"
+    },
+    "Lễ tân": {
+      "file": "Lễ tân.mp4",
+      "bytes": 57789,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000371.mp4"
+    },
+    "Mua bán": {
+      "file": "Mua bán.mp4",
+      "bytes": 67640,
+      "durationMs": 2667,
+      "sourceClip": "Part_1/split_1/front_view/000782.mp4"
+    },
+    "Muốn": {
+      "file": "Muốn.mp4",
+      "bytes": 44608,
+      "durationMs": 2266,
+      "sourceClip": "Part_1/split_1/front_view/000434.mp4"
+    },
+    "Màu cam": {
+      "file": "Màu cam.mp4",
+      "bytes": 70743,
+      "durationMs": 2466,
+      "sourceClip": "Part_1/split_1/front_view/000677.mp4"
+    },
+    "Màu hồng": {
+      "file": "Màu hồng.mp4",
+      "bytes": 51115,
+      "durationMs": 2666,
+      "sourceClip": "Part_1/split_1/front_view/000686.mp4"
+    },
+    "Màu nâu": {
+      "file": "Màu nâu.mp4",
+      "bytes": 46785,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000690.mp4"
+    },
+    "Màu trắng": {
+      "file": "Màu trắng.mp4",
+      "bytes": 47027,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000673.mp4"
+    },
+    "Màu tím": {
+      "file": "Màu tím.mp4",
+      "bytes": 49771,
+      "durationMs": 2800,
+      "sourceClip": "Part_1/split_1/front_view/000688.mp4"
+    },
+    "Màu vàng": {
+      "file": "Màu vàng.mp4",
+      "bytes": 48113,
+      "durationMs": 2733,
+      "sourceClip": "Part_1/split_1/front_view/000679.mp4"
+    },
+    "Màu xanh da trời": {
+      "file": "Màu xanh da trời.mp4",
+      "bytes": 47103,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000684.mp4"
+    },
+    "Màu xanh lá cây": {
+      "file": "Màu xanh lá cây.mp4",
+      "bytes": 68297,
+      "durationMs": 2833,
+      "sourceClip": "Part_1/split_1/front_view/000682.mp4"
+    },
+    "Màu đen": {
+      "file": "Màu đen.mp4",
+      "bytes": 49951,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000671.mp4"
+    },
+    "Màu đỏ": {
+      "file": "Màu đỏ.mp4",
+      "bytes": 54909,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000675.mp4"
+    },
+    "Mách": {
+      "file": "Mách.mp4",
+      "bytes": 42369,
+      "durationMs": 2233,
+      "sourceClip": "Part_1/split_1/front_view/000742.mp4"
+    },
+    "Mát mẻ": {
+      "file": "Mát mẻ.mp4",
+      "bytes": 56827,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000555.mp4"
+    },
+    "Máy bay": {
+      "file": "Máy bay.mp4",
+      "bytes": 46235,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000397.mp4"
+    },
+    "Máy chiếu": {
+      "file": "Máy chiếu.mp4",
+      "bytes": 55707,
+      "durationMs": 2067,
+      "sourceClip": "Part_1/split_1/front_view/000020.mp4"
+    },
+    "Máy giặt": {
+      "file": "Máy giặt.mp4",
+      "bytes": 56468,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000060.mp4"
+    },
+    "Máy tính cầm tay": {
+      "file": "Máy tính cầm tay.mp4",
+      "bytes": 52895,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000309.mp4"
+    },
+    "Máy điều hòa": {
+      "file": "Máy điều hòa.mp4",
+      "bytes": 62942,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000058.mp4"
+    },
+    "Mì gói": {
+      "file": "Mì gói.mp4",
+      "bytes": 46830,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000251.mp4"
+    },
+    "Mùa hè": {
+      "file": "Mùa hè.mp4",
+      "bytes": 54618,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000104.mp4"
+    },
+    "Mùa khô": {
+      "file": "Mùa khô.mp4",
+      "bytes": 78503,
+      "durationMs": 3200,
+      "sourceClip": "Part_1/split_1/front_view/000114.mp4"
+    },
+    "Mùa mưa": {
+      "file": "Mùa mưa.mp4",
+      "bytes": 79636,
+      "durationMs": 3000,
+      "sourceClip": "Part_1/split_1/front_view/000112.mp4"
+    },
+    "Mùa thu": {
+      "file": "Mùa thu.mp4",
+      "bytes": 55455,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000108.mp4"
+    },
+    "Mùa xuân": {
+      "file": "Mùa xuân.mp4",
+      "bytes": 63648,
+      "durationMs": 2833,
+      "sourceClip": "Part_1/split_1/front_view/000102.mp4"
+    },
+    "Mùa đông": {
+      "file": "Mùa đông.mp4",
+      "bytes": 62578,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000110.mp4"
+    },
+    "Múa": {
+      "file": "Múa.mp4",
+      "bytes": 83160,
+      "durationMs": 2667,
+      "sourceClip": "Part_1/split_1/front_view/000762.mp4"
+    },
+    "Mũ": {
+      "file": "Mũ.mp4",
+      "bytes": 63019,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000343.mp4"
+    },
+    "Mũ bảo hiểm": {
+      "file": "Mũ bảo hiểm.mp4",
+      "bytes": 85271,
+      "durationMs": 3033,
+      "sourceClip": "Part_1/split_1/front_view/000345.mp4"
+    },
+    "Mưa": {
+      "file": "Mưa.mp4",
+      "bytes": 75480,
+      "durationMs": 2567,
+      "sourceClip": "Part_1/split_1/front_view/000121.mp4"
+    },
+    "Mạnh": {
+      "file": "Mạnh.mp4",
+      "bytes": 45929,
+      "durationMs": 2133,
+      "sourceClip": "Part_1/split_1/front_view/000577.mp4"
+    },
+    "Mập": {
+      "file": "Mập.mp4",
+      "bytes": 41334,
+      "durationMs": 2000,
+      "sourceClip": "Part_1/split_1/front_view/000832.mp4"
+    },
+    "Mặn": {
+      "file": "Mặn.mp4",
+      "bytes": 43581,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000794.mp4"
+    },
+    "Mẹ": {
+      "file": "Mẹ.mp4",
+      "bytes": 42589,
+      "durationMs": 2133,
+      "sourceClip": "Part_1/split_1/front_view/000716.mp4"
+    },
+    "Mềm": {
+      "file": "Mềm.mp4",
+      "bytes": 52906,
+      "durationMs": 2466,
+      "sourceClip": "Part_1/split_1/front_view/000596.mp4"
+    },
+    "Mền": {
+      "file": "Mền.mp4",
+      "bytes": 60634,
+      "durationMs": 2166,
+      "sourceClip": "Part_1/split_1/front_view/000053.mp4"
+    },
+    "Mệt": {
+      "file": "Mệt.mp4",
+      "bytes": 46038,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000840.mp4"
+    },
+    "Mới": {
+      "file": "Mới.mp4",
+      "bytes": 52927,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000602.mp4"
+    },
+    "Mỹ": {
+      "file": "Mỹ.mp4",
+      "bytes": 60887,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000647.mp4"
+    },
+    "Nghe": {
+      "file": "Nghe.mp4",
+      "bytes": 49083,
+      "durationMs": 2467,
+      "sourceClip": "Part_1/split_1/front_view/000418.mp4"
+    },
+    "Nghèo": {
+      "file": "Nghèo.mp4",
+      "bytes": 56463,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000605.mp4"
+    },
+    "Nghề nghiệp": {
+      "file": "Nghề nghiệp.mp4",
+      "bytes": 60531,
+      "durationMs": 2567,
+      "sourceClip": "Part_1/split_1/front_view/000355.mp4"
+    },
+    "Nghỉ ngơi": {
+      "file": "Nghỉ ngơi.mp4",
+      "bytes": 48094,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000516.mp4"
+    },
+    "Ngoan": {
+      "file": "Ngoan.mp4",
+      "bytes": 46632,
+      "durationMs": 2467,
+      "sourceClip": "Part_1/split_1/front_view/000834.mp4"
+    },
+    "Ngon miệng": {
+      "file": "Ngon miệng.mp4",
+      "bytes": 56805,
+      "durationMs": 2466,
+      "sourceClip": "Part_1/split_1/front_view/000807.mp4"
+    },
+    "Ngu ngốc": {
+      "file": "Ngu ngốc.mp4",
+      "bytes": 51170,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000529.mp4"
+    },
+    "Ngày": {
+      "file": "Ngày.mp4",
+      "bytes": 51127,
+      "durationMs": 2666,
+      "sourceClip": "Part_1/split_1/front_view/000172.mp4"
+    },
+    "Ngày Nhà giáo Việt Nam": {
+      "file": "Ngày Nhà giáo Việt Nam.mp4",
+      "bytes": 82013,
+      "durationMs": 3533,
+      "sourceClip": "Part_1/split_1/front_view/000210.mp4"
+    },
+    "Ngày Quốc tế Lao động": {
+      "file": "Ngày Quốc tế Lao động.mp4",
+      "bytes": 84596,
+      "durationMs": 3667,
+      "sourceClip": "Part_1/split_1/front_view/000145.mp4"
+    },
+    "Ngày Quốc tế Phụ nữ": {
+      "file": "Ngày Quốc tế Phụ nữ.mp4",
+      "bytes": 80205,
+      "durationMs": 3600,
+      "sourceClip": "Part_1/split_1/front_view/000141.mp4"
+    },
+    "Ngày Quốc tế Thiếu nhi": {
+      "file": "Ngày Quốc tế Thiếu nhi.mp4",
+      "bytes": 86149,
+      "durationMs": 3633,
+      "sourceClip": "Part_1/split_1/front_view/000139.mp4"
+    },
+    "Ngân hàng": {
+      "file": "Ngân hàng.mp4",
+      "bytes": 50732,
+      "durationMs": 2467,
+      "sourceClip": "Part_1/split_1/front_view/000080.mp4"
+    },
+    "Ngắn": {
+      "file": "Ngắn.mp4",
+      "bytes": 47677,
+      "durationMs": 2133,
+      "sourceClip": "Part_1/split_1/front_view/000526.mp4"
+    },
+    "Ngọt": {
+      "file": "Ngọt.mp4",
+      "bytes": 42052,
+      "durationMs": 2233,
+      "sourceClip": "Part_1/split_1/front_view/000801.mp4"
+    },
+    "Ngủ": {
+      "file": "Ngủ.mp4",
+      "bytes": 57023,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000428.mp4"
+    },
+    "Ngửi": {
+      "file": "Ngửi.mp4",
+      "bytes": 47379,
+      "durationMs": 2233,
+      "sourceClip": "Part_1/split_1/front_view/000461.mp4"
+    },
+    "Nhanh": {
+      "file": "Nhanh.mp4",
+      "bytes": 49590,
+      "durationMs": 2033,
+      "sourceClip": "Part_1/split_1/front_view/000532.mp4"
+    },
+    "Nhà": {
+      "file": "Nhà.mp4",
+      "bytes": 53732,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000074.mp4"
+    },
+    "Nhà hàng": {
+      "file": "Nhà hàng.mp4",
+      "bytes": 55129,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000084.mp4"
+    },
+    "Nhà sách": {
+      "file": "Nhà sách.mp4",
+      "bytes": 62323,
+      "durationMs": 2767,
+      "sourceClip": "Part_1/split_1/front_view/000087.mp4"
+    },
+    "Nhà trọ": {
+      "file": "Nhà trọ.mp4",
+      "bytes": 57590,
+      "durationMs": 2833,
+      "sourceClip": "Part_1/split_1/front_view/000096.mp4"
+    },
+    "Nhân viên phục vụ": {
+      "file": "Nhân viên phục vụ.mp4",
+      "bytes": 79854,
+      "durationMs": 3033,
+      "sourceClip": "Part_1/split_1/front_view/000361.mp4"
+    },
+    "Nhân viên văn phòng": {
+      "file": "Nhân viên văn phòng.mp4",
+      "bytes": 64210,
+      "durationMs": 2833,
+      "sourceClip": "Part_1/split_1/front_view/000359.mp4"
+    },
+    "Nhạt": {
+      "file": "Nhạt.mp4",
+      "bytes": 44682,
+      "durationMs": 2467,
+      "sourceClip": "Part_1/split_1/front_view/000805.mp4"
+    },
+    "Nhảy cao": {
+      "file": "Nhảy cao.mp4",
+      "bytes": 61550,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000234.mp4"
+    },
+    "Nhảy dây": {
+      "file": "Nhảy dây.mp4",
+      "bytes": 60345,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000226.mp4"
+    },
+    "Nhầm lẫn": {
+      "file": "Nhầm lẫn.mp4",
+      "bytes": 57484,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000768.mp4"
+    },
+    "Nhật Bản": {
+      "file": "Nhật Bản.mp4",
+      "bytes": 52494,
+      "durationMs": 2633,
+      "sourceClip": "Part_1/split_1/front_view/000643.mp4"
+    },
+    "Nhẹ": {
+      "file": "Nhẹ.mp4",
+      "bytes": 55639,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000615.mp4"
+    },
+    "Nên": {
+      "file": "Nên.mp4",
+      "bytes": 55573,
+      "durationMs": 2267,
+      "sourceClip": "Part_1/split_1/front_view/000459.mp4"
+    },
+    "Nói": {
+      "file": "Nói.mp4",
+      "bytes": 48080,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000439.mp4"
+    },
+    "Nói chuyện": {
+      "file": "Nói chuyện.mp4",
+      "bytes": 62462,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000512.mp4"
+    },
+    "Nóng": {
+      "file": "Nóng.mp4",
+      "bytes": 49291,
+      "durationMs": 2766,
+      "sourceClip": "Part_1/split_1/front_view/000600.mp4"
+    },
+    "Nông dân": {
+      "file": "Nông dân.mp4",
+      "bytes": 62247,
+      "durationMs": 2633,
+      "sourceClip": "Part_1/split_1/front_view/000390.mp4"
+    },
+    "Năm": {
+      "file": "Năm.mp4",
+      "bytes": 60134,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000176.mp4"
+    },
+    "Nước": {
+      "file": "Nước.mp4",
+      "bytes": 44382,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000266.mp4"
+    },
+    "Nướng": {
+      "file": "Nướng.mp4",
+      "bytes": 46270,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000766.mp4"
+    },
+    "Nấu": {
+      "file": "Nấu.mp4",
+      "bytes": 55843,
+      "durationMs": 2367,
+      "sourceClip": "Part_1/split_1/front_view/000764.mp4"
+    },
+    "Nắng": {
+      "file": "Nắng.mp4",
+      "bytes": 64991,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000117.mp4"
+    },
+    "Nặng": {
+      "file": "Nặng.mp4",
+      "bytes": 41104,
+      "durationMs": 1933,
+      "sourceClip": "Part_1/split_1/front_view/000594.mp4"
+    },
+    "Nếm": {
+      "file": "Nếm.mp4",
+      "bytes": 41740,
+      "durationMs": 2166,
+      "sourceClip": "Part_1/split_1/front_view/000482.mp4"
+    },
+    "Nồi cơm điện": {
+      "file": "Nồi cơm điện.mp4",
+      "bytes": 58365,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000022.mp4"
+    },
+    "Phút": {
+      "file": "Phút.mp4",
+      "bytes": 48241,
+      "durationMs": 2133,
+      "sourceClip": "Part_1/split_1/front_view/000181.mp4"
+    },
+    "Phơi đồ": {
+      "file": "Phơi đồ.mp4",
+      "bytes": 67971,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000496.mp4"
+    },
+    "Phở": {
+      "file": "Phở.mp4",
+      "bytes": 57402,
+      "durationMs": 2233,
+      "sourceClip": "Part_1/split_1/front_view/000249.mp4"
+    },
+    "Quan sát": {
+      "file": "Quan sát.mp4",
+      "bytes": 65645,
+      "durationMs": 2567,
+      "sourceClip": "Part_1/split_1/front_view/000770.mp4"
+    },
+    "Quen": {
+      "file": "Quen.mp4",
+      "bytes": 49850,
+      "durationMs": 2467,
+      "sourceClip": "Part_1/split_1/front_view/000437.mp4"
+    },
+    "Quán cà phê": {
+      "file": "Quán cà phê.mp4",
+      "bytes": 57452,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000082.mp4"
+    },
+    "Quạt (đứng)": {
+      "file": "Quạt (đứng).mp4",
+      "bytes": 52124,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000038.mp4"
+    },
+    "Quả bơ": {
+      "file": "Quả bơ.mp4",
+      "bytes": 57899,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000704.mp4"
+    },
+    "Quả cam": {
+      "file": "Quả cam.mp4",
+      "bytes": 48125,
+      "durationMs": 2667,
+      "sourceClip": "Part_1/split_1/front_view/000702.mp4"
+    },
+    "Quả chuối": {
+      "file": "Quả chuối.mp4",
+      "bytes": 63538,
+      "durationMs": 2633,
+      "sourceClip": "Part_1/split_1/front_view/000706.mp4"
+    },
+    "Quả dâu": {
+      "file": "Quả dâu.mp4",
+      "bytes": 47762,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000692.mp4"
+    },
+    "Quả dứa": {
+      "file": "Quả dứa.mp4",
+      "bytes": 58242,
+      "durationMs": 2766,
+      "sourceClip": "Part_1/split_1/front_view/000696.mp4"
+    },
+    "Quả dừa": {
+      "file": "Quả dừa.mp4",
+      "bytes": 50045,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000711.mp4"
+    },
+    "Quả mận": {
+      "file": "Quả mận.mp4",
+      "bytes": 60652,
+      "durationMs": 2800,
+      "sourceClip": "Part_1/split_1/front_view/000694.mp4"
+    },
+    "Quả xoài": {
+      "file": "Quả xoài.mp4",
+      "bytes": 51231,
+      "durationMs": 2266,
+      "sourceClip": "Part_1/split_1/front_view/000708.mp4"
+    },
+    "Quả đu đủ": {
+      "file": "Quả đu đủ.mp4",
+      "bytes": 64718,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000700.mp4"
+    },
+    "Quả đào": {
+      "file": "Quả đào.mp4",
+      "bytes": 59249,
+      "durationMs": 2467,
+      "sourceClip": "Part_1/split_1/front_view/000698.mp4"
+    },
+    "Quả địa cầu": {
+      "file": "Quả địa cầu.mp4",
+      "bytes": 55626,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000315.mp4"
+    },
+    "Quần thun": {
+      "file": "Quần thun.mp4",
+      "bytes": 69454,
+      "durationMs": 2466,
+      "sourceClip": "Part_1/split_1/front_view/000328.mp4"
+    },
+    "Quần tây": {
+      "file": "Quần tây.mp4",
+      "bytes": 55837,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000336.mp4"
+    },
+    "Quần đùi": {
+      "file": "Quần đùi.mp4",
+      "bytes": 63355,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000635.mp4"
+    },
+    "Rượu": {
+      "file": "Rượu.mp4",
+      "bytes": 54857,
+      "durationMs": 2666,
+      "sourceClip": "Part_1/split_1/front_view/000270.mp4"
+    },
+    "Rạp chiếu phim": {
+      "file": "Rạp chiếu phim.mp4",
+      "bytes": 78318,
+      "durationMs": 2833,
+      "sourceClip": "Part_1/split_1/front_view/000098.mp4"
+    },
+    "Rẻ": {
+      "file": "Rẻ.mp4",
+      "bytes": 40970,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000541.mp4"
+    },
+    "Rộng": {
+      "file": "Rộng.mp4",
+      "bytes": 63364,
+      "durationMs": 2566,
+      "sourceClip": "Part_1/split_1/front_view/000820.mp4"
+    },
+    "Rửa chén": {
+      "file": "Rửa chén.mp4",
+      "bytes": 57082,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000476.mp4"
+    },
+    "Rửa mặt": {
+      "file": "Rửa mặt.mp4",
+      "bytes": 82196,
+      "durationMs": 2767,
+      "sourceClip": "Part_1/split_1/front_view/000468.mp4"
+    },
+    "Rửa tay": {
+      "file": "Rửa tay.mp4",
+      "bytes": 54167,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000444.mp4"
+    },
+    "Sai": {
+      "file": "Sai.mp4",
+      "bytes": 44637,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000564.mp4"
+    },
+    "Sinh viên": {
+      "file": "Sinh viên.mp4",
+      "bytes": 45800,
+      "durationMs": 2266,
+      "sourceClip": "Part_1/split_1/front_view/000379.mp4"
+    },
+    "Siêu thị": {
+      "file": "Siêu thị.mp4",
+      "bytes": 55060,
+      "durationMs": 2266,
+      "sourceClip": "Part_1/split_1/front_view/000094.mp4"
+    },
+    "Sách": {
+      "file": "Sách.mp4",
+      "bytes": 52059,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000281.mp4"
+    },
+    "Sáng tạo": {
+      "file": "Sáng tạo.mp4",
+      "bytes": 65655,
+      "durationMs": 2367,
+      "sourceClip": "Part_1/split_1/front_view/000859.mp4"
+    },
+    "Sạch sẽ": {
+      "file": "Sạch sẽ.mp4",
+      "bytes": 46653,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000549.mp4"
+    },
+    "Sớm": {
+      "file": "Sớm.mp4",
+      "bytes": 44107,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000585.mp4"
+    },
+    "Sữa": {
+      "file": "Sữa.mp4",
+      "bytes": 57180,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000276.mp4"
+    },
+    "Taxi": {
+      "file": "Taxi.mp4",
+      "bytes": 47704,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000412.mp4"
+    },
+    "Tham lam": {
+      "file": "Tham lam.mp4",
+      "bytes": 59307,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000587.mp4"
+    },
+    "Tham ăn": {
+      "file": "Tham ăn.mp4",
+      "bytes": 57547,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000609.mp4"
+    },
+    "Thay đổi": {
+      "file": "Thay đổi.mp4",
+      "bytes": 56776,
+      "durationMs": 2366,
+      "sourceClip": "Part_1/split_1/front_view/000510.mp4"
+    },
+    "Thuyền": {
+      "file": "Thuyền.mp4",
+      "bytes": 54483,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000404.mp4"
+    },
+    "Thành phố": {
+      "file": "Thành phố.mp4",
+      "bytes": 62785,
+      "durationMs": 2467,
+      "sourceClip": "Part_1/split_1/front_view/000064.mp4"
+    },
+    "Thái Lan": {
+      "file": "Thái Lan.mp4",
+      "bytes": 53863,
+      "durationMs": 2566,
+      "sourceClip": "Part_1/split_1/front_view/000645.mp4"
+    },
+    "Tháng": {
+      "file": "Tháng.mp4",
+      "bytes": 60093,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000174.mp4"
+    },
+    "Tháng ba": {
+      "file": "Tháng ba.mp4",
+      "bytes": 56695,
+      "durationMs": 2733,
+      "sourceClip": "Part_1/split_1/front_view/000151.mp4"
+    },
+    "Tháng bảy": {
+      "file": "Tháng bảy.mp4",
+      "bytes": 53095,
+      "durationMs": 2233,
+      "sourceClip": "Part_1/split_1/front_view/000160.mp4"
+    },
+    "Tháng chín": {
+      "file": "Tháng chín.mp4",
+      "bytes": 48653,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000163.mp4"
+    },
+    "Tháng hai": {
+      "file": "Tháng hai.mp4",
+      "bytes": 52577,
+      "durationMs": 2367,
+      "sourceClip": "Part_1/split_1/front_view/000149.mp4"
+    },
+    "Tháng mười": {
+      "file": "Tháng mười.mp4",
+      "bytes": 53302,
+      "durationMs": 2233,
+      "sourceClip": "Part_1/split_1/front_view/000165.mp4"
+    },
+    "Tháng mười hai": {
+      "file": "Tháng mười hai.mp4",
+      "bytes": 62499,
+      "durationMs": 3166,
+      "sourceClip": "Part_1/split_1/front_view/000170.mp4"
+    },
+    "Tháng mười một": {
+      "file": "Tháng mười một.mp4",
+      "bytes": 60465,
+      "durationMs": 2867,
+      "sourceClip": "Part_1/split_1/front_view/000168.mp4"
+    },
+    "Tháng một": {
+      "file": "Tháng một.mp4",
+      "bytes": 52416,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000147.mp4"
+    },
+    "Tháng năm": {
+      "file": "Tháng năm.mp4",
+      "bytes": 50559,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000156.mp4"
+    },
+    "Tháng sáu": {
+      "file": "Tháng sáu.mp4",
+      "bytes": 52943,
+      "durationMs": 2367,
+      "sourceClip": "Part_1/split_1/front_view/000158.mp4"
+    },
+    "Tháng tám": {
+      "file": "Tháng tám.mp4",
+      "bytes": 41956,
+      "durationMs": 2233,
+      "sourceClip": "Part_1/split_1/front_view/000162.mp4"
+    },
+    "Tháng tư": {
+      "file": "Tháng tư.mp4",
+      "bytes": 52628,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000154.mp4"
+    },
+    "Thèm": {
+      "file": "Thèm.mp4",
+      "bytes": 42171,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000740.mp4"
+    },
+    "Thích": {
+      "file": "Thích.mp4",
+      "bytes": 44977,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000502.mp4"
+    },
+    "Thông minh": {
+      "file": "Thông minh.mp4",
+      "bytes": 55086,
+      "durationMs": 2633,
+      "sourceClip": "Part_1/split_1/front_view/000633.mp4"
+    },
+    "Thú vị": {
+      "file": "Thú vị.mp4",
+      "bytes": 58417,
+      "durationMs": 2367,
+      "sourceClip": "Part_1/split_1/front_view/000853.mp4"
+    },
+    "Thơm": {
+      "file": "Thơm.mp4",
+      "bytes": 51641,
+      "durationMs": 2266,
+      "sourceClip": "Part_1/split_1/front_view/000545.mp4"
+    },
+    "Thư ký": {
+      "file": "Thư ký.mp4",
+      "bytes": 55110,
+      "durationMs": 2666,
+      "sourceClip": "Part_1/split_1/front_view/000395.mp4"
+    },
+    "Thước kẻ": {
+      "file": "Thước kẻ.mp4",
+      "bytes": 62505,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000298.mp4"
+    },
+    "Thấp (đồ vật)": {
+      "file": "Thấp (đồ vật).mp4",
+      "bytes": 47130,
+      "durationMs": 2466,
+      "sourceClip": "Part_1/split_1/front_view/000568.mp4"
+    },
+    "Thể dục (thể thao)": {
+      "file": "Thể dục (thể thao).mp4",
+      "bytes": 77102,
+      "durationMs": 2667,
+      "sourceClip": "Part_1/split_1/front_view/000212.mp4"
+    },
+    "Thịt": {
+      "file": "Thịt.mp4",
+      "bytes": 59185,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000243.mp4"
+    },
+    "Thời gian": {
+      "file": "Thời gian.mp4",
+      "bytes": 58711,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000201.mp4"
+    },
+    "Thời tiết": {
+      "file": "Thời tiết.mp4",
+      "bytes": 65033,
+      "durationMs": 3000,
+      "sourceClip": "Part_1/split_1/front_view/000100.mp4"
+    },
+    "Thứ ba": {
+      "file": "Thứ ba.mp4",
+      "bytes": 42187,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000127.mp4"
+    },
+    "Thứ bảy": {
+      "file": "Thứ bảy.mp4",
+      "bytes": 40966,
+      "durationMs": 2267,
+      "sourceClip": "Part_1/split_1/front_view/000135.mp4"
+    },
+    "Thứ hai": {
+      "file": "Thứ hai.mp4",
+      "bytes": 41973,
+      "durationMs": 2267,
+      "sourceClip": "Part_1/split_1/front_view/000125.mp4"
+    },
+    "Thứ năm": {
+      "file": "Thứ năm.mp4",
+      "bytes": 41286,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000131.mp4"
+    },
+    "Thứ sáu": {
+      "file": "Thứ sáu.mp4",
+      "bytes": 43079,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000133.mp4"
+    },
+    "Thứ tư": {
+      "file": "Thứ tư.mp4",
+      "bytes": 45450,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000129.mp4"
+    },
+    "Thức dậy": {
+      "file": "Thức dậy.mp4",
+      "bytes": 48464,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000450.mp4"
+    },
+    "Thử": {
+      "file": "Thử.mp4",
+      "bytes": 46715,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000494.mp4"
+    },
+    "Tivi": {
+      "file": "Tivi.mp4",
+      "bytes": 57074,
+      "durationMs": 2767,
+      "sourceClip": "Part_1/split_1/front_view/000033.mp4"
+    },
+    "Tiếp tục": {
+      "file": "Tiếp tục.mp4",
+      "bytes": 57169,
+      "durationMs": 2367,
+      "sourceClip": "Part_1/split_1/front_view/000474.mp4"
+    },
+    "Trung Quốc": {
+      "file": "Trung Quốc.mp4",
+      "bytes": 41836,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000639.mp4"
+    },
+    "Trung thu": {
+      "file": "Trung thu.mp4",
+      "bytes": 66490,
+      "durationMs": 2800,
+      "sourceClip": "Part_1/split_1/front_view/000204.mp4"
+    },
+    "Trà": {
+      "file": "Trà.mp4",
+      "bytes": 54239,
+      "durationMs": 2267,
+      "sourceClip": "Part_1/split_1/front_view/000274.mp4"
+    },
+    "Trường Cao đẳng": {
+      "file": "Trường Cao đẳng.mp4",
+      "bytes": 72478,
+      "durationMs": 3233,
+      "sourceClip": "Part_1/split_1/front_view/000070.mp4"
+    },
+    "Trường học": {
+      "file": "Trường học.mp4",
+      "bytes": 52175,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000072.mp4"
+    },
+    "Trường Đại học": {
+      "file": "Trường Đại học.mp4",
+      "bytes": 69375,
+      "durationMs": 3000,
+      "sourceClip": "Part_1/split_1/front_view/000068.mp4"
+    },
+    "Trẻ": {
+      "file": "Trẻ.mp4",
+      "bytes": 55431,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000539.mp4"
+    },
+    "Trễ": {
+      "file": "Trễ.mp4",
+      "bytes": 48678,
+      "durationMs": 1833,
+      "sourceClip": "Part_1/split_1/front_view/000607.mp4"
+    },
+    "Trứng": {
+      "file": "Trứng.mp4",
+      "bytes": 51471,
+      "durationMs": 2567,
+      "sourceClip": "Part_1/split_1/front_view/000255.mp4"
+    },
+    "Trực thăng": {
+      "file": "Trực thăng.mp4",
+      "bytes": 55406,
+      "durationMs": 2266,
+      "sourceClip": "Part_1/split_1/front_view/000400.mp4"
+    },
+    "Tàu hỏa": {
+      "file": "Tàu hỏa.mp4",
+      "bytes": 61027,
+      "durationMs": 2666,
+      "sourceClip": "Part_1/split_1/front_view/000416.mp4"
+    },
+    "Tìm": {
+      "file": "Tìm.mp4",
+      "bytes": 65318,
+      "durationMs": 2633,
+      "sourceClip": "Part_1/split_1/front_view/000514.mp4"
+    },
+    "Túi xách": {
+      "file": "Túi xách.mp4",
+      "bytes": 42562,
+      "durationMs": 2566,
+      "sourceClip": "Part_1/split_1/front_view/000332.mp4"
+    },
+    "Tường": {
+      "file": "Tường.mp4",
+      "bytes": 56228,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000047.mp4"
+    },
+    "Tắm rửa": {
+      "file": "Tắm rửa.mp4",
+      "bytes": 49389,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000488.mp4"
+    },
+    "Tết Âm lịch": {
+      "file": "Tết Âm lịch.mp4",
+      "bytes": 61096,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000208.mp4"
+    },
+    "Tỉnh": {
+      "file": "Tỉnh.mp4",
+      "bytes": 58540,
+      "durationMs": 2366,
+      "sourceClip": "Part_1/split_1/front_view/000066.mp4"
+    },
+    "Tốt bụng": {
+      "file": "Tốt bụng.mp4",
+      "bytes": 46183,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000851.mp4"
+    },
+    "Tủ lạnh": {
+      "file": "Tủ lạnh.mp4",
+      "bytes": 46891,
+      "durationMs": 1867,
+      "sourceClip": "Part_1/split_1/front_view/000062.mp4"
+    },
+    "Từ chối": {
+      "file": "Từ chối.mp4",
+      "bytes": 54310,
+      "durationMs": 2566,
+      "sourceClip": "Part_1/split_1/front_view/000486.mp4"
+    },
+    "Uống": {
+      "file": "Uống.mp4",
+      "bytes": 48614,
+      "durationMs": 2366,
+      "sourceClip": "Part_1/split_1/front_view/000736.mp4"
+    },
+    "Viên phấn": {
+      "file": "Viên phấn.mp4",
+      "bytes": 51861,
+      "durationMs": 2633,
+      "sourceClip": "Part_1/split_1/front_view/000284.mp4"
+    },
+    "Viết": {
+      "file": "Viết.mp4",
+      "bytes": 45733,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000422.mp4"
+    },
+    "Việt Nam": {
+      "file": "Việt Nam.mp4",
+      "bytes": 51756,
+      "durationMs": 2567,
+      "sourceClip": "Part_1/split_1/front_view/000637.mp4"
+    },
+    "Vâng lời": {
+      "file": "Vâng lời.mp4",
+      "bytes": 54994,
+      "durationMs": 2267,
+      "sourceClip": "Part_1/split_1/front_view/000521.mp4"
+    },
+    "Vòng tay": {
+      "file": "Vòng tay.mp4",
+      "bytes": 53745,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000351.mp4"
+    },
+    "Võ": {
+      "file": "Võ.mp4",
+      "bytes": 64593,
+      "durationMs": 2367,
+      "sourceClip": "Part_1/split_1/front_view/000230.mp4"
+    },
+    "Vở": {
+      "file": "Vở.mp4",
+      "bytes": 62207,
+      "durationMs": 2667,
+      "sourceClip": "Part_1/split_1/front_view/000302.mp4"
+    },
+    "Vợ": {
+      "file": "Vợ.mp4",
+      "bytes": 56386,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000722.mp4"
+    },
+    "Xa": {
+      "file": "Xa.mp4",
+      "bytes": 61745,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000624.mp4"
+    },
+    "Xe buýt": {
+      "file": "Xe buýt.mp4",
+      "bytes": 54128,
+      "durationMs": 2367,
+      "sourceClip": "Part_1/split_1/front_view/000408.mp4"
+    },
+    "Xe máy": {
+      "file": "Xe máy.mp4",
+      "bytes": 44835,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000414.mp4"
+    },
+    "Xe tải": {
+      "file": "Xe tải.mp4",
+      "bytes": 50290,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000406.mp4"
+    },
+    "Xe đạp": {
+      "file": "Xe đạp.mp4",
+      "bytes": 75741,
+      "durationMs": 2933,
+      "sourceClip": "Part_1/split_1/front_view/000410.mp4"
+    },
+    "Xem": {
+      "file": "Xem.mp4",
+      "bytes": 45017,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000738.mp4"
+    },
+    "Xin": {
+      "file": "Xin.mp4",
+      "bytes": 58840,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000447.mp4"
+    },
+    "Xin lỗi": {
+      "file": "Xin lỗi.mp4",
+      "bytes": 56606,
+      "durationMs": 2367,
+      "sourceClip": "Part_1/split_1/front_view/000463.mp4"
+    },
+    "Xôi": {
+      "file": "Xôi.mp4",
+      "bytes": 45412,
+      "durationMs": 2467,
+      "sourceClip": "Part_1/split_1/front_view/000245.mp4"
+    },
+    "Xấu (người)": {
+      "file": "Xấu (người).mp4",
+      "bytes": 57488,
+      "durationMs": 2833,
+      "sourceClip": "Part_1/split_1/front_view/000591.mp4"
+    },
+    "Xấu (vật)": {
+      "file": "Xấu (vật).mp4",
+      "bytes": 45115,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000809.mp4"
+    },
+    "Y tá": {
+      "file": "Y tá.mp4",
+      "bytes": 57404,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000363.mp4"
+    },
+    "Yên tĩnh": {
+      "file": "Yên tĩnh.mp4",
+      "bytes": 51845,
+      "durationMs": 2466,
+      "sourceClip": "Part_1/split_1/front_view/000575.mp4"
+    },
+    "Yêu thương": {
+      "file": "Yêu thương.mp4",
+      "bytes": 54834,
+      "durationMs": 2667,
+      "sourceClip": "Part_1/split_1/front_view/000420.mp4"
+    },
+    "Yếu": {
+      "file": "Yếu.mp4",
+      "bytes": 47905,
+      "durationMs": 2533,
+      "sourceClip": "Part_1/split_1/front_view/000598.mp4"
+    },
+    "Áo sơ mi": {
+      "file": "Áo sơ mi.mp4",
+      "bytes": 63280,
+      "durationMs": 3067,
+      "sourceClip": "Part_1/split_1/front_view/000334.mp4"
+    },
+    "Áo thun": {
+      "file": "Áo thun.mp4",
+      "bytes": 69730,
+      "durationMs": 3066,
+      "sourceClip": "Part_1/split_1/front_view/000326.mp4"
+    },
+    "Áo đầm": {
+      "file": "Áo đầm.mp4",
+      "bytes": 54297,
+      "durationMs": 2067,
+      "sourceClip": "Part_1/split_1/front_view/000338.mp4"
+    },
+    "Ô tô": {
+      "file": "Ô tô.mp4",
+      "bytes": 59290,
+      "durationMs": 2266,
+      "sourceClip": "Part_1/split_1/front_view/000402.mp4"
+    },
+    "Ông ngoại": {
+      "file": "Ông ngoại.mp4",
+      "bytes": 50672,
+      "durationMs": 2800,
+      "sourceClip": "Part_1/split_1/front_view/000730.mp4"
+    },
+    "Ông nội": {
+      "file": "Ông nội.mp4",
+      "bytes": 55307,
+      "durationMs": 2767,
+      "sourceClip": "Part_1/split_1/front_view/000726.mp4"
+    },
+    "Ăn": {
+      "file": "Ăn.mp4",
+      "bytes": 46847,
+      "durationMs": 2366,
+      "sourceClip": "Part_1/split_1/front_view/000734.mp4"
+    },
+    "Đau": {
+      "file": "Đau.mp4",
+      "bytes": 41508,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000842.mp4"
+    },
+    "Đi": {
+      "file": "Đi.mp4",
+      "bytes": 52159,
+      "durationMs": 2600,
+      "sourceClip": "Part_1/split_1/front_view/000754.mp4"
+    },
+    "Điền kinh": {
+      "file": "Điền kinh.mp4",
+      "bytes": 57527,
+      "durationMs": 2367,
+      "sourceClip": "Part_1/split_1/front_view/000232.mp4"
+    },
+    "Điện thoại": {
+      "file": "Điện thoại.mp4",
+      "bytes": 46532,
+      "durationMs": 2367,
+      "sourceClip": "Part_1/split_1/front_view/000305.mp4"
+    },
+    "Đá cầu": {
+      "file": "Đá cầu.mp4",
+      "bytes": 59281,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000238.mp4"
+    },
+    "Đúng": {
+      "file": "Đúng.mp4",
+      "bytes": 42601,
+      "durationMs": 2200,
+      "sourceClip": "Part_1/split_1/front_view/000543.mp4"
+    },
+    "Đầu bếp": {
+      "file": "Đầu bếp.mp4",
+      "bytes": 69227,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000373.mp4"
+    },
+    "Đậm": {
+      "file": "Đậm.mp4",
+      "bytes": 52563,
+      "durationMs": 2333,
+      "sourceClip": "Part_1/split_1/front_view/000803.mp4"
+    },
+    "Đắng": {
+      "file": "Đắng.mp4",
+      "bytes": 42851,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000796.mp4"
+    },
+    "Đắt": {
+      "file": "Đắt.mp4",
+      "bytes": 40169,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000562.mp4"
+    },
+    "Đẹp (người)": {
+      "file": "Đẹp (người).mp4",
+      "bytes": 61254,
+      "durationMs": 2666,
+      "sourceClip": "Part_1/split_1/front_view/000613.mp4"
+    },
+    "Đẹp (vật)": {
+      "file": "Đẹp (vật).mp4",
+      "bytes": 45650,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000811.mp4"
+    },
+    "Đọc": {
+      "file": "Đọc.mp4",
+      "bytes": 64450,
+      "durationMs": 2567,
+      "sourceClip": "Part_1/split_1/front_view/000504.mp4"
+    },
+    "Đồ buộc tóc": {
+      "file": "Đồ buộc tóc.mp4",
+      "bytes": 74658,
+      "durationMs": 2467,
+      "sourceClip": "Part_1/split_1/front_view/000349.mp4"
+    },
+    "Đồ dùng": {
+      "file": "Đồ dùng.mp4",
+      "bytes": 56147,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000055.mp4"
+    },
+    "Đồng hồ đeo tay": {
+      "file": "Đồng hồ đeo tay.mp4",
+      "bytes": 58105,
+      "durationMs": 2433,
+      "sourceClip": "Part_1/split_1/front_view/000324.mp4"
+    },
+    "Đồng ý": {
+      "file": "Đồng ý.mp4",
+      "bytes": 46004,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000466.mp4"
+    },
+    "Ướt": {
+      "file": "Ướt.mp4",
+      "bytes": 43417,
+      "durationMs": 2233,
+      "sourceClip": "Part_1/split_1/front_view/000536.mp4"
+    },
+    "Ấm": {
+      "file": "Ấm.mp4",
+      "bytes": 50776,
+      "durationMs": 2233,
+      "sourceClip": "Part_1/split_1/front_view/000579.mp4"
+    },
+    "Ốm": {
+      "file": "Ốm.mp4",
+      "bytes": 60344,
+      "durationMs": 2733,
+      "sourceClip": "Part_1/split_1/front_view/000830.mp4"
+    },
+    "Ồn ào": {
+      "file": "Ồn ào.mp4",
+      "bytes": 51494,
+      "durationMs": 2400,
+      "sourceClip": "Part_1/split_1/front_view/000551.mp4"
+    }
+  },
+  "missing": []
+}

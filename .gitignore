@@ -1,0 +1,68 @@
+﻿# ─── Data — too large or regeneratable ─────────────────────────────
+# Raw VSL400 dataset (70 GB)
+vsl400/
+
+# Extracted landmark JSONs (24,753 files)
+vsl400_landmarks/
+
+# Dataset artifacts
+dataset/
+models/checkpoint.pt
+
+# Reference videos (22 MB, regeneratable from VSL400)
+signpath-test/reference_videos/*.mp4
+
+# Supplementary template sources (will appear after Prompt 2)
+supplementary_sources/
+
+# The big templates file — 77 MB, regeneratable
+signpath-test/models/sign-templates.json
+signpath-test/models/sign-templates.json.bak
+
+# Logs
+prep_reference_videos.log
+*.log
+
+# ─── Python ───────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.Python
+*.egg-info/
+.pytest_cache/
+
+# ─── Node ─────────────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ─── IDE / OS ─────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# ─── Credentials / secrets ────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+coach-proxy/.env
+**/secrets.json
+**/*.key
+
+# ─── Claude Code internal ─────────────────────────────────────────
+.claude/sessions/
+.claude/cache/
+.claude/logs/
+
+# ─── Build / temp artifacts ───────────────────────────────────────
+tmp/
+temp/
+.cache/
