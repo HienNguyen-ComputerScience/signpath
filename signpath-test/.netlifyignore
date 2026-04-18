@@ -1,0 +1,14 @@
+# Keep the raw 77 MB template JSON out of Netlify deploys — the .gz copy
+# (~11 MB) is what the engine actually loads in production. The raw file
+# stays on disk for local dev convenience.
+models/sign-templates.json
+models/sign-templates.json.bak
+
+# Test harness — not useful to ship as part of the public app.
+test.html
+signpath-audio.harness.html
+
+# Node tests + reports — dev-only.
+*.test.js
+*_REPORT.md
+BACKEND_BUILD_REPORT.md

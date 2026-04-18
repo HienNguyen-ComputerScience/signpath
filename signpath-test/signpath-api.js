@@ -77,6 +77,19 @@ class SignPathApp {
       || (global.SignPathCoach ? new global.SignPathCoach() : null)
     // Coach is optional — session tolerates null.
 
+    // Auto-wire the remote coach provider from window.COACH_PROXY_URL when
+    // running in a browser. opts.coachProxyUrl wins (useful for tests); a
+    // falsy URL leaves the coach in local-advice-only mode.
+    if (this.coach && typeof this.coach.setProvider === 'function') {
+      const proxyUrl = opts.coachProxyUrl
+        || (typeof window !== 'undefined' ? window.COACH_PROXY_URL : null)
+      const factory = (typeof window !== 'undefined' && window.SignPathCoach && window.SignPathCoach.createProxyProvider)
+        || global.SignPathCoach && global.SignPathCoach.createProxyProvider
+      if (proxyUrl && factory) {
+        this.coach.setProvider(factory(proxyUrl.replace(/\/+$/, '') + '/coach'))
+      }
+    }
+
     this.progression = opts.progression
       || (global.SignPathProgression ? new global.SignPathProgression(this.engine, opts) : null)
     if (!this.progression) throw new Error('SignPathApp: progression not provided and SignPathProgression global not found')

@@ -28,6 +28,7 @@
 
 const VERSION = '3.0.0'
 const TEMPLATES_PATH = 'models/sign-templates.json'
+const TEMPLATES_PATH_GZ = 'models/sign-templates.json.gz'
 const CONFIG_PATH = 'models/model-config.json'
 
 // Preprocessing (must match build_templates.py exactly)
@@ -555,6 +556,33 @@ function _normalizeQuality(raw) {
   return raw === 'low' ? 'low' : 'high'
 }
 
+// Try the gzipped template file first (Netlify serves it with
+// Content-Encoding:gzip so the browser decodes transparently — fetch.json()
+// just works). Fall back to the uncompressed JSON for local `python -m
+// http.server` dev, which doesn't send Content-Encoding. When the .gz is
+// served without that header we decode manually via DecompressionStream so
+// a misconfigured host still works.
+async function _loadTemplates(gzPath, rawPath) {
+  try {
+    const res = await fetch(gzPath)
+    if (res.ok) {
+      const encoded = (res.headers.get('content-encoding') || '').toLowerCase()
+      if (encoded.includes('gzip')) {
+        return await res.json()
+      }
+      if (typeof DecompressionStream === 'function') {
+        const stream = res.body.pipeThrough(new DecompressionStream('gzip'))
+        const text = await new Response(stream).text()
+        return JSON.parse(text)
+      }
+    }
+  } catch (_) { /* fall through to raw */ }
+
+  const res = await fetch(rawPath)
+  if (!res.ok) throw new Error(`${rawPath} returned ${res.status}`)
+  return await res.json()
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // ENGINE CLASS
 // ═══════════════════════════════════════════════════════════════════════════
@@ -623,13 +651,13 @@ class SignPathEngine {
   async init(videoElement, opts = {}) {
     this._video = videoElement
     const templatesPath = opts.templatesPath || TEMPLATES_PATH
+    const templatesPathGz = opts.templatesPathGz || TEMPLATES_PATH_GZ
     const configPath = opts.configPath || CONFIG_PATH
 
-    // 1. Load templates
+    // 1. Load templates — prefer the .gz (15% of raw size) when the server
+    // serves it; fall back to raw JSON for local dev and old deploys.
     try {
-      const res = await fetch(templatesPath)
-      if (!res.ok) throw new Error(`${templatesPath} returned ${res.status}`)
-      const data = await res.json()
+      const data = await _loadTemplates(templatesPathGz, templatesPath)
       this._templateFrameCount = data.frameCount || 60
       // Convert template arrays to Float32Arrays for fast math + precompute
       // per-frame *weighted* norms that match the template's quality tier.

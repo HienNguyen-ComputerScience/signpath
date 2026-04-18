@@ -1,0 +1,42 @@
+# Netlify deploy config for SignPath frontend.
+# Static site — nothing to build. Netlify just publishes `signpath-test/`.
+#
+# Secrets: none required. The coach-proxy URL is chosen client-side by
+# hostname (see signpath-test/app.html) and is not secret.
+
+[build]
+  publish = "signpath-test"
+
+# ── Pre-compressed templates ────────────────────────────────────────────
+# Netlify serves `sign-templates.json.gz` as already-encoded content so the
+# browser transparently decompresses. Without these headers the browser
+# would download the raw gzip bytes and fetch.json() would fail.
+[[headers]]
+  for = "/models/sign-templates.json.gz"
+  [headers.values]
+    Content-Type = "application/json"
+    Content-Encoding = "gzip"
+    Cache-Control = "public, max-age=86400"
+
+# ── Reference videos ────────────────────────────────────────────────────
+# Cache aggressively. Videos are content-addressed by filename.
+[[headers]]
+  for = "/reference_videos/*.mp4"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+    Access-Control-Allow-Origin = "*"
+
+# ── Entry redirect ──────────────────────────────────────────────────────
+# `/` serves app.html. 200 (rewrite), not 301 — URL stays clean.
+[[redirects]]
+  from = "/"
+  to = "/app.html"
+  status = 200
+
+# ── Security headers ────────────────────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
