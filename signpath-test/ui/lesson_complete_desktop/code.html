@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lesson Complete | SignPath</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-primary": "#f68a2f",
+                    "on-primary": "#fff7f4",
+                    "surface-container-highest": "#e9e2d6",
+                    "error-container": "#fd795a",
+                    "primary-fixed-dim": "#e57d21",
+                    "surface-tint": "#954b00",
+                    "surface": "#fef8f1",
+                    "secondary": "#755946",
+                    "background": "#fef8f1",
+                    "on-surface": "#35322a",
+                    "surface-dim": "#e0d9ce",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed": "#4d450f",
+                    "surface-container-high": "#eee7dd",
+                    "tertiary-dim": "#5c541d",
+                    "secondary-fixed-dim": "#f3cdb5",
+                    "outline-variant": "#b7b1a7",
+                    "surface-variant": "#e9e2d6",
+                    "surface-bright": "#fef8f1",
+                    "tertiary-fixed-dim": "#eade99",
+                    "primary-dim": "#834100",
+                    "inverse-on-surface": "#a19c96",
+                    "tertiary-fixed": "#f9eca6",
+                    "primary": "#954b00",
+                    "primary-fixed": "#f68a2f",
+                    "on-tertiary-fixed-variant": "#6a622a",
+                    "primary-container": "#f68a2f",
+                    "surface-container-low": "#f9f3ea",
+                    "secondary-dim": "#684d3b",
+                    "tertiary-container": "#f9eca6",
+                    "on-secondary-fixed": "#533a28",
+                    "on-primary-fixed-variant": "#502500",
+                    "on-secondary-fixed-variant": "#725642",
+                    "on-tertiary-container": "#605721",
+                    "on-primary-fixed": "#0f0400",
+                    "on-background": "#35322a",
+                    "on-secondary-container": "#674c39",
+                    "on-surface-variant": "#635f56",
+                    "secondary-container": "#ffdcc5",
+                    "surface-container": "#f4ede3",
+                    "error-dim": "#791903",
+                    "on-primary-container": "#421e00",
+                    "secondary-fixed": "#ffdcc5",
+                    "on-error": "#fff7f6",
+                    "inverse-surface": "#0f0e0a",
+                    "on-tertiary": "#fff9e7",
+                    "on-error-container": "#6e1400",
+                    "outline": "#7f7a71",
+                    "on-secondary": "#fff7f4",
+                    "tertiary": "#686028",
+                    "error": "#a73b21"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Be Vietnam Pro"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Be Vietnam Pro"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #fef8f1;
+            color: #35322a;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #954b00 0%, #f68a2f 100%);
+        }
+        .asymmetric-offset {
+            margin-top: 64px;
+        }
+    </style>
+</head>
+<body class="bg-surface selection:bg-secondary-container">
+<!-- Top Navigation Anchor (As per Shell Visibility Rule: Suppressed for Transactional/Success, but keeping branding/utility) -->
+<header class="w-full top-0 sticky bg-[#fef8f1] dark:bg-stone-950 flex items-center justify-between px-10 py-6 z-40">
+<div class="text-lg font-bold text-[#954b00] tracking-tighter font-headline">SignPath</div>
+<div class="flex items-center gap-6">
+<button class="flex items-center gap-2 px-4 py-2 rounded-full hover:bg-[#f9f3ea] transition-colors text-[#954b00] font-semibold">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+<span class="text-sm font-label">Share progress</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-10 pb-24 min-h-screen flex flex-col">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-16 asymmetric-offset items-start">
+<!-- Left Column: Hero Celebration -->
+<section class="md:col-span-5 flex flex-col items-start">
+<div class="relative mb-12">
+<div class="w-64 h-64 rounded-full primary-gradient flex items-center justify-center relative z-10">
+<span class="material-symbols-outlined text-white text-[120px]" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<!-- Decorative Element -->
+<div class="absolute -top-4 -right-4 w-20 h-20 bg-tertiary-container rounded-full -z-0 opacity-60"></div>
+</div>
+<h1 class="text-[3.5rem] font-bold leading-[1.1] text-primary tracking-tight font-headline mb-4">
+                    Lesson Complete!
+                </h1>
+<p class="text-[1.75rem] font-semibold text-secondary-dim font-headline mb-8">
+                    Greetings &amp; Basics
+                </p>
+<div class="flex flex-wrap gap-3">
+<span class="bg-tertiary-container text-on-tertiary-container px-4 py-1.5 rounded-full text-sm font-semibold tracking-wider uppercase">Level 1 Mastered</span>
+<span class="bg-surface-container-high text-on-surface-variant px-4 py-1.5 rounded-full text-sm font-semibold tracking-wider uppercase">Vocabulary Boost</span>
+</div>
+</section>
+<!-- Right Column: Stats & Gallery -->
+<section class="md:col-span-7">
+<!-- Stats Block: Bento Style -->
+<div class="grid grid-cols-3 gap-6 mb-12">
+<div class="bg-surface-container-lowest p-8 rounded-lg flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="timer">timer</span>
+<div class="text-3xl font-bold text-on-surface font-headline">12:45</div>
+<div class="text-xs font-semibold text-outline tracking-widest uppercase mt-1">Focus Time</div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-lg flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="check_circle">check_circle</span>
+<div class="text-3xl font-bold text-on-surface font-headline">96%</div>
+<div class="text-xs font-semibold text-outline tracking-widest uppercase mt-1">Accuracy</div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-lg flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="local_fire_department">local_fire_department</span>
+<div class="text-3xl font-bold text-on-surface font-headline">14</div>
+<div class="text-xs font-semibold text-outline tracking-widest uppercase mt-1">Day Streak</div>
+</div>
+</div>
+<!-- Sign Recap Gallery -->
+<div class="bg-surface-container-low rounded-lg p-10">
+<h3 class="text-xl font-semibold text-on-surface mb-8 font-headline flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+                        New Signs Mastered
+                    </h3>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+<!-- Sign Card 1 -->
+<div class="flex flex-col gap-3 group">
+<div class="aspect-square bg-surface-container-lowest rounded-lg overflow-hidden relative border-b-2 border-transparent group-hover:border-primary transition-all">
+<img class="w-full h-full object-cover" data-alt="Close up of a person's hands performing a friendly 'hello' sign language gesture in warm natural morning sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhU-pr2_c39Ss3piO4O6OZoJBf6DNYLzxjM52Nt8Dm2Kq_zrgfI040jXKskV3eNLsWbyPr37scmuPxq6RiQipGfLxWso_fwHo6LPvwO-XZrvYPheUnquuBIOQobzQUdhi0aVYs9wbVjVJZWWOETmFAXGN6O9_h4IEkuVkloaDMZdbGshOMqvdVeZw-Acqw9HyYaPxD9AYf-ghN1a2u_GAiG-hQtdCIxMQGCDOojsHM0HkcSIwnOdUxv5bGH8-fcbjaesL3UPAY7KI"/>
+</div>
+<span class="text-center font-semibold text-on-surface-variant text-sm">Hello</span>
+</div>
+<!-- Sign Card 2 -->
+<div class="flex flex-col gap-3 group">
+<div class="aspect-square bg-surface-container-lowest rounded-lg overflow-hidden relative border-b-2 border-transparent group-hover:border-primary transition-all">
+<img class="w-full h-full object-cover" data-alt="Close up of hands performing the sign for 'thank you' with soft golden hour lighting and clean aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0r2uro1qNZ3vK_2Sh8p9BguoFVJuGioB-5tplyB_O2OmeXfxMlvPmpXOeMzJ7Y2f1tnNsoPq3UDGE_YebX7geLR3I6V5xMIjhdEOfXqCovlLcHa4riL517Fep1knhMUGuWJp5B1HvaQGgfDlB9NAS_MG3ydz_VAebAa6Cs-3A6VXwP51snNSZcej0MWEuze7ePSAS447bLoy-gk68Z_0gTy3261b2UDRExlvQQ2IxrbfvuTQxMvk3UAs94ZSlbJUdrcsJJPdZJs8"/>
+</div>
+<span class="text-center font-semibold text-on-surface-variant text-sm">Thank You</span>
+</div>
+<!-- Sign Card 3 -->
+<div class="flex flex-col gap-3 group">
+<div class="aspect-square bg-surface-container-lowest rounded-lg overflow-hidden relative border-b-2 border-transparent group-hover:border-primary transition-all">
+<img class="w-full h-full object-cover" data-alt="Hands demonstrating the American Sign Language gesture for 'please' in a warm educational setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAhxLXSddw18FSqm3gePYhhsflxzchpuhqEhtz_3HdmZPHvjrs1r6S57OTrtrGPRWAQRyimjcSzBis3f8kOwNV3KwBzi5ZsCM7ihD1sALb4q5Dsbl0_2_eIF-VevDOFsD7zxDB1W6iosaYIhhpBt_PT2T83Xs2XUX1NeJZngibtDcu-Lleq8pR0P_YPfwrLEpZ5q9CaBANQmnMb66BlZF0x4CnEgldFS8YuKOkW0-MG6Rc8IO8aRSvOfQJiJTB_qPjrjP0i_CE-co"/>
+</div>
+<span class="text-center font-semibold text-on-surface-variant text-sm">Please</span>
+</div>
+<!-- Sign Card 4 -->
+<div class="flex flex-col gap-3 group">
+<div class="aspect-square bg-surface-container-lowest rounded-lg overflow-hidden relative border-b-2 border-transparent group-hover:border-primary transition-all">
+<img class="w-full h-full object-cover" data-alt="A person performing the 'goodbye' hand sign in a cozy sun-drenched minimalist room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPIP4r9WwdXMwEFE7XN7jCRgQi7O3ntL-btgAn_A4SbTCC1QUdoSMZ69YCyFvv8uyfF0msDoqI5mPMw8lfE758arw6FTtv3AYrBeH-M1HHCbOh2xHWD9qEZxgUstkBehaso-lJZnbU2GiiSuFFE2LF3XmLn9BDRRxTf_v0R__OWqAAUhXHB1bggBPgHY6i4buDTFJNw3mQJNKmH8KphuxVEnTbIoCNwHWhpGfucRCWdikQF-5Fi_jKUmI_FjoFL0q2CAwi9boqLwU"/>
+</div>
+<span class="text-center font-semibold text-on-surface-variant text-sm">Goodbye</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Bottom Area: Unlock Card -->
+<div class="mt-24 max-w-4xl mx-auto w-full">
+<div class="bg-secondary-container rounded-xl p-1 px-1 mb-12">
+<div class="bg-surface-container-lowest rounded-[2.75rem] p-12 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-8">
+<div class="w-16 h-16 rounded-full bg-tertiary-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl" data-icon="lock_open">lock_open</span>
+</div>
+<div>
+<p class="text-sm font-semibold text-outline tracking-widest uppercase mb-1">New Chapter Unlocked</p>
+<h2 class="text-3xl font-bold text-on-secondary-container font-headline">Numbers &amp; Counting</h2>
+</div>
+</div>
+<button class="primary-gradient text-white px-10 py-5 rounded-full font-bold text-lg flex items-center gap-3 active:scale-95 transition-transform">
+                        Next up: Numbers
+                        <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Back Link -->
+<div class="flex justify-center">
+<a class="text-primary font-bold flex items-center gap-2 hover:opacity-80 transition-opacity border-b-2 border-primary pb-1" href="#">
+<span class="material-symbols-outlined" data-icon="keyboard_backspace">keyboard_backspace</span>
+                    Back to Learn
+                </a>
+</div>
+</div>
+</main>
+<!-- Success Decoration: Floating Grain Textures and Blobs (Visual Styling Only) -->
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 opacity-20">
+<div class="absolute top-[10%] left-[5%] w-64 h-64 bg-primary-container rounded-full blur-[100px]"></div>
+<div class="absolute bottom-[20%] right-[10%] w-96 h-96 bg-tertiary-container rounded-full blur-[120px]"></div>
+</div>
+</body></html>

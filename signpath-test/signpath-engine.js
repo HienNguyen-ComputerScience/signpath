@@ -59,6 +59,15 @@ const SIM_THRESHOLDS = {
   low:  { floor: 0.40, ceiling: 0.85, passAt: 55 },
 }
 
+// Fix 1 v2 — one-handed detection via template motion only. If the template's
+// non-dom hand barely moves across its 60 frames relative to its dom hand, the
+// sign is linguistically one-handed and the non-dom data is a data-collection
+// artifact (resting hand in frame). Skip non-dom comparison in that case,
+// regardless of what the user's hands are doing.
+// Threshold = 0.75 (was 0.3). See MOTION_RATIO_DISTRIBUTION.md — 87.2% accuracy
+// on 39 hand-labeled signs, 172/400 templates classify as one-handed.
+const NONDOM_MOTION_RATIO_THRESHOLD = 0.75
+
 // Star thresholds per tier. High keeps the historical [50, 70, 88]. Low
 // derives from passAt so a single constant controls the whole curve:
 //   [passAt, passAt+15, passAt+25] → 0/1/2/3 stars at 0/55/70/80.
@@ -76,13 +85,27 @@ const STAR_THRESHOLDS_LOW = [
 //   126..146 pose subset      (7 landmarks  × 3)   ← signer idiosyncrasies
 //   147..161 face subset      (5 landmarks  × 3)   ← signer idiosyncrasies
 //
-// Hand band gets 1.5, pose+face band gets 0.3 for low-tier templates. High
-// tier keeps all-1 weights (weighted cosine reduces to plain cosine). These
-// numbers are a v1 guess. TODO(v1.5): POSE_IDX contains wrist landmarks
-// (15, 16) which are anatomically hand-adjacent but live in the pose band
-// at 0.3 — revisit once we have real low-tier data to eval against.
+// Low tier: hand 1.5, pose/face 0.3 — heavy reweighting for single-signer
+// templates whose pose/face mirror idiosyncrasies rather than the sign.
+//
+// High tier: hand 1.15, pose/face 0.7 — mild hand emphasis. Derived from
+// SCORING_DIAGNOSIS_REPORT.md: whole-frame cosine can collapse even when
+// hands are correct because pose+face hold 20-25% of template energy and
+// amplify natural body-posture differences between the VSL400 mean signer
+// and the current user. These values are conservative compared to low-tier —
+// high-quality templates still deserve meaningful pose/face credit.
+// TODO(v1.5): POSE_IDX contains wrist landmarks (15, 16) which are
+// anatomically hand-adjacent but live in the pose band — revisit grouping
+// once observability data (debug:score events) lands.
 
-const WEIGHTS_HIGH = new Float32Array(NUM_FEATURES).fill(1.0)
+const WEIGHTS_HIGH = (() => {
+  const w = new Float32Array(NUM_FEATURES)
+  for (let i = 0;   i < 63;  i++) w[i] = 1.15  // dominant hand
+  for (let i = 63;  i < 126; i++) w[i] = 1.15  // non-dominant hand
+  for (let i = 126; i < 147; i++) w[i] = 0.7   // pose
+  for (let i = 147; i < 162; i++) w[i] = 0.7   // face
+  return w
+})()
 
 const WEIGHTS_LOW = (() => {
   const w = new Float32Array(NUM_FEATURES)
@@ -310,21 +333,26 @@ function _pickOrigin(pose, rHand, lHand) {
     if (lv>SHOULDER_VIS && rv>SHOULDER_VIS) {
       const ox=(ls.x+rs.x)/2, oy=(ls.y+rs.y)/2, oz=((ls.z||0)+(rs.z||0))/2
       const s=Math.sqrt((ls.x-rs.x)**2+(ls.y-rs.y)**2+((ls.z||0)-(rs.z||0))**2)
-      if (s>MIN_SHOULDER_W) return {ox,oy,oz,scale:s}
+      if (s>MIN_SHOULDER_W) return {ox,oy,oz,scale:s,refType:'shoulder'}
     }
   }
   const h=rHand||lHand
   if (h&&h.length>=10) {
     const w=h[0],m=h[9]
     const s=Math.sqrt((m.x-w.x)**2+(m.y-w.y)**2+((m.z||0)-(w.z||0))**2)
-    if (s>MIN_PALM) return {ox:w.x,oy:w.y,oz:w.z||0,scale:s}
+    if (s>MIN_PALM) return {ox:w.x,oy:w.y,oz:w.z||0,scale:s,refType:'palm'}
   }
   return null
 }
 
-function _buildFrame(rHand, lHand, pose, face) {
+// outMeta: optional caller-supplied object that receives {refType: 'shoulder'|'palm'|'none'}.
+// We surface the normalization mode so _onResults can track palm-fallback rate and warn
+// the UI — templates live in shoulder-normalized space, so palm fallback means the user's
+// frame lives in an incompatible coordinate system.
+function _buildFrame(rHand, lHand, pose, face, outMeta) {
   const f=new Float32Array(NUM_FEATURES)
   const o=_pickOrigin(pose,rHand,lHand)
+  if (outMeta) outMeta.refType = o ? o.refType : 'none'
   if (!o) return f
   const {ox,oy,oz,scale}=o
   const n=lm=>lm?[((lm.x||0)-ox)/scale,((lm.y||0)-oy)/scale,((lm.z||0)-oz)/scale]:null
@@ -408,6 +436,94 @@ function _compareSequences(userFrames, templateMean, featureStart, featureLen) {
   return totalSim / nFrames
 }
 
+// Weighted cosine over TWO disjoint feature ranges [s1,e1) ∪ [s2,e2). Used by
+// Fix 1 (skip non-dominant-hand band for one-handed matches). Equivalent to
+// _cosineSimilarityWeightedPrenormed but across two ranges, with the norms
+// recomputed internally over only the ranges we care about.
+function _cosineSimilarityWeightedMasked(a, b, wSq, s1, e1, s2, e2) {
+  let dot = 0, nA = 0, nB = 0
+  for (let i = s1; i < e1; i++) {
+    dot += wSq[i] * a[i] * b[i]
+    nA  += wSq[i] * a[i] * a[i]
+    nB  += wSq[i] * b[i] * b[i]
+  }
+  for (let i = s2; i < e2; i++) {
+    dot += wSq[i] * a[i] * b[i]
+    nA  += wSq[i] * a[i] * a[i]
+    nB  += wSq[i] * b[i] * b[i]
+  }
+  nA = Math.sqrt(nA); nB = Math.sqrt(nB)
+  if (nA < 1e-8 || nB < 1e-8) return 0
+  return dot / (nA * nB)
+}
+
+// [Fix 1 v2] Template-side one-handed detection. Measures the motion extent
+// of the dom hand vs the non-dom hand across all template frames, returning
+// nonDomMotion / domMotion. A low ratio (<0.3) means the non-dom hand barely
+// moves relative to the dom hand — template represents a one-handed sign.
+// A high ratio (>0.3) means both hands are active — genuinely two-handed.
+//
+// Extent per landmark: max(rangeX, rangeY, rangeZ) across the 60 frames.
+// Averaged over 21 landmarks per hand.
+//
+// Edge case: if the dom hand itself is stationary (rare — static sign held
+// in one position), the ratio is undefined; we return 1.0 to default to NOT
+// skipping the non-dom band. Safe conservative behaviour for those signs.
+function _computeNonDomMotionRatio(meanFrames) {
+  const nFrames = meanFrames.length
+  if (nFrames < 2) return 1.0
+
+  function handMotionAvg(startFeature) {
+    let totalExtent = 0
+    for (let li = 0; li < 21; li++) {
+      const base = startFeature + li * 3
+      let minX = Infinity, maxX = -Infinity
+      let minY = Infinity, maxY = -Infinity
+      let minZ = Infinity, maxZ = -Infinity
+      for (let f = 0; f < nFrames; f++) {
+        const x = meanFrames[f][base]
+        const y = meanFrames[f][base + 1]
+        const z = meanFrames[f][base + 2]
+        if (x < minX) minX = x; if (x > maxX) maxX = x
+        if (y < minY) minY = y; if (y > maxY) maxY = y
+        if (z < minZ) minZ = z; if (z > maxZ) maxZ = z
+      }
+      totalExtent += Math.max(maxX - minX, maxY - minY, maxZ - minZ)
+    }
+    return totalExtent / 21
+  }
+
+  const domMotion = handMotionAvg(0)
+  const nonDomMotion = handMotionAvg(63)
+
+  // Dom hand barely moves → can't compute a meaningful ratio. Default to 1.0
+  // (no skip) so static-sign templates fall through to full-frame scoring.
+  if (domMotion < 0.01) return 1.0
+
+  return nonDomMotion / domMotion
+}
+
+// Weighted band similarity: average per-frame weighted cosine over a single
+// feature range. Used by Fix 3's debug:score event so UI/diagnostics can see
+// which band is dragging down the whole-frame score.
+function _compareSequencesWeightedBand(userFrames, templateMean, wSq, start, len) {
+  const nFrames = Math.min(userFrames.length, templateMean.length)
+  if (nFrames === 0) return 0
+  let totalSim = 0
+  for (let f = 0; f < nFrames; f++) {
+    const a = userFrames[f], b = templateMean[f]
+    let dot = 0, nA = 0, nB = 0
+    for (let i = start; i < start + len; i++) {
+      dot += wSq[i] * a[i] * b[i]
+      nA  += wSq[i] * a[i] * a[i]
+      nB  += wSq[i] * b[i] * b[i]
+    }
+    nA = Math.sqrt(nA); nB = Math.sqrt(nB)
+    totalSim += (nA < 1e-8 || nB < 1e-8) ? 0 : dot / (nA * nB)
+  }
+  return totalSim / nFrames
+}
+
 function _simToScore(sim, quality) {
   // Map cosine similarity to 0-100 score. Quality is MANDATORY (no default):
   // calling with a missing tier must throw so a bug where a low-tier template
@@ -470,6 +586,14 @@ class SignPathEngine {
     // (which would drag cosine similarity toward zero for that frame).
     this._lastFrame = null
 
+    // [Fix 3] Normalization observability. Last 30 frames' refType ('shoulder'|'palm'|'none');
+    // when palm-fallback is firing > 20% of the time, the user's frame lives in a coordinate
+    // system incompatible with shoulder-normalized templates. Emit 'tracking:degraded' to
+    // let the UI warn the user. Rate-limited to one emit per 2000ms.
+    this._originHistory = []        // rolling last 30 refTypes
+    this._lastOriginRefType = null  // refType from the most recent frame (for debug:score)
+    this._lastDegradedEmit = 0
+
     // MediaPipe
     this._holistic = null
     this._video = null
@@ -523,10 +647,36 @@ class SignPathEngine {
           quality,
           sampleCount: tmpl.sampleCount,
           consistency: tmpl.consistency,
+          // [Fix 1 v2] Cached once per template. Used by _compareAndScore to
+          // decide whether to skip the non-dom-hand band when scoring.
+          nonDomMotionRatio: _computeNonDomMotionRatio(mean),
         }
       }
       this._templatesReady = true
       console.log(`[engine] Loaded ${Object.keys(this._templates).length} templates (${this._templateFrameCount} frames each)`)
+
+      // [Fix 1 v2] Classification summary — shows how many templates will
+      // trigger skip-non-dom and whether known-one-handed signs classify
+      // correctly. Worth watching in logs during development so miscalibrated
+      // thresholds are visible without a full run of the app.
+      const summary = { total: 0, oneHanded: 0, twoHanded: 0, staticDom: 0 }
+      const specificSigns = ['Mẹ', 'Bố', 'Anh', 'Em', 'Cảm ơn', 'Xin lỗi', 'Xin', 'Năm']
+      const specificResults = {}
+      for (const [gloss, tmplEntry] of Object.entries(this._templates)) {
+        summary.total++
+        const r = tmplEntry.nonDomMotionRatio
+        if (r === 1.0)                                   summary.staticDom++
+        else if (r < NONDOM_MOTION_RATIO_THRESHOLD)      summary.oneHanded++
+        else                                             summary.twoHanded++
+        if (specificSigns.includes(gloss)) {
+          specificResults[gloss] = {
+            ratio: Math.round(r * 1000) / 1000,
+            classified: r < NONDOM_MOTION_RATIO_THRESHOLD ? 'one-handed' : 'two-handed',
+          }
+        }
+      }
+      console.log('[engine] Template handedness classification:', summary)
+      console.log('[engine] Specific signs:', specificResults)
     } catch(e) {
       this._emit('error', {message: `Templates failed: ${e.message}`, type: 'templates'})
       return
@@ -646,6 +796,7 @@ class SignPathEngine {
       this._frameBuffer = []
       this._scoreBuffer = []
       this._lastFrame = null  // reset carry-forward cache on loss of track
+      this._originHistory = []  // reset palm-fallback detection too
       if (this._activeSign) {
         this._emit('score', {
           score:0, signKey:this._activeSign,
@@ -659,8 +810,17 @@ class SignPathEngine {
     // Only buffer + compare when a sign is selected and templates are ready
     if (!this._activeSign || !this._templatesReady) return
 
-    // Build normalized feature vector for this frame
-    const frame = _buildFrame(rHand, lHand, pose, face)
+    // Build normalized feature vector for this frame (outMeta reports which
+    // normalization path fired — 'shoulder' is primary, 'palm' means the
+    // user's frame is in a coordinate system incompatible with templates).
+    const frameMeta = { refType: 'none' }
+    const frame = _buildFrame(rHand, lHand, pose, face, frameMeta)
+    this._lastOriginRefType = frameMeta.refType
+
+    // Rolling palm-fallback-rate detection (Fix 3)
+    this._originHistory.push(frameMeta.refType)
+    if (this._originHistory.length > 30) this._originHistory.shift()
+    this._maybeEmitDegraded()
 
     // [M-2] Carry-forward: if face/pose dropped this frame but we had them last frame,
     // reuse the last values rather than zero-filling those slots.
@@ -745,11 +905,57 @@ class SignPathEngine {
 
     // Find selected sign's row
     const selectedEntry = scores.find(s => s.gloss === key)
-    const rawScore = selectedEntry ? selectedEntry.score : 0
+    let selectedSim = selectedEntry ? selectedEntry.similarity : 0
+    let rawScore = selectedEntry ? selectedEntry.score : 0
     const selectedQuality = selectedEntry
       ? selectedEntry.quality
       : (this._templates[key] ? this._templates[key].quality : 'high')
     const passAt = SIM_THRESHOLDS[selectedQuality].passAt
+
+    // Per-finger scores + deviations are quality-aware (score mapping only;
+    // finger cosine itself is unweighted because fingers live in one band).
+    const fingerScores = this._computeFingerScores(userFrames, key, selectedQuality)
+    const deviations = this._computeDeviations(userFrames, key, fingerScores, selectedQuality)
+
+    // [Fix 1 v2] Skip non-dominant-hand band when the TEMPLATE represents a
+    // one-handed sign — detected purely from template motion. If the template's
+    // non-dom hand barely moves across its 60 frames relative to the dom hand,
+    // the non-dom data is a data-collection artifact (signer's resting hand in
+    // frame), not part of the sign's meaning. Skip it from the cosine.
+    //
+    // The user's hand state is irrelevant: for a one-handed sign, whether the
+    // user has one hand, two hands, or is gesturing wildly with a second hand,
+    // none of it affects the sign's correctness. The coach still receives the
+    // original deviations.twoHanded fields and can comment separately.
+    //
+    // Top-5 ranking stays on full-frame cosine for apples-to-apples comparison
+    // across all 400 templates. Missing nonDomMotionRatio → conservative
+    // default to NOT skip (matches behaviour for minimal test mocks).
+    const tmplRec = this._templates[key]
+    let skippedNonDom = false
+    const isOneHandedMatch = selectedEntry
+      && tmplRec
+      && typeof tmplRec.nonDomMotionRatio === 'number'
+      && tmplRec.nonDomMotionRatio < NONDOM_MOTION_RATIO_THRESHOLD
+    if (isOneHandedMatch) {
+      const tmpl = tmplRec
+      const isLow = tmpl.quality === 'low'
+      const wSq = isLow ? WEIGHTS_SQ_LOW : WEIGHTS_SQ_HIGH
+      const nFrames = Math.min(userFrames.length, tmpl.mean.length)
+      let tot = 0
+      for (let f = 0; f < nFrames; f++) {
+        tot += _cosineSimilarityWeightedMasked(
+          userFrames[f], tmpl.mean[f], wSq,
+          0, 63,      // dominant hand
+          126, 162,   // pose + face
+        )
+      }
+      const maskedSim = nFrames ? tot / nFrames : 0
+      selectedSim = maskedSim
+      rawScore = _simToScore(maskedSim, selectedQuality)
+      skippedNonDom = true
+    }
+
     const rawPassed = rawScore >= passAt
 
     const selectedRank = scores.findIndex(s => s.gloss === key)
@@ -757,7 +963,9 @@ class SignPathEngine {
 
     // [M-5]+quality: isMatch now prioritises pass-status. Passing the
     // selected sign's threshold is a stronger signal than out-ranking it
-    // on a sub-threshold attempt.
+    // on a sub-threshold attempt. Note: isMatch's similarity-margin branches
+    // still use the ORIGINAL selectedEntry.similarity (full-frame), since
+    // ranking is full-frame. Only rawPassed is affected by the skip.
     const isMatch = rawPassed
       || selectedRank === 0
       || (selectedEntry && top1Sim - selectedEntry.similarity < 0.03)
@@ -770,11 +978,6 @@ class SignPathEngine {
       : this._smoothedScore * (1 - SCORE_ALPHA) + rawScore * SCORE_ALPHA
     const score = Math.round(this._smoothedScore)
     const passed = score >= passAt
-
-    // Per-finger scores + deviations are quality-aware (score mapping only;
-    // finger cosine itself is unweighted because fingers live in one band).
-    const fingerScores = this._computeFingerScores(userFrames, key, selectedQuality)
-    const deviations = this._computeDeviations(userFrames, key, fingerScores, selectedQuality)
 
     // Tier + feedback (cosmetic bands, uniform across quality tiers)
     let tier, tierEmoji, feedback
@@ -804,7 +1007,54 @@ class SignPathEngine {
       bufferFrames: this._frameBuffer.length,
     })
 
+    // [Fix 3] Observability: emit per-band cosines whenever the selected sign's
+    // similarity is suspiciously low. Lets the UI / diagnostics see WHICH band
+    // (dom hand, non-dom hand, pose, face) is dragging down the whole-frame
+    // score. Also lets a developer confirm whether the palm-fallback
+    // coordinate-system mismatch is in play for an attempt.
+    if (selectedEntry && selectedSim < 0.65) {
+      const tmpl = this._templates[key]
+      const isLow = tmpl.quality === 'low'
+      const wSq = isLow ? WEIGHTS_SQ_LOW : WEIGHTS_SQ_HIGH
+      this._emit('debug:score', {
+        signKey: key,
+        overallSim: selectedSim,
+        overallScore: rawScore,
+        perBandSim: {
+          domHand:    _compareSequencesWeightedBand(userFrames, tmpl.mean, wSq,   0, 63),
+          nonDomHand: _compareSequencesWeightedBand(userFrames, tmpl.mean, wSq,  63, 63),
+          pose:       _compareSequencesWeightedBand(userFrames, tmpl.mean, wSq, 126, 21),
+          face:       _compareSequencesWeightedBand(userFrames, tmpl.mean, wSq, 147, 15),
+        },
+        // [Fix 1 v2] Surface the handedness metric so live telemetry can
+        // verify the skip-non-dom branch fires for the signs it should.
+        nonDomMotionRatio: tmpl.nonDomMotionRatio,
+        skipNonDomActivated: skippedNonDom,
+        skippedNonDom,
+        originFallbackActive: this._lastOriginRefType === 'palm',
+        quality: selectedQuality,
+      })
+    }
+
     this._updateProgress(key, score)
+  }
+
+  // [Fix 3] Rate-check + emit palm-fallback warning. Extracted from _onResults
+  // so unit tests can drive _originHistory directly without synthesizing
+  // MediaPipe callbacks. Rate-limited to one emit per 2000ms.
+  _maybeEmitDegraded() {
+    if (this._originHistory.length < 15) return
+    let palmCount = 0
+    for (const r of this._originHistory) if (r === 'palm') palmCount++
+    const palmRate = palmCount / this._originHistory.length
+    if (palmRate <= 0.20) return
+    const now = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now()
+    if (now - this._lastDegradedEmit <= 2000) return
+    this._lastDegradedEmit = now
+    this._emit('tracking:degraded', {
+      reason: 'shoulders_not_visible',
+      palmFallbackRate: Math.round(palmRate * 100) / 100,
+    })
   }
 
   _computeFingerScores(userFrames, gloss, quality) {
@@ -1201,12 +1451,17 @@ global.SignPathEngine._internals = {
   STAR_THRESHOLDS_LOW,
   WEIGHTS_HIGH, WEIGHTS_LOW,
   WEIGHTS_SQ_HIGH, WEIGHTS_SQ_LOW,
+  NONDOM_MOTION_RATIO_THRESHOLD,        // [Fix 1 v2] exposed for M-series tests
   _simToScore,
   _starsForScore,
   _normalizeQuality,
   _frameNorm,
   _frameWeightedNorm,
   _cosineSimilarityWeightedPrenormed,
+  _cosineSimilarityWeightedMasked,      // [Fix 1] exposed for skip-non-dom tests
+  _compareSequencesWeightedBand,        // [Fix 3] exposed for per-band debug tests
+  _pickOrigin,                           // [Fix 3] exposed for refType tests
+  _computeNonDomMotionRatio,            // [Fix 1 v2] exposed for M-series tests
 }
 
 })(typeof window !== 'undefined' ? window : this);

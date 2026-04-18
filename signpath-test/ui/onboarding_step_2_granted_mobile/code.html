@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#fef8f1",
+                    "on-tertiary-fixed-variant": "#6a622a",
+                    "surface-container-low": "#f9f3ea",
+                    "primary-dim": "#834100",
+                    "on-background": "#35322a",
+                    "error": "#a73b21",
+                    "inverse-on-surface": "#a19c96",
+                    "surface-container": "#f4ede3",
+                    "surface-container-high": "#eee7dd",
+                    "surface-container-highest": "#e9e2d6",
+                    "surface-tint": "#954b00",
+                    "surface-dim": "#e0d9ce",
+                    "tertiary-container": "#f9eca6",
+                    "error-container": "#fd795a",
+                    "secondary-dim": "#684d3b",
+                    "on-surface": "#35322a",
+                    "tertiary-fixed": "#f9eca6",
+                    "primary": "#954b00",
+                    "on-tertiary-fixed": "#4d450f",
+                    "on-primary-fixed-variant": "#502500",
+                    "error-dim": "#791903",
+                    "surface-bright": "#fef8f1",
+                    "tertiary-dim": "#5c541d",
+                    "on-secondary": "#fff7f4",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#e9e2d6",
+                    "tertiary": "#686028",
+                    "secondary": "#755946",
+                    "inverse-surface": "#0f0e0a",
+                    "on-error-container": "#6e1400",
+                    "outline": "#7f7a71",
+                    "tertiary-fixed-dim": "#eade99",
+                    "primary-fixed-dim": "#e57d21",
+                    "on-primary": "#fff7f4",
+                    "on-secondary-fixed": "#533a28",
+                    "on-error": "#fff7f6",
+                    "on-tertiary": "#fff9e7",
+                    "on-surface-variant": "#635f56",
+                    "primary-fixed": "#f68a2f",
+                    "outline-variant": "#b7b1a7",
+                    "on-primary-container": "#421e00",
+                    "on-tertiary-container": "#605721",
+                    "on-secondary-fixed-variant": "#725642",
+                    "on-secondary-container": "#674c39",
+                    "secondary-fixed": "#ffdcc5",
+                    "secondary-fixed-dim": "#f3cdb5",
+                    "on-primary-fixed": "#0f0400",
+                    "secondary-container": "#ffdcc5",
+                    "primary-container": "#f68a2f",
+                    "inverse-primary": "#f68a2f",
+                    "background": "#fef8f1"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Be Vietnam Pro"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Be Vietnam Pro"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .landmark-pulse {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .5; transform: scale(1.2); }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container min-h-screen flex flex-col">
+<header class="w-full top-0 sticky bg-[#fef8f1] dark:bg-slate-950 flex justify-between items-center px-6 py-4 max-w-7xl mx-auto z-50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#954b00] dark:text-[#f68a2f] active:scale-95 transition-transform duration-200 cursor-pointer" data-icon="arrow_back">arrow_back</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-[#954b00] dark:text-[#f68a2f] font-['Be_Vietnam_Pro']">SignPath</h1>
+<button class="font-['Be_Vietnam_Pro'] headline-md font-semibold text-[#35322a] dark:text-[#fef8f1] text-sm hover:opacity-80 transition-opacity">Skip</button>
+</header>
+<main class="flex-1 flex flex-col px-6 pt-8 pb-32 max-w-md mx-auto w-full">
+<div class="mb-10 space-y-2">
+<span class="text-primary font-label font-semibold tracking-wider text-[0.75rem] uppercase">Step 2 of 3</span>
+<h2 class="text-[1.75rem] font-semibold leading-tight text-on-surface font-headline">Calibration Ready</h2>
+<p class="text-on-surface-variant text-base leading-relaxed mt-2">The camera is active. Center your body in the frame so we can track your movements.</p>
+</div>
+<div class="relative flex-1 min-h-[400px] rounded-xl overflow-hidden bg-surface-container-highest flex items-center justify-center">
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="A focused young person framed from waist up against a warm minimalist interior, correctly positioned for fitness tracking" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4W9ws4_UMoxgThta5r0NcnBgTjtQ3vUVNCRFAiM9yIuKkCFJf_Kn_-AEq5gPqzgcwy0c_L3M7HfdogitkuwWMHcyVLkD2T1j397nV5oXDlkTzqSPiMaKuWyhKlp76ti1pzcp2X06RIsZ3-M5vL3TcMuhJhRER1Gt0VJoEdLxmvscAB3EgIa9EteSaoAYaeiAkLbynL7jZX38BAZAXLixdSwMCYljBC5lE-r6YP9FFI1d35odKrHtyYcJIcDoZzirMGAGfypem-PU"/>
+<div class="absolute inset-0 bg-primary/10 mix-blend-overlay"></div>
+<div class="absolute top-1/4 left-1/3 w-4 h-4 bg-tertiary-container rounded-full border-2 border-surface flex items-center justify-center shadow-lg landmark-pulse">
+<span class="material-symbols-outlined text-[10px] text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="absolute top-1/4 right-1/3 w-4 h-4 bg-tertiary-container rounded-full border-2 border-surface flex items-center justify-center shadow-lg landmark-pulse">
+<span class="material-symbols-outlined text-[10px] text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="absolute top-2/3 left-[20%] w-4 h-4 bg-tertiary-container rounded-full border-2 border-surface flex items-center justify-center shadow-lg landmark-pulse">
+<span class="material-symbols-outlined text-[10px] text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="absolute top-2/3 right-[20%] w-4 h-4 bg-tertiary-container rounded-full border-2 border-surface flex items-center justify-center shadow-lg landmark-pulse">
+<span class="material-symbols-outlined text-[10px] text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="absolute inset-0 border-[16px] border-surface/20 pointer-events-none">
+<div class="h-full w-full border-2 border-dashed border-white/40 rounded-lg"></div>
+</div>
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-surface-bright/80 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">sensors</span>
+<span class="text-[0.75rem] font-semibold text-on-surface whitespace-nowrap">4 Landmarks Tracked</span>
+</div>
+</div>
+<div class="mt-8 grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-4 rounded-lg flex flex-col gap-1">
+<span class="text-[0.75rem] font-semibold text-primary font-label">Lighting</span>
+<span class="text-sm font-medium text-on-surface">Optimal</span>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg flex flex-col gap-1">
+<span class="text-[0.75rem] font-semibold text-primary font-label">Framing</span>
+<span class="text-sm font-medium text-on-surface">Excellent</span>
+</div>
+</div>
+</main>
+<footer class="fixed bottom-0 left-0 w-full p-6 bg-surface/80 backdrop-blur-xl z-50">
+<div class="max-w-md mx-auto">
+<button class="w-full h-14 bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-xl font-semibold text-base flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-[0_12px_32px_-4px_rgba(149,75,0,0.2)]">
+                Continue
+                <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</footer>
+</body></html>

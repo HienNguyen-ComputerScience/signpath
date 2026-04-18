@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SignPath — Ngôn ngữ ký hiệu Việt Nam</title>
+
+<!-- Fonts + icons -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="ui/signpath-styles.css">
+</head>
+<body>
+
+<!-- App shell: sidebar + main content -->
+<div id="sp-root">
+  <aside class="sp-sidebar" id="sp-sidebar">
+    <div class="sp-sidebar-brand">SignPath</div>
+    <nav class="sp-sidebar-nav">
+      <a class="sp-sidebar-link" data-route="home" href="#home">
+        <span class="material-symbols-outlined">school</span>
+        <span>Học</span>
+      </a>
+      <a class="sp-sidebar-link" data-route="progress" href="#progress">
+        <span class="material-symbols-outlined">leaderboard</span>
+        <span>Tiến độ</span>
+      </a>
+      <a class="sp-sidebar-link" data-route="dictionary" href="#dictionary">
+        <span class="material-symbols-outlined">menu_book</span>
+        <span>Từ điển</span>
+      </a>
+    </nav>
+    <div style="margin-top:auto; padding:1rem; font-size:.75rem; color:var(--sp-on-surface-variant);">
+      <div id="sp-engine-status">Đang khởi động…</div>
+    </div>
+  </aside>
+
+  <main class="sp-main" id="sp-main">
+    <div id="sp-screen" class="sp-screen-enter"></div>
+  </main>
+</div>
+
+<!-- Offscreen video element — the engine needs a persistent HTMLVideoElement.
+     We keep it hidden and forward the stream onto whatever <video> the current
+     screen renders (practice screen uses .srcObject of this element). -->
+<video id="sp-engine-video" autoplay muted playsinline
+       style="position:fixed; width:1px; height:1px; opacity:0; pointer-events:none; left:-9999px;"></video>
+
+<!-- Modal / toast mount points -->
+<div id="sp-modal-mount"></div>
+<div id="sp-toast-mount"></div>
+
+<!-- ── Deploy config ──────────────────────────────────────────────────────
+     Set COACH_PROXY_URL to the deployed coach-proxy base URL (no trailing
+     slash) to enable the keep-warm pinger AND connect the AI coach. Leave
+     blank / null for local dev (the app falls back to getLocalAdvice only).
+     Example after Render deploy:
+       window.COACH_PROXY_URL = 'https://signpath-coach.onrender.com'
+-->
+<script>
+  window.COACH_PROXY_URL = null   // ← paste deployed URL here after Prompt 2 Render deploy
+</script>
+
+<!-- ── Keep-warm pinger (Render free tier spins down after 15min idle) ── -->
+<script src="scripts/keep_warm.js"></script>
+
+<!-- ── Backend dependencies (strict order) ────────────────────────────── -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic/holistic.js" crossorigin="anonymous"></script>
+<script src="signpath-engine.js"></script>
+<script src="signpath-coach.js"></script>
+<script src="signpath-session.js"></script>
+<script src="signpath-progression.js"></script>
+<script src="signpath-review.js"></script>
+<script src="signpath-audio.js"></script>
+<script src="signpath-api.js"></script>
+
+<!-- ── UI ────────────────────────────────────────────────────────────── -->
+<script src="screens/shared.js"></script>
+<script src="screens/modals.js"></script>
+<script src="screens/onboarding.js"></script>
+<script src="screens/home.js"></script>
+<script src="screens/lesson.js"></script>
+<script src="screens/practice.js"></script>
+<script src="screens/dictionary.js"></script>
+<script src="screens/progress.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

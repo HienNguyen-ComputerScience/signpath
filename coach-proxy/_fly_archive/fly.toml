@@ -1,0 +1,36 @@
+# fly.toml — Fly.io deployment config for signpath-coach-proxy.
+#
+# Edit `app` before first deploy if the suggested name is taken. `flyctl launch`
+# will prompt for a name and rewrite this value if needed.
+
+app = "signpath-coach"
+primary_region = "sin"   # Singapore — closest Fly region to Vietnam demo venue
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  PORT     = "3000"
+  # Secrets (GEMINI_API_KEY) + mutable CORS config (ALLOWED_ORIGINS,
+  # ALLOWED_ORIGIN_SUFFIXES) are set via `flyctl secrets set` — never here.
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = "stop"   # scale to zero when idle — cheap demo setup
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    interval = "15s"
+    timeout  = "2s"
+    grace_period = "5s"
+    method   = "GET"
+    path     = "/health"
+
+# Single small VM is enough for a demo. Bump `memory` or `cpus` if the
+# Gemini latency shows contention under real traffic.
+[[vm]]
+  size   = "shared-cpu-1x"
+  memory = "256mb"

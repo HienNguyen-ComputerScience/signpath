@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SignPath | Progress &amp; Stats</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#6a622a",
+                    "surface-dim": "#e0d9ce",
+                    "error-container": "#fd795a",
+                    "surface-container-low": "#f9f3ea",
+                    "secondary-container": "#ffdcc5",
+                    "tertiary-container": "#f9eca6",
+                    "error-dim": "#791903",
+                    "primary-dim": "#834100",
+                    "surface-container-highest": "#e9e2d6",
+                    "primary-container": "#f68a2f",
+                    "on-error": "#fff7f6",
+                    "outline": "#7f7a71",
+                    "tertiary-fixed-dim": "#eade99",
+                    "outline-variant": "#b7b1a7",
+                    "secondary-fixed-dim": "#f3cdb5",
+                    "on-secondary": "#fff7f4",
+                    "on-tertiary": "#fff9e7",
+                    "on-primary-fixed-variant": "#502500",
+                    "surface": "#fef8f1",
+                    "tertiary": "#686028",
+                    "secondary": "#755946",
+                    "on-primary-fixed": "#0f0400",
+                    "on-primary": "#fff7f4",
+                    "surface-variant": "#e9e2d6",
+                    "inverse-on-surface": "#a19c96",
+                    "on-secondary-container": "#674c39",
+                    "on-primary-container": "#421e00",
+                    "on-secondary-fixed-variant": "#725642",
+                    "surface-bright": "#fef8f1",
+                    "secondary-fixed": "#ffdcc5",
+                    "surface-container-high": "#eee7dd",
+                    "tertiary-dim": "#5c541d",
+                    "secondary-dim": "#684d3b",
+                    "surface-tint": "#954b00",
+                    "primary-fixed": "#f68a2f",
+                    "tertiary-fixed": "#f9eca6",
+                    "primary": "#954b00",
+                    "on-surface-variant": "#635f56",
+                    "on-background": "#35322a",
+                    "on-tertiary-container": "#605721",
+                    "primary-fixed-dim": "#e57d21",
+                    "surface-container": "#f4ede3",
+                    "inverse-surface": "#0f0e0a",
+                    "on-tertiary-fixed": "#4d450f",
+                    "on-surface": "#35322a",
+                    "background": "#fef8f1",
+                    "on-error-container": "#6e1400",
+                    "on-secondary-fixed": "#533a28",
+                    "error": "#a73b21",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#f68a2f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Be Vietnam Pro"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Be Vietnam Pro"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-frosted {
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(24px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-50 bg-[#fef8f1] dark:bg-stone-950 w-full px-6 py-4">
+<div class="flex justify-between items-center w-full px-2 max-w-screen-xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden">
+<img alt="Student Profile" class="w-full h-full object-cover" data-alt="Close-up portrait of a friendly young student with a warm smile, soft natural lighting, outdoor setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTBMHpielyJbcTkxJIaOBx7hvwYHn73vWCokowmNFklUt8WeajtN6KlDEubznsSXFzlxqIpYCXK7nzgTWWD09hapzoYmDCUOOxX0iij7Cp7lgFsuq_4jddbIJSE0JZhluOHuv-yV38KqgzT4dqanloFqV2EoELh2zZUoVdAtJkQWIvL7IZCfl2nEUutGZ8aMPlKQ6_WQfIRcN3IthqJYpPFLz-qQmhWTPnOtYcexoHXV-FFXJR4SMYDXUGx-u96w8h4kawSMp2G7s"/>
+</div>
+<span class="text-2xl font-bold tracking-tight text-[#954b00] dark:text-orange-500">SignPath</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined text-[#954b00] dark:text-orange-400" data-icon="local_fire_department">local_fire_department</span>
+</button>
+</div>
+</header>
+<main class="max-w-screen-xl mx-auto px-6 pt-8 space-y-12">
+<!-- Hero Section: Stats Cards -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
+<div class="md:col-span-7 space-y-4">
+<p class="text-[#954b00] font-semibold text-xs tracking-[0.2em] uppercase mb-2">Weekly Milestones</p>
+<h1 class="text-5xl md:text-7xl font-bold text-primary leading-none tracking-tight">
+                    Shining <br/>Bright.
+                </h1>
+</div>
+<div class="md:col-span-5 grid grid-cols-2 gap-4">
+<div class="bg-gradient-to-tr from-primary to-primary-container p-8 rounded-xl text-on-primary shadow-[0_12px_32px_-4px_rgba(149,75,0,0.12)] aspect-square flex flex-col justify-between">
+<span class="material-symbols-outlined text-4xl" data-icon="auto_awesome">auto_awesome</span>
+<div>
+<p class="text-4xl font-bold">7 days</p>
+<p class="label-md font-semibold opacity-90">streak</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 aspect-square flex flex-col justify-between">
+<span class="material-symbols-outlined text-4xl text-primary" data-icon="menu_book">menu_book</span>
+<div>
+<p class="text-4xl font-bold text-on-surface">42</p>
+<p class="label-md font-semibold text-on-surface-variant">signs learned</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Activity Chart Section -->
+<section class="bg-surface-container-low rounded-lg p-8 md:p-12 relative overflow-hidden">
+<div class="relative z-10">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="headline-md font-semibold text-on-surface mb-1">Weekly Activity</h2>
+<p class="body-lg text-on-surface-variant">Your practice consistency this week</p>
+</div>
+<div class="text-right">
+<span class="text-3xl font-bold text-primary">12.4 hrs</span>
+<p class="label-md font-semibold text-on-surface-variant">Total Practice</p>
+</div>
+</div>
+<div class="flex items-end justify-between h-48 md:h-64 gap-2 md:gap-4">
+<!-- Bar Items -->
+<div class="flex-1 flex flex-col items-center gap-4 group">
+<div class="w-full bg-surface-container-high rounded-t-full h-[40%] group-hover:bg-secondary-container transition-colors duration-300"></div>
+<span class="label-md text-on-surface-variant">M</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-4 group">
+<div class="w-full bg-surface-container-high rounded-t-full h-[65%] group-hover:bg-secondary-container transition-colors duration-300"></div>
+<span class="label-md text-on-surface-variant">T</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-4 group">
+<div class="w-full bg-primary rounded-t-full h-[90%] shadow-[0_4px_20px_rgba(149,75,0,0.2)]"></div>
+<span class="label-md text-on-surface font-bold">W</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-4 group">
+<div class="w-full bg-surface-container-high rounded-t-full h-[55%] group-hover:bg-secondary-container transition-colors duration-300"></div>
+<span class="label-md text-on-surface-variant">T</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-4 group">
+<div class="w-full bg-surface-container-high rounded-t-full h-[75%] group-hover:bg-secondary-container transition-colors duration-300"></div>
+<span class="label-md text-on-surface-variant">F</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-4 group">
+<div class="w-full bg-surface-container-high rounded-t-full h-[30%] group-hover:bg-secondary-container transition-colors duration-300"></div>
+<span class="label-md text-on-surface-variant">S</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-4 group">
+<div class="w-full bg-surface-container-high rounded-t-full h-[20%] group-hover:bg-secondary-container transition-colors duration-300"></div>
+<span class="label-md text-on-surface-variant">S</span>
+</div>
+</div>
+</div>
+<!-- Decorative Grain/Texture Backdrop -->
+<div class="absolute inset-0 opacity-5 pointer-events-none mix-blend-multiply bg-[radial-gradient(#954b00_1px,transparent_1px)] [background-size:20px_20px]"></div>
+</section>
+<!-- Progress by Unit -->
+<section class="space-y-8">
+<div class="flex justify-between items-center">
+<h2 class="headline-md font-semibold text-on-surface">Curriculum Mastery</h2>
+<button class="text-primary font-bold text-sm hover:underline">View Roadmap</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Unit 1 -->
+<div class="bg-surface-container-lowest p-8 rounded-lg space-y-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-tertiary-container rounded-full flex items-center justify-center text-on-tertiary-container">
+<span class="material-symbols-outlined" data-icon="handshake">handshake</span>
+</div>
+<div>
+<h3 class="title-lg font-bold text-on-surface">Greetings</h3>
+<p class="label-md text-on-surface-variant">85% Complete</p>
+</div>
+</div>
+<div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full w-[85%] rounded-full"></div>
+</div>
+</div>
+<!-- Unit 2 -->
+<div class="bg-surface-container-lowest p-8 rounded-lg space-y-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined" data-icon="thumbs_up_down">thumbs_up_down</span>
+</div>
+<div>
+<h3 class="title-lg font-bold text-on-surface">Yes / No</h3>
+<p class="label-md text-on-surface-variant">42% Complete</p>
+</div>
+</div>
+<div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full w-[42%] rounded-full"></div>
+</div>
+</div>
+<!-- Unit 3 -->
+<div class="bg-surface-container-lowest p-8 rounded-lg space-y-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-high rounded-full flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="family_history">family_history</span>
+</div>
+<div>
+<h3 class="title-lg font-bold text-on-surface">Family</h3>
+<p class="label-md text-on-surface-variant">12% Complete</p>
+</div>
+</div>
+<div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden">
+<div class="bg-primary-dim h-full w-[12%] rounded-full"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Due for Review Section -->
+<section class="space-y-6">
+<h2 class="headline-md font-semibold text-on-surface">Due for Review</h2>
+<div class="flex flex-wrap gap-3">
+<div class="px-6 py-3 bg-error-container/10 text-error rounded-full border border-error-container/20 flex items-center gap-2 hover:bg-error-container/20 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="history">history</span>
+<span class="label-md font-semibold">Thank You</span>
+</div>
+<div class="px-6 py-3 bg-surface-container-high text-on-surface-variant rounded-full flex items-center gap-2 hover:bg-surface-container-highest cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="history">history</span>
+<span class="label-md font-semibold">Please</span>
+</div>
+<div class="px-6 py-3 bg-surface-container-high text-on-surface-variant rounded-full flex items-center gap-2 hover:bg-surface-container-highest cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="history">history</span>
+<span class="label-md font-semibold">Morning</span>
+</div>
+<div class="px-6 py-3 bg-surface-container-high text-on-surface-variant rounded-full flex items-center gap-2 hover:bg-surface-container-highest cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="history">history</span>
+<span class="label-md font-semibold">Help</span>
+</div>
+<div class="px-6 py-3 bg-surface-container-high text-on-surface-variant rounded-full flex items-center gap-2 hover:bg-surface-container-highest cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="history">history</span>
+<span class="label-md font-semibold">Mother</span>
+</div>
+<div class="px-6 py-3 bg-primary/10 text-primary rounded-full border border-primary/20 flex items-center gap-2 hover:bg-primary/20 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+<span class="label-md font-semibold">+8 more</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-[#ffffff]/70 dark:bg-stone-900/70 backdrop-blur-xl shadow-[0_-12px_32px_-4px_rgba(149,75,0,0.08)] rounded-t-[3rem]">
+<a class="flex flex-col items-center justify-center text-[#674c39] dark:text-stone-400 px-6 py-2 hover:bg-[#f9f3ea] dark:hover:bg-stone-800 rounded-full transition-colors active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="font-be-vietnam-pro label-md font-semibold">Learn</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#674c39] dark:text-stone-400 px-6 py-2 hover:bg-[#f9f3ea] dark:hover:bg-stone-800 rounded-full transition-colors active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-be-vietnam-pro label-md font-semibold">Review</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#674c39] dark:text-stone-400 px-6 py-2 hover:bg-[#f9f3ea] dark:hover:bg-stone-800 rounded-full transition-colors active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-be-vietnam-pro label-md font-semibold">Dictionary</span>
+</a>
+<!-- Active Tab: Profile/Stats -->
+<a class="flex flex-col items-center justify-center bg-gradient-to-tr from-[#954b00] to-[#f68a2f] text-white rounded-full px-6 py-2 active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-be-vietnam-pro label-md font-semibold">Profile</span>
+</a>
+</nav>
+</body></html>

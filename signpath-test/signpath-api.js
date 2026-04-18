@@ -40,6 +40,8 @@ const EVENT_OWNERS = {
   'tracking': 'engine',
   'score': 'engine',
   'progress': 'engine',
+  'debug:score': 'engine',         // [Fix 3] per-band cosine breakdown on low-score attempts
+  'tracking:degraded': 'engine',   // [Fix 3] palm-fallback rate exceeded threshold
   // session
   'attempt:start': 'session',
   'attempt:tick': 'session',

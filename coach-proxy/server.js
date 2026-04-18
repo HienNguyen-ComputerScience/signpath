@@ -36,6 +36,11 @@ const defaults = {
   model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
   allowedOrigins: (process.env.ALLOWED_ORIGINS || 'http://localhost:8000')
     .split(',').map(s => s.trim()).filter(Boolean),
+  // Any origin whose host ends with one of these suffixes is also allowed,
+  // without having to enumerate every Netlify preview URL. Default empty —
+  // set ALLOWED_ORIGIN_SUFFIXES='.netlify.app' in prod to accept Netlify.
+  allowedOriginSuffixes: (process.env.ALLOWED_ORIGIN_SUFFIXES || '')
+    .split(',').map(s => s.trim()).filter(Boolean),
   rateLimit: 30,
   rateWindowMs: 60_000,
   maxBodyBytes: 10_000,
@@ -92,14 +97,36 @@ function createServer(config) {
     return false
   }
 
+  function isOriginAllowed(origin) {
+    if (!origin) return false
+    if (cfg.allowedOrigins.indexOf(origin) !== -1) return true
+    // Suffix match (e.g. '.netlify.app' so every preview URL works).
+    // We extract the host to avoid matching against a path that happens
+    // to contain the suffix.
+    let host = origin
+    try { host = new URL(origin).host } catch (_) { return false }
+    for (const sfx of cfg.allowedOriginSuffixes) {
+      if (!sfx) continue
+      // Accept exact match on host (e.g. 'netlify.app') OR subdomain ending
+      // with the suffix. The leading-dot form ('.netlify.app') matches only
+      // strict subdomains; the bare form matches both.
+      if (sfx.startsWith('.')) {
+        if (host.endsWith(sfx)) return true
+      } else {
+        if (host === sfx || host.endsWith('.' + sfx)) return true
+      }
+    }
+    return false
+  }
+
   function corsHeaders(origin) {
     const h = {
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
       'Access-Control-Max-Age': '600',
       Vary: 'Origin',
     }
-    if (origin && cfg.allowedOrigins.indexOf(origin) !== -1) {
+    if (isOriginAllowed(origin)) {
       h['Access-Control-Allow-Origin'] = origin
     }
     return h
@@ -147,6 +174,13 @@ function createServer(config) {
       res.writeHead(204, cors)
       res.end()
       return done(204)
+    }
+
+    // Unauthenticated health probe for Fly.io / uptime checks. Kept above the
+    // rate-limit so health checks don't starve real traffic and vice versa.
+    if (req.method === 'GET' && req.url === '/health') {
+      sendJson(res, 200, { status: 'ok' }, cors)
+      return done(200)
     }
 
     if (req.method !== 'POST' || req.url !== '/coach') {
@@ -203,10 +237,13 @@ if (require.main === module) {
     process.exit(1)
   }
   const srv = createServer({})
-  srv.listen(defaults.port, () => {
-    console.log(`[coach-proxy] listening on http://localhost:${defaults.port}`)
+  srv.listen(defaults.port, '0.0.0.0', () => {
+    console.log(`[coach-proxy] listening on 0.0.0.0:${defaults.port}`)
     console.log(`[coach-proxy] model: ${defaults.model}`)
-    console.log(`[coach-proxy] allowed origins: ${defaults.allowedOrigins.join(', ')}`)
+    console.log(`[coach-proxy] allowed origins: ${defaults.allowedOrigins.join(', ') || '(none)'}`)
+    if (defaults.allowedOriginSuffixes.length) {
+      console.log(`[coach-proxy] allowed origin suffixes: ${defaults.allowedOriginSuffixes.join(', ')}`)
+    }
   })
 }
 

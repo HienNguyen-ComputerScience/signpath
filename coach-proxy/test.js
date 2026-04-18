@@ -176,6 +176,67 @@ async function run() {
     } finally { await closeServer(srv) }
   })
 
+  await test('GET /health returns 200 with {status:"ok"}', async () => {
+    const { srv, base } = await startOnRandomPort()
+    try {
+      const r = await fetch(`${base}/health`)
+      assert.strictEqual(r.status, 200)
+      const body = await r.json()
+      assert.strictEqual(body.status, 'ok')
+    } finally { await closeServer(srv) }
+  })
+
+  await test('GET /health does NOT consume the rate-limit bucket', async () => {
+    // Rate limit 1/min → hammering /health must not trip it.
+    const { srv, base } = await startOnRandomPort({ rateLimit: 1 })
+    try {
+      for (let i = 0; i < 5; i++) {
+        const r = await fetch(`${base}/health`)
+        assert.strictEqual(r.status, 200, `health call ${i} should still succeed`)
+      }
+      // And the first /coach still works (rate-limit budget intact).
+      const r = await fetch(`${base}/coach`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: 'hi' }),
+      })
+      assert.strictEqual(r.status, 200, 'coach still has its rate budget after health pings')
+    } finally { await closeServer(srv) }
+  })
+
+  await test('allowedOriginSuffixes allows wildcard subdomains (e.g. Netlify preview)', async () => {
+    const { srv, base } = await startOnRandomPort({
+      allowedOrigins: ['http://localhost:8000'],
+      allowedOriginSuffixes: ['.netlify.app'],
+    })
+    try {
+      const r = await fetch(`${base}/coach`, {
+        method: 'OPTIONS',
+        headers: { Origin: 'https://deploy-preview-42--signpath.netlify.app' },
+      })
+      assert.strictEqual(r.status, 204)
+      assert.strictEqual(
+        r.headers.get('access-control-allow-origin'),
+        'https://deploy-preview-42--signpath.netlify.app',
+      )
+    } finally { await closeServer(srv) }
+  })
+
+  await test('allowedOriginSuffixes rejects non-matching origins', async () => {
+    const { srv, base } = await startOnRandomPort({
+      allowedOrigins: ['http://localhost:8000'],
+      allowedOriginSuffixes: ['.netlify.app'],
+    })
+    try {
+      const r = await fetch(`${base}/coach`, {
+        method: 'OPTIONS',
+        headers: { Origin: 'https://evil.example.com' },
+      })
+      assert.strictEqual(r.status, 204)
+      assert.strictEqual(r.headers.get('access-control-allow-origin'), null)
+    } finally { await closeServer(srv) }
+  })
+
   await test('logger receives only metadata (no prompt body)', async () => {
     const entries = []
     const { srv, base } = await startOnRandomPort({ logger: e => entries.push(e) })

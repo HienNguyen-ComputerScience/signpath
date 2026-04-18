@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SignPath | Từ điển dấu</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#eee7dd",
+                    "primary": "#954b00",
+                    "on-primary-container": "#421e00",
+                    "surface-container-highest": "#e9e2d6",
+                    "surface-container": "#f4ede3",
+                    "secondary-container": "#ffdcc5",
+                    "tertiary": "#686028",
+                    "on-surface": "#35322a",
+                    "error-container": "#fd795a",
+                    "surface-bright": "#fef8f1",
+                    "error-dim": "#791903",
+                    "surface-container-low": "#f9f3ea",
+                    "on-tertiary-container": "#605721",
+                    "primary-container": "#f68a2f",
+                    "secondary-fixed-dim": "#f3cdb5",
+                    "inverse-primary": "#f68a2f",
+                    "surface": "#fef8f1",
+                    "primary-fixed": "#f68a2f",
+                    "tertiary-dim": "#5c541d",
+                    "on-tertiary-fixed": "#4d450f",
+                    "on-tertiary": "#fff9e7",
+                    "on-tertiary-fixed-variant": "#6a622a",
+                    "on-secondary-fixed-variant": "#725642",
+                    "tertiary-fixed-dim": "#eade99",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error": "#fff7f6",
+                    "surface-dim": "#e0d9ce",
+                    "secondary-fixed": "#ffdcc5",
+                    "on-error-container": "#6e1400",
+                    "background": "#fef8f1",
+                    "on-primary-fixed-variant": "#502500",
+                    "primary-fixed-dim": "#e57d21",
+                    "secondary-dim": "#684d3b",
+                    "inverse-surface": "#0f0e0a",
+                    "on-secondary-fixed": "#533a28",
+                    "tertiary-container": "#f9eca6",
+                    "on-primary-fixed": "#0f0400",
+                    "primary-dim": "#834100",
+                    "on-secondary": "#fff7f4",
+                    "surface-variant": "#e9e2d6",
+                    "error": "#a73b21",
+                    "secondary": "#755946",
+                    "on-background": "#35322a",
+                    "on-surface-variant": "#635f56",
+                    "tertiary-fixed": "#f9eca6",
+                    "outline-variant": "#b7b1a7",
+                    "inverse-on-surface": "#a19c96",
+                    "surface-tint": "#954b00",
+                    "outline": "#7f7a71",
+                    "on-secondary-container": "#674c39",
+                    "on-primary": "#fff7f4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Be Vietnam Pro"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Be Vietnam Pro"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-nav { background: rgba(254, 248, 241, 0.7); backdrop-filter: blur(24px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-40 bg-[#fef8f1] dark:bg-stone-950 flex justify-between items-center px-16 py-6 w-full mx-auto">
+<div class="flex items-center gap-12">
+<h1 class="text-2xl font-bold tracking-tight text-[#954b00] dark:text-[#f68a2f]">SignPath</h1>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="font-['Be_Vietnam_Pro'] font-bold text-lg text-stone-500 hover:text-[#f68a2f] transition-colors" href="#">Học</a>
+<a class="font-['Be_Vietnam_Pro'] font-bold text-lg text-stone-500 hover:text-[#f68a2f] transition-colors" href="#">Ôn tập</a>
+<a class="font-['Be_Vietnam_Pro'] font-bold text-lg text-[#954b00] border-b-2 border-[#954b00]" href="#">Từ điển</a>
+<a class="font-['Be_Vietnam_Pro'] font-bold text-lg text-stone-500 hover:text-[#f68a2f] transition-colors" href="#">Tiến độ</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-4 py-2 bg-surface-container rounded-full">
+<span class="material-symbols-outlined text-[#954b00]" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-bold text-[#954b00]">12</span>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="portrait of a young Vietnamese woman with a friendly smile, soft natural golden hour lighting, clean aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCk-AQCZsNMWTPwmMrJyZEFCJa2hHoYJ-N7cFhnKbDbCOfT3QRezv1nERueML9tahIyWF9y3D9QcEgiLy63MD-ZrK81QYVdAHjduv0AuylIARVMVYxxgynFKMior0REojlkwqjRjBxzDXZXnfdPqxha798z1jHFbmIEVLKKRSGxXdSiaS1SBLMh2Blj2zLrV1WyB4yExfalqdEHbImjes0JIlxn7ivqxbthp7hFyyTQomcEyECWrfJ1Wcy1PVWg-Pyp_wkxGmoqE3c"/>
+</div>
+</div>
+</header>
+<div class="flex max-w-[1440px] mx-auto px-16 pb-20 gap-12">
+<!-- SideNavBar (Hidden on desktop as we use TopAppBar per user request but keeping the logic shell) -->
+<aside class="hidden lg:flex flex-col h-[calc(100vh-100px)] w-12 sticky top-[100px]">
+<!-- Side Icons for quick access -->
+<div class="flex flex-col gap-8 text-outline">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors" data-icon="menu_book">menu_book</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors" data-icon="school">school</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors" data-icon="fitness_center">fitness_center</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors" data-icon="settings">settings</span>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 min-w-0">
+<!-- Hero Title Section -->
+<header class="mt-16 mb-12">
+<h2 class="text-[3.5rem] font-bold text-primary leading-tight tracking-tight mb-2">Từ điển dấu</h2>
+<p class="text-title-lg text-on-surface-variant max-w-xl">400 dấu trong ngôn ngữ ký hiệu Việt Nam</p>
+</header>
+<!-- Search and Filter Section -->
+<section class="space-y-8">
+<div class="relative group">
+<span class="absolute left-6 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline group-focus-within:text-primary transition-colors" data-icon="search">search</span>
+<input class="w-full pl-16 pr-8 py-6 bg-surface-container-lowest rounded-xl border-none focus:ring-2 focus:ring-primary/20 text-lg shadow-sm transition-all outline-none" placeholder="Tìm kiếm dấu, từ vựng, hoặc chủ đề..." type="text"/>
+</div>
+<div class="flex gap-3 overflow-x-auto no-scrollbar pb-2">
+<button class="px-6 py-2 bg-primary text-on-primary rounded-full font-semibold whitespace-nowrap">All</button>
+<button class="px-6 py-2 bg-surface-container-high text-on-surface hover:bg-surface-container-highest rounded-full font-semibold whitespace-nowrap transition-colors">Chào hỏi</button>
+<button class="px-6 py-2 bg-surface-container-high text-on-surface hover:bg-surface-container-highest rounded-full font-semibold whitespace-nowrap transition-colors">Gia đình</button>
+<button class="px-6 py-2 bg-surface-container-high text-on-surface hover:bg-surface-container-highest rounded-full font-semibold whitespace-nowrap transition-colors">Màu sắc</button>
+<button class="px-6 py-2 bg-surface-container-high text-on-surface hover:bg-surface-container-highest rounded-full font-semibold whitespace-nowrap transition-colors">Tháng</button>
+<button class="px-6 py-2 bg-surface-container-high text-on-surface hover:bg-surface-container-highest rounded-full font-semibold whitespace-nowrap transition-colors">Thời gian</button>
+<button class="px-6 py-2 bg-surface-container-high text-on-surface hover:bg-surface-container-highest rounded-full font-semibold whitespace-nowrap transition-colors">Mùa &amp; Thời tiết</button>
+<button class="px-6 py-2 bg-surface-container-high text-on-surface hover:bg-surface-container-highest rounded-full font-semibold whitespace-nowrap transition-colors">Địa điểm</button>
+<button class="px-6 py-2 bg-surface-container-high text-on-surface hover:bg-surface-container-highest rounded-full font-semibold whitespace-nowrap transition-colors">Động vật</button>
+</div>
+</section>
+<!-- Cards Grid -->
+<section class="mt-12 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden group hover:translate-y-[-4px] transition-all duration-300">
+<div class="aspect-video relative overflow-hidden bg-surface-container-high">
+<video autoplay="" class="w-full h-full object-cover" loop="" muted="" playsinline="">
+<source src="#" type="video/mp4"/>
+</video>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="absolute top-4 right-4 bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span> Mastered
+                        </div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-xl font-bold text-on-surface">Cảm ơn</h3>
+<span class="text-xs font-semibold text-outline-variant uppercase tracking-wider">Chào hỏi</span>
+</div>
+<div class="mt-4 h-1 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-full"></div>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden group hover:translate-y-[-4px] transition-all duration-300">
+<div class="aspect-video relative overflow-hidden bg-surface-container-high">
+<video autoplay="" class="w-full h-full object-cover" loop="" muted="" playsinline="">
+<source src="#" type="video/mp4"/>
+</video>
+<div class="absolute top-4 right-4 bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span> Mastered
+                        </div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-xl font-bold text-on-surface">Xin lỗi</h3>
+<span class="text-xs font-semibold text-outline-variant uppercase tracking-wider">Chào hỏi</span>
+</div>
+<div class="mt-4 h-1 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-full"></div>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden group hover:translate-y-[-4px] transition-all duration-300">
+<div class="aspect-video relative overflow-hidden bg-surface-container-high">
+<video autoplay="" class="w-full h-full object-cover" loop="" muted="" playsinline="">
+<source src="#" type="video/mp4"/>
+</video>
+<div class="absolute top-4 right-4 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold">
+                            Learning (70%)
+                        </div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-xl font-bold text-on-surface">Mẹ</h3>
+<span class="text-xs font-semibold text-outline-variant uppercase tracking-wider">Gia đình</span>
+</div>
+<div class="mt-4 h-1 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container" style="width: 70%"></div>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden group hover:translate-y-[-4px] transition-all duration-300">
+<div class="aspect-video relative overflow-hidden bg-surface-container-high">
+<video autoplay="" class="w-full h-full object-cover" loop="" muted="" playsinline="">
+<source src="#" type="video/mp4"/>
+</video>
+<div class="absolute top-4 right-4 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold">
+                            Learning (60%)
+                        </div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-xl font-bold text-on-surface">Bố</h3>
+<span class="text-xs font-semibold text-outline-variant uppercase tracking-wider">Gia đình</span>
+</div>
+<div class="mt-4 h-1 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container" style="width: 60%"></div>
+</div>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden group hover:translate-y-[-4px] transition-all duration-300">
+<div class="aspect-video relative overflow-hidden bg-surface-container-high">
+<video autoplay="" class="w-full h-full object-cover" loop="" muted="" playsinline="">
+<source src="#" type="video/mp4"/>
+</video>
+<div class="absolute top-4 right-4 bg-surface-container text-on-surface-variant px-3 py-1 rounded-full text-xs font-bold">
+                            New
+                        </div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-xl font-bold text-on-surface">Anh</h3>
+<span class="text-xs font-semibold text-outline-variant uppercase tracking-wider">Gia đình</span>
+</div>
+<div class="mt-4 h-1 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-surface-container-highest" style="width: 0%"></div>
+</div>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden group hover:translate-y-[-4px] transition-all duration-300">
+<div class="aspect-video relative overflow-hidden bg-surface-container-high">
+<video autoplay="" class="w-full h-full object-cover" loop="" muted="" playsinline="">
+<source src="#" type="video/mp4"/>
+</video>
+<div class="absolute top-4 right-4 bg-surface-container text-on-surface-variant px-3 py-1 rounded-full text-xs font-bold">
+                            New
+                        </div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-xl font-bold text-on-surface">Em</h3>
+<span class="text-xs font-semibold text-outline-variant uppercase tracking-wider">Gia đình</span>
+</div>
+<div class="mt-4 h-1 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-surface-container-highest" style="width: 0%"></div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Right Panel: Recently Practiced -->
+<aside class="hidden xl:block w-80 mt-16 sticky top-[100px] h-fit">
+<div class="bg-surface-container-low rounded-lg p-8">
+<h4 class="text-headline-md font-bold text-on-surface mb-8">Vừa học gần đây</h4>
+<div class="space-y-6">
+<div class="flex items-center gap-4 group cursor-pointer">
+<div class="w-16 h-16 rounded-xl bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="Close up of hands performing Vietnamese sign language gesture for family, soft focus background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDijKuQOiZ78YiSNCB4741S4E--YX3pwx7bBRBROi1_8irlL9iX0x0wjbGoFhUzkw6xZWb2gAjemF4H3Xm4PNQLD-zqLK3kR6PJ_rDBLa8r_aFMMp48O9IFCTbjHrrDJ_76PGasMFc1Jh-r4FWKZSzNuA73s7gpg7lDAUGAbmGozjJL1NfmJMr1mPYTxiutaijCWaI2FCKL8Kq0VYcsaWt0bmrGtO8291BJs4SzwpVNiR-b3idwMRcJVyU8qvXuhqGSG6IEbVPzbTI"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">Gia đình</p>
+<p class="text-sm text-outline">15 phút trước</p>
+</div>
+</div>
+<div class="flex items-center gap-4 group cursor-pointer">
+<div class="w-16 h-16 rounded-xl bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="Abstract vibrant yellow and orange colors representing dawn and energy, soft texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9FI9MwTV1uC8bVEA3mTCMSEDhn8tOrzQ3uW2xWjRB08awNiX7YXr6cUUpY-ewHlTHvBaQcQu1KH7hxNgjiqvBzlJAMHV99V7mtc9e68sulUJUXR6Rhy5KtLTfI2pkQRA8nyxyHHSeWVHlh3Zw_wx834dhyaJ1HyBpWqPP1jq867JUJiW3o7tAtG_SykmgGBofVSchB3kOlFIAzOSC6d11NAab-iZbsZzaiGYRwzRNqMoRcVfpGa9ZfWJJwxmR92-s3bBk3LGwhFg"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">Màu sắc</p>
+<p class="text-sm text-outline">1 giờ trước</p>
+</div>
+</div>
+<div class="flex items-center gap-4 group cursor-pointer">
+<div class="w-16 h-16 rounded-xl bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="Vietnamese tropical fruits like mango and dragon fruit on a wooden table, warm sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXvsJORO1hJrOzOAUvx-HcGwNde3YWB8z8xlic-FmZSXkU0Eg5aHuz6BOj9LzD_DEnJZEny9jhxkS50hBUreNCRuJaKw5B8MLD60RCBNuNKrDjlE2V-25o2MKLPLyDOypNGSSLpPWofKNlok_fRlmRb4ZksTuTaC14HEIuI3mXAfZ9ivFde4eCU1Rle-oJ0MZM1GOgEVYAUU4fXDxPQnWZ_b0zZG1eZBl4Foq7uB7q5FVVd9tf6mAHCYuU1Q-8fBj5d3oxIPlc2r4"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">Trái cây</p>
+<p class="text-sm text-outline">Hôm qua</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Pro Tip / Quote -->
+<div class="mt-8 p-6 bg-tertiary-container rounded-lg text-on-tertiary-container italic">
+                "Ký hiệu là cầu nối của sự thấu hiểu. Mỗi ngày 5 phút, mở ra một thế giới mới."
+            </div>
+</aside>
+</div>
+<!-- BottomNavBar (Mobile only display but follows JSON rules) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 glass-nav flex justify-around items-center py-4 px-2 z-50">
+<div class="flex flex-col items-center gap-1 text-stone-500">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="text-[10px] font-medium">Học</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-stone-500">
+<span class="material-symbols-outlined" data-icon="fitness_center">fitness_center</span>
+<span class="text-[10px] font-medium">Ôn tập</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-[#954b00] font-bold">
+<span class="material-symbols-outlined" data-icon="menu_book" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+<span class="text-[10px]">Từ điển</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-stone-500">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+<span class="text-[10px] font-medium">Tiến độ</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-stone-500">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[10px] font-medium">Cá nhân</span>
+</div>
+</nav>
+<!-- Floating Action Button (FAB) - Suppression Logic applied: Hidden as we are in "Details/Dictionary" mode focusing on grid -->
+</body></html>

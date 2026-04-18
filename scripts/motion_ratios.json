@@ -1,0 +1,3602 @@
+[
+  {
+    "gloss": "Anh",
+    "ratio": 0.5592796648285578,
+    "domMotion": 1.9620476240913074,
+    "nonDomMotion": 1.0973333375794547,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 83
+  },
+  {
+    "gloss": "Ba lô",
+    "ratio": 0.9588114008273785,
+    "domMotion": 1.8012380962304415,
+    "nonDomMotion": 1.72704762227035,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Bia",
+    "ratio": 0.4864387561604232,
+    "domMotion": 2.1033333355472204,
+    "nonDomMotion": 1.023142851534344,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Buổi chiều",
+    "ratio": 0.8151471398189103,
+    "domMotion": 1.650476180371784,
+    "nonDomMotion": 1.3453809377692996,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Buổi sáng",
+    "ratio": 0.9562602123910856,
+    "domMotion": 2.6520476170948575,
+    "nonDomMotion": 2.536047617594401,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Buổi trưa",
+    "ratio": 0.6302491321072915,
+    "domMotion": 2.2917619063740684,
+    "nonDomMotion": 1.4443809524888085,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Buổi tối",
+    "ratio": 0.8830417937102008,
+    "domMotion": 2.5861904734656926,
+    "nonDomMotion": 2.2837142745653787,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 54
+  },
+  {
+    "gloss": "Bà ngoại",
+    "ratio": 0.48213668745000315,
+    "domMotion": 1.9299999888808954,
+    "nonDomMotion": 0.9305238014175778,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Bà nội",
+    "ratio": 0.46988349538254365,
+    "domMotion": 2.0230952377120652,
+    "nonDomMotion": 0.9506190617879232,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 67
+  },
+  {
+    "gloss": "Bàn phím",
+    "ratio": 0.9748053244559799,
+    "domMotion": 1.5838571439186733,
+    "nonDomMotion": 1.543952377069564,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Bác",
+    "ratio": 0.5682682165361435,
+    "domMotion": 1.666047633758613,
+    "nonDomMotion": 0.9467619175002688,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 68
+  },
+  {
+    "gloss": "Bác sĩ",
+    "ratio": 0.9216514596551939,
+    "domMotion": 2.4797619127091908,
+    "nonDomMotion": 2.285476186445781,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 68
+  },
+  {
+    "gloss": "Bánh bao",
+    "ratio": 0.8462196031091055,
+    "domMotion": 1.6154761853672208,
+    "nonDomMotion": 1.3670476164136613,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Bánh chưng",
+    "ratio": 0.9118176120890837,
+    "domMotion": 1.879761892498382,
+    "nonDomMotion": 1.7140000001139317,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 69
+  },
+  {
+    "gloss": "Bánh tét",
+    "ratio": 0.887038438668759,
+    "domMotion": 1.8957142880009044,
+    "nonDomMotion": 1.6815714421903802,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 69
+  },
+  {
+    "gloss": "Bánh xèo",
+    "ratio": 1.080843120144561,
+    "domMotion": 1.427809523684638,
+    "nonDomMotion": 1.5432381005514235,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Báo cáo",
+    "ratio": 0.9363627591968611,
+    "domMotion": 1.962761893336262,
+    "nonDomMotion": 1.8378571420907974,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 64
+  },
+  {
+    "gloss": "Bây giờ",
+    "ratio": 1.0024927715452145,
+    "domMotion": 1.3180952370166779,
+    "nonDomMotion": 1.3213809473173959,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 76
+  },
+  {
+    "gloss": "Bình minh",
+    "ratio": 0.6607584687387988,
+    "domMotion": 2.1170476114466075,
+    "nonDomMotion": 1.398857137986592,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 61
+  },
+  {
+    "gloss": "Bóng bàn",
+    "ratio": 0.7882876258250727,
+    "domMotion": 1.9588571474554815,
+    "nonDomMotion": 1.5441428500981558,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Bóng chuyền",
+    "ratio": 1.0548502223363163,
+    "domMotion": 1.3465238170964378,
+    "nonDomMotion": 1.4203809478453227,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 63
+  },
+  {
+    "gloss": "Bóng rổ",
+    "ratio": 0.9588494023015842,
+    "domMotion": 3.171857158342997,
+    "nonDomMotion": 3.041333340463184,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 65
+  },
+  {
+    "gloss": "Bóng đá",
+    "ratio": 1.1074415445873977,
+    "domMotion": 1.229904762336186,
+    "nonDomMotion": 1.3620476296969823,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Bún",
+    "ratio": 0.4453432132620873,
+    "domMotion": 1.6836666794759887,
+    "nonDomMotion": 0.7498095291001456,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Bút bi",
+    "ratio": 0.5984596485351447,
+    "domMotion": 1.8610476296882899,
+    "nonDomMotion": 1.113761910370418,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Bút chì",
+    "ratio": 0.48128514720800475,
+    "domMotion": 2.075000001117587,
+    "nonDomMotion": 0.998666680994488,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 64
+  },
+  {
+    "gloss": "Bơi lội",
+    "ratio": 0.9996973988190692,
+    "domMotion": 1.5736666694283485,
+    "nonDomMotion": 1.573190476035788,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Bảng",
+    "ratio": 0.9720350789931702,
+    "domMotion": 2.3890476184231892,
+    "nonDomMotion": 2.32223809049243,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Bảo vệ",
+    "ratio": 0.47801606310280453,
+    "domMotion": 1.3700476090113323,
+    "nonDomMotion": 0.6549047643230075,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Bận",
+    "ratio": 0.69559301240543,
+    "domMotion": 1.8898571533084447,
+    "nonDomMotion": 1.3145714302857716,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Bắt buộc",
+    "ratio": 0.7794710915905269,
+    "domMotion": 1.806047618572068,
+    "nonDomMotion": 1.4077619087128412,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Bắt chước",
+    "ratio": 0.5275495849281184,
+    "domMotion": 1.8607142903132452,
+    "nonDomMotion": 0.981619051524571,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Bệnh viện",
+    "ratio": 0.9382280086866821,
+    "domMotion": 2.5755238164038885,
+    "nonDomMotion": 2.416428581589744,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 73
+  },
+  {
+    "gloss": "Bố",
+    "ratio": 0.6130424152148463,
+    "domMotion": 1.765666675493343,
+    "nonDomMotion": 1.082428563208807,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 73
+  },
+  {
+    "gloss": "Ca sĩ",
+    "ratio": 0.5755449071533947,
+    "domMotion": 1.8591904833502624,
+    "nonDomMotion": 1.0700476141203017,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 65
+  },
+  {
+    "gloss": "Cao (người)",
+    "ratio": 0.39323446943964796,
+    "domMotion": 2.9251904657908847,
+    "nonDomMotion": 1.1502857208251953,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 55
+  },
+  {
+    "gloss": "Cao (đồ vật)",
+    "ratio": 0.4616487816548214,
+    "domMotion": 2.7558571497599282,
+    "nonDomMotion": 1.2722380956013997,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Cay",
+    "ratio": 0.7534686697698311,
+    "domMotion": 1.6302380888235002,
+    "nonDomMotion": 1.2283333241939545,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Cho",
+    "ratio": 0.5357758381803323,
+    "domMotion": 1.4920952348482042,
+    "nonDomMotion": 0.7994285750956762,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Chua",
+    "ratio": 0.6062557467568089,
+    "domMotion": 1.8634285742106538,
+    "nonDomMotion": 1.1297142817860557,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Cháu",
+    "ratio": 0.9983541194004097,
+    "domMotion": 1.909523807709948,
+    "nonDomMotion": 1.9063809595203824,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 71
+  },
+  {
+    "gloss": "Chìa khóa",
+    "ratio": 0.5727761082085318,
+    "domMotion": 1.9587142845349652,
+    "nonDomMotion": 1.121904744988396,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 66
+  },
+  {
+    "gloss": "Chú",
+    "ratio": 0.5860737897690939,
+    "domMotion": 1.8751904802574288,
+    "nonDomMotion": 1.0989999913033985,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 65
+  },
+  {
+    "gloss": "Chú ý",
+    "ratio": 0.6264242791147714,
+    "domMotion": 1.838857145542057,
+    "nonDomMotion": 1.1519047617912292,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 72
+  },
+  {
+    "gloss": "Chăm chỉ",
+    "ratio": 1.027974681299239,
+    "domMotion": 1.7532857138153521,
+    "nonDomMotion": 1.8023333228858454,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Chơi cờ",
+    "ratio": 0.8408048805284739,
+    "domMotion": 1.6305237987211771,
+    "nonDomMotion": 1.3709523677825928,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 66
+  },
+  {
+    "gloss": "Chạy",
+    "ratio": 1.0821883389490452,
+    "domMotion": 1.3204285601774852,
+    "nonDomMotion": 1.4289523902393522,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Chậm chạp",
+    "ratio": 0.9864622776116622,
+    "domMotion": 1.6743333249219827,
+    "nonDomMotion": 1.6516666651836462,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 64
+  },
+  {
+    "gloss": "Chật",
+    "ratio": 1.0031517226920217,
+    "domMotion": 1.6317618978875024,
+    "nonDomMotion": 1.6369047588890506,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Chết",
+    "ratio": 0.6175343600569562,
+    "domMotion": 1.988476186990738,
+    "nonDomMotion": 1.2279523696218217,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Chị",
+    "ratio": 0.5530578708536044,
+    "domMotion": 2.0018571521199884,
+    "nonDomMotion": 1.1071428543045407,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 80
+  },
+  {
+    "gloss": "Chồng",
+    "ratio": 0.7930073501994295,
+    "domMotion": 1.9135714180412746,
+    "nonDomMotion": 1.517476199638276,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Chợ",
+    "ratio": 0.9977407562689409,
+    "domMotion": 1.5808095364343553,
+    "nonDomMotion": 1.5772381023991675,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Chụp hình",
+    "ratio": 0.9798051175648281,
+    "domMotion": 2.4239999992506847,
+    "nonDomMotion": 2.3750476042429605,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Chủ nhật",
+    "ratio": 0.960693675647352,
+    "domMotion": 1.5761428560529436,
+    "nonDomMotion": 1.5141904737268175,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 73
+  },
+  {
+    "gloss": "Chủ tịch",
+    "ratio": 0.978740337030371,
+    "domMotion": 2.7528095160211836,
+    "nonDomMotion": 2.6942857134909857,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 55
+  },
+  {
+    "gloss": "Con bò",
+    "ratio": 0.977318999237638,
+    "domMotion": 2.853238100097293,
+    "nonDomMotion": 2.788523804573786,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Con chó",
+    "ratio": 0.9756400613195623,
+    "domMotion": 2.912666667075384,
+    "nonDomMotion": 2.8417142856688726,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 64
+  },
+  {
+    "gloss": "Con dê",
+    "ratio": 0.7179115775079109,
+    "domMotion": 2.827380955219269,
+    "nonDomMotion": 2.029809521777289,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Con gà",
+    "ratio": 0.8974457753928916,
+    "domMotion": 1.8549999956130272,
+    "nonDomMotion": 1.6647619094167436,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 55
+  },
+  {
+    "gloss": "Con gái",
+    "ratio": 0.4895029243883868,
+    "domMotion": 1.980142854597597,
+    "nonDomMotion": 0.9692857180322919,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Con heo",
+    "ratio": 0.4577180206545317,
+    "domMotion": 1.8379999951825343,
+    "nonDomMotion": 0.8412857197579884,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 74
+  },
+  {
+    "gloss": "Con mèo",
+    "ratio": 0.9744025231327296,
+    "domMotion": 2.327238082885742,
+    "nonDomMotion": 2.2676666598944437,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Con rùa",
+    "ratio": 1.0424628370899418,
+    "domMotion": 1.5924285905701774,
+    "nonDomMotion": 1.6600476263889246,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Con thỏ",
+    "ratio": 0.970039963836282,
+    "domMotion": 2.9070476293563843,
+    "nonDomMotion": 2.8199523772512163,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Con trai",
+    "ratio": 0.40982610019444293,
+    "domMotion": 1.8018095157597036,
+    "nonDomMotion": 0.738428567137037,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Con trâu",
+    "ratio": 0.9731505444808807,
+    "domMotion": 2.8483333388964334,
+    "nonDomMotion": 2.771857139610109,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Con vịt",
+    "ratio": 0.41384677379107143,
+    "domMotion": 2.0193809483732497,
+    "nonDomMotion": 0.8357142905394236,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Cung cấp",
+    "ratio": 0.4303616496448838,
+    "domMotion": 2.2647619176478613,
+    "nonDomMotion": 0.9746666749318441,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Cà phê",
+    "ratio": 1.0081293215953844,
+    "domMotion": 1.5347142822685695,
+    "nonDomMotion": 1.5471904682261604,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Cái bàn",
+    "ratio": 1.012637283213789,
+    "domMotion": 1.5826190419140316,
+    "nonDomMotion": 1.602619046966235,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 71
+  },
+  {
+    "gloss": "Cái chảo",
+    "ratio": 0.9963297619173072,
+    "domMotion": 1.5180000009990873,
+    "nonDomMotion": 1.5124285795858927,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 69
+  },
+  {
+    "gloss": "Cái cửa",
+    "ratio": 0.9495761209959755,
+    "domMotion": 2.156952369425978,
+    "nonDomMotion": 2.0481904641325985,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 68
+  },
+  {
+    "gloss": "Cái ghế",
+    "ratio": 0.9550863382366118,
+    "domMotion": 2.2890476087729135,
+    "nonDomMotion": 2.1862380987121943,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 66
+  },
+  {
+    "gloss": "Cái kéo",
+    "ratio": 0.5541578853956286,
+    "domMotion": 1.6921428461403896,
+    "nonDomMotion": 0.9377143014044989,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Cái nồi",
+    "ratio": 1.0988589421995913,
+    "domMotion": 1.4147142668565114,
+    "nonDomMotion": 1.5545714227926164,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 68
+  },
+  {
+    "gloss": "Cái quần",
+    "ratio": 0.6736691699699322,
+    "domMotion": 0.4329523869923183,
+    "nonDomMotion": 0.29166667518161593,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Cái áo",
+    "ratio": 0.39263127468728387,
+    "domMotion": 1.641428564276014,
+    "nonDomMotion": 0.6444761894998097,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Cái đèn",
+    "ratio": 0.4944336343966883,
+    "domMotion": 2.446666663601285,
+    "nonDomMotion": 1.209714290641603,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 73
+  },
+  {
+    "gloss": "Có",
+    "ratio": 0.44979119918556354,
+    "domMotion": 1.7446190540878368,
+    "nonDomMotion": 0.7847142964601517,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Cô",
+    "ratio": 0.5221142686123688,
+    "domMotion": 2.0144285594689704,
+    "nonDomMotion": 1.051761893999009,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 77
+  },
+  {
+    "gloss": "Công ty",
+    "ratio": 0.9377624563437399,
+    "domMotion": 1.8370476198781813,
+    "nonDomMotion": 1.7227142884373843,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 61
+  },
+  {
+    "gloss": "Công viên",
+    "ratio": 0.8123976931670773,
+    "domMotion": 1.803714290039525,
+    "nonDomMotion": 1.465333328360603,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 64
+  },
+  {
+    "gloss": "Cũ",
+    "ratio": 0.8783121034754718,
+    "domMotion": 1.689333323921476,
+    "nonDomMotion": 1.4837619052046822,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Cười",
+    "ratio": 0.5978005151131318,
+    "domMotion": 1.8012857245547431,
+    "nonDomMotion": 1.0768095340047563,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Cảm thấy",
+    "ratio": 0.5683037408315704,
+    "domMotion": 1.5979047488598597,
+    "nonDomMotion": 0.9080952462695894,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Cảm ơn",
+    "ratio": 0.9641687357082753,
+    "domMotion": 2.1516190384115492,
+    "nonDomMotion": 2.0745238079911186,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Cần",
+    "ratio": 0.721457570623944,
+    "domMotion": 1.923619041762625,
+    "nonDomMotion": 1.3878095206760226,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Cầu lông",
+    "ratio": 0.8795297463212834,
+    "domMotion": 2.7503333489100137,
+    "nonDomMotion": 2.4189999926657904,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Cậu",
+    "ratio": 0.46674727341856304,
+    "domMotion": 1.8509047629888213,
+    "nonDomMotion": 0.863904751482464,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 67
+  },
+  {
+    "gloss": "Cắm trại",
+    "ratio": 0.8928310690773869,
+    "domMotion": 2.2829999937897636,
+    "nonDomMotion": 2.038333325158982,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 63
+  },
+  {
+    "gloss": "Cục tẩy",
+    "ratio": 0.9642899417187104,
+    "domMotion": 1.6095238029956818,
+    "nonDomMotion": 1.552047614185583,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Cứng",
+    "ratio": 0.9339825987657149,
+    "domMotion": 1.7015714136262734,
+    "nonDomMotion": 1.589238090884118,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 66
+  },
+  {
+    "gloss": "Cửa sổ",
+    "ratio": 0.9421494074905934,
+    "domMotion": 1.8166666688796664,
+    "nonDomMotion": 1.7115714256928878,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 71
+  },
+  {
+    "gloss": "Diễn viên",
+    "ratio": 0.8625429589627498,
+    "domMotion": 1.8568571298660355,
+    "nonDomMotion": 1.6016190431657291,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Dài",
+    "ratio": 0.9906373778321852,
+    "domMotion": 1.5868571439669246,
+    "nonDomMotion": 1.5720000000936645,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 71
+  },
+  {
+    "gloss": "Dây chuyền",
+    "ratio": 0.9525768006635029,
+    "domMotion": 2.0956190526485443,
+    "nonDomMotion": 1.9962380925814311,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Dép",
+    "ratio": 1.0023444674709736,
+    "domMotion": 1.543666647303672,
+    "nonDomMotion": 1.5472857235443025,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 54
+  },
+  {
+    "gloss": "Dì",
+    "ratio": 0.7115946866014143,
+    "domMotion": 1.9869523882156326,
+    "nonDomMotion": 1.4139047619842349,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 71
+  },
+  {
+    "gloss": "Dũng cảm",
+    "ratio": 0.9251629616573461,
+    "domMotion": 1.504857151281266,
+    "nonDomMotion": 1.3922380989506131,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Dơ",
+    "ratio": 0.4466750023929015,
+    "domMotion": 1.7909047628442447,
+    "nonDomMotion": 0.7999523892289117,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 73
+  },
+  {
+    "gloss": "Dễ",
+    "ratio": 0.577325073679221,
+    "domMotion": 1.9681904797575303,
+    "nonDomMotion": 1.1362857137407576,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 81
+  },
+  {
+    "gloss": "Dỗi",
+    "ratio": 0.6187260380107719,
+    "domMotion": 1.8756666774639772,
+    "nonDomMotion": 1.160523811976115,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 61
+  },
+  {
+    "gloss": "Dở",
+    "ratio": 0.33204402888613055,
+    "domMotion": 1.8343809505791537,
+    "nonDomMotion": 0.6090952413422721,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Dụng cụ học tập",
+    "ratio": 0.8529724011010186,
+    "domMotion": 1.6148571357840584,
+    "nonDomMotion": 1.377428568544842,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Dừng lại",
+    "ratio": 0.9382009255912321,
+    "domMotion": 1.6135238061348598,
+    "nonDomMotion": 1.5138095283792132,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Dữ",
+    "ratio": 0.7209880864374887,
+    "domMotion": 1.646285702075277,
+    "nonDomMotion": 1.1869523780686515,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Em",
+    "ratio": 0.5276472910547195,
+    "domMotion": 1.7335714342161304,
+    "nonDomMotion": 0.9147142711139861,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 83
+  },
+  {
+    "gloss": "Ghét",
+    "ratio": 0.5593818963729875,
+    "domMotion": 1.9414285730925345,
+    "nonDomMotion": 1.0859999968892051,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Già",
+    "ratio": 0.5596939660873969,
+    "domMotion": 1.5124761973108565,
+    "nonDomMotion": 0.8465238014856974,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Giàu",
+    "ratio": 0.4825023648388254,
+    "domMotion": 1.65328571838992,
+    "nonDomMotion": 0.7977142688773927,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 69
+  },
+  {
+    "gloss": "Giày",
+    "ratio": 0.9165309609441038,
+    "domMotion": 1.930000001564622,
+    "nonDomMotion": 1.7689047560561448,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Giám đốc",
+    "ratio": 0.5451503238925383,
+    "domMotion": 1.77871428457244,
+    "nonDomMotion": 0.96966666834695,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 55
+  },
+  {
+    "gloss": "Giáng sinh",
+    "ratio": 0.9267327873787562,
+    "domMotion": 1.7093333313740524,
+    "nonDomMotion": 1.5840952427436907,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Giây",
+    "ratio": 0.9476558021332309,
+    "domMotion": 2.0232380951444306,
+    "nonDomMotion": 1.9173333199606055,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Gió",
+    "ratio": 0.6902458027278421,
+    "domMotion": 1.64861903658935,
+    "nonDomMotion": 1.1379523703030177,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 69
+  },
+  {
+    "gloss": "Giúp đỡ",
+    "ratio": 1.1821402140187305,
+    "domMotion": 1.4115238026494072,
+    "nonDomMotion": 1.6686190501565026,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 66
+  },
+  {
+    "gloss": "Giường",
+    "ratio": 0.8959426509315389,
+    "domMotion": 1.660714280747232,
+    "nonDomMotion": 1.4879047551325388,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 79
+  },
+  {
+    "gloss": "Giấy nháp",
+    "ratio": 0.901336528379847,
+    "domMotion": 1.8740952244427587,
+    "nonDomMotion": 1.6891904834524862,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Giặt đồ",
+    "ratio": 0.9380286822040265,
+    "domMotion": 1.5706190438497634,
+    "nonDomMotion": 1.4732857119469416,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Giỏi",
+    "ratio": 0.5395697811995754,
+    "domMotion": 1.897190489201984,
+    "nonDomMotion": 1.02366665715263,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Giới thiệu",
+    "ratio": 0.885934785665409,
+    "domMotion": 2.134952384801138,
+    "nonDomMotion": 1.8914285834346498,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Giờ",
+    "ratio": 0.8250036312141575,
+    "domMotion": 1.6397618977796464,
+    "nonDomMotion": 1.3528095199948265,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Gạo",
+    "ratio": 0.864052288959623,
+    "domMotion": 1.5664285726490474,
+    "nonDomMotion": 1.3534761936891646,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Gần",
+    "ratio": 0.9124560521332085,
+    "domMotion": 1.9772380947002344,
+    "nonDomMotion": 1.804142866017563,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Gọi",
+    "ratio": 0.9245990929136834,
+    "domMotion": 1.8024285693176179,
+    "nonDomMotion": 1.6665238202327775,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Gối (đầu)",
+    "ratio": 0.9349885369070227,
+    "domMotion": 2.4530476218178157,
+    "nonDomMotion": 2.293571406886691,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 71
+  },
+  {
+    "gloss": "Gội đầu",
+    "ratio": 0.9481103667615237,
+    "domMotion": 2.7631904681523642,
+    "nonDomMotion": 2.6198095281918845,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Hay (khen)",
+    "ratio": 0.5923523349090477,
+    "domMotion": 1.8791904644708015,
+    "nonDomMotion": 1.1131428593680972,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Hiền",
+    "ratio": 0.5056818177596802,
+    "domMotion": 1.6594285764509724,
+    "nonDomMotion": 0.8391428589820862,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Hiệu trưởng",
+    "ratio": 0.8690065347661671,
+    "domMotion": 2.0419047567106428,
+    "nonDomMotion": 1.774428576951669,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Hoàng hôn",
+    "ratio": 0.6633173453039525,
+    "domMotion": 2.1752857232377645,
+    "nonDomMotion": 1.4429047512156623,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Hy vọng",
+    "ratio": 0.45369002838221795,
+    "domMotion": 1.836999998716194,
+    "nonDomMotion": 0.8334285815556844,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Hài hước",
+    "ratio": 0.9572274837310825,
+    "domMotion": 0.9563333335376921,
+    "nonDomMotion": 0.915428550470443,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Hàn Quốc",
+    "ratio": 0.5342889775208394,
+    "domMotion": 1.6609523884419883,
+    "nonDomMotion": 0.887428553331466,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 63
+  },
+  {
+    "gloss": "Hát",
+    "ratio": 0.6238246249516319,
+    "domMotion": 1.7269047574982757,
+    "nonDomMotion": 1.0772857126735507,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 72
+  },
+  {
+    "gloss": "Hôi",
+    "ratio": 0.5606634109599249,
+    "domMotion": 1.6480476185679436,
+    "nonDomMotion": 0.9239999992506844,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Hư",
+    "ratio": 0.5324976216816413,
+    "domMotion": 2.3019999961058297,
+    "nonDomMotion": 1.2258095230375017,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Hẹp",
+    "ratio": 0.9496853446500675,
+    "domMotion": 1.6041904716264634,
+    "nonDomMotion": 1.5234761809309323,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 74
+  },
+  {
+    "gloss": "Họ hàng",
+    "ratio": 0.960552511289761,
+    "domMotion": 1.9857618957314462,
+    "nonDomMotion": 1.9074285757683573,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 69
+  },
+  {
+    "gloss": "Học",
+    "ratio": 0.7268194901367644,
+    "domMotion": 1.7574285784115393,
+    "nonDomMotion": 1.2773333433128538,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Học sinh",
+    "ratio": 0.7610902085604205,
+    "domMotion": 1.59514285836901,
+    "nonDomMotion": 1.214047610759735,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 54
+  },
+  {
+    "gloss": "Hứa",
+    "ratio": 0.5055560035908633,
+    "domMotion": 1.7955714261957578,
+    "nonDomMotion": 0.9077619143894741,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Kem",
+    "ratio": 0.6539419097964517,
+    "domMotion": 1.77880952760045,
+    "nonDomMotion": 1.1632380996431624,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Khoe khoang",
+    "ratio": 0.36139935573181087,
+    "domMotion": 1.5694285815670377,
+    "nonDomMotion": 0.5671904782454172,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Khám bệnh",
+    "ratio": 0.5693579812283174,
+    "domMotion": 1.5375714259488242,
+    "nonDomMotion": 0.8754285630725679,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 54
+  },
+  {
+    "gloss": "Khó",
+    "ratio": 0.7121998877757076,
+    "domMotion": 1.2751904527346294,
+    "nonDomMotion": 0.9081904973302569,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Khóc",
+    "ratio": 0.5952114481467271,
+    "domMotion": 1.8297619029735437,
+    "nonDomMotion": 1.0890952320325942,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Khô",
+    "ratio": 0.8979640344811445,
+    "domMotion": 1.6021428562345958,
+    "nonDomMotion": 1.438666662999562,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Không cho",
+    "ratio": 0.4870857000514056,
+    "domMotion": 2.1091428625264337,
+    "nonDomMotion": 1.0273333277021135,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 61
+  },
+  {
+    "gloss": "Không cần",
+    "ratio": 0.7284967361435913,
+    "domMotion": 1.8214285598092137,
+    "nonDomMotion": 1.3269047609397344,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Không nghe lời",
+    "ratio": 0.8672667905888488,
+    "domMotion": 2.158285717524233,
+    "nonDomMotion": 1.8718095274109925,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 55
+  },
+  {
+    "gloss": "Không nên",
+    "ratio": 0.7263494277074726,
+    "domMotion": 1.7582380872308498,
+    "nonDomMotion": 1.277095228433609,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 65
+  },
+  {
+    "gloss": "Không quen",
+    "ratio": 0.43364047521021243,
+    "domMotion": 2.010333337665846,
+    "nonDomMotion": 0.87176190387635,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Khăn quàng cổ",
+    "ratio": 0.9144719500239834,
+    "domMotion": 1.9943333359967386,
+    "nonDomMotion": 1.8237618947667735,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 55
+  },
+  {
+    "gloss": "Khỏe",
+    "ratio": 0.9474556393573668,
+    "domMotion": 2.1840952322596596,
+    "nonDomMotion": 2.0693333446979523,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Kính lúp",
+    "ratio": 0.9667544667341056,
+    "domMotion": 1.7718095222399348,
+    "nonDomMotion": 1.7129047698274786,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Kẹo",
+    "ratio": 0.9441403349519368,
+    "domMotion": 2.2096190551916757,
+    "nonDomMotion": 2.0861904748848508,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Kẹp tóc",
+    "ratio": 0.4233248727001831,
+    "domMotion": 2.6074761918612888,
+    "nonDomMotion": 1.1038095269884383,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Kế toán",
+    "ratio": 0.934140862491622,
+    "domMotion": 2.374476195091293,
+    "nonDomMotion": 2.218095240848405,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 54
+  },
+  {
+    "gloss": "Laptop",
+    "ratio": 0.8524197791516366,
+    "domMotion": 2.347714275121689,
+    "nonDomMotion": 2.0012380839103745,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Luật sư",
+    "ratio": 0.8346177170444535,
+    "domMotion": 1.7301904918359858,
+    "nonDomMotion": 1.4440476383481706,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 55
+  },
+  {
+    "gloss": "Làm bài tập",
+    "ratio": 0.9505004722433781,
+    "domMotion": 2.088523809398924,
+    "nonDomMotion": 1.985142867125216,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Làm việc",
+    "ratio": 0.8925614884430565,
+    "domMotion": 1.5991428657656623,
+    "nonDomMotion": 1.4273333365008944,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 79
+  },
+  {
+    "gloss": "Lùn",
+    "ratio": 0.3529229892053059,
+    "domMotion": 2.618000002134414,
+    "nonDomMotion": 0.9239523864927746,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Lười biếng",
+    "ratio": 0.5098003390989727,
+    "domMotion": 1.8245238095045178,
+    "nonDomMotion": 0.9301428567795527,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 66
+  },
+  {
+    "gloss": "Lạnh",
+    "ratio": 0.9396592247785192,
+    "domMotion": 1.9255714280353415,
+    "nonDomMotion": 1.809380955323355,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 78
+  },
+  {
+    "gloss": "Lễ tân",
+    "ratio": 0.959131481196216,
+    "domMotion": 1.638238087296486,
+    "nonDomMotion": 1.5712857232207345,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 67
+  },
+  {
+    "gloss": "Mua bán",
+    "ratio": 1.0233953438347576,
+    "domMotion": 1.5713333423648561,
+    "nonDomMotion": 1.6080952261885006,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Muốn",
+    "ratio": 0.6687450674497813,
+    "domMotion": 1.809999988392173,
+    "nonDomMotion": 1.2104285643214272,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 78
+  },
+  {
+    "gloss": "Màu cam",
+    "ratio": 1.0063492123646647,
+    "domMotion": 1.784999991412319,
+    "nonDomMotion": 1.7963333354287205,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Màu hồng",
+    "ratio": 0.6109908590692863,
+    "domMotion": 1.9141428589466072,
+    "nonDomMotion": 1.1695237897691273,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 61
+  },
+  {
+    "gloss": "Màu nâu",
+    "ratio": 0.4997307665752481,
+    "domMotion": 2.2993333353882743,
+    "nonDomMotion": 1.1490476103056044,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 72
+  },
+  {
+    "gloss": "Màu trắng",
+    "ratio": 0.5808444607516179,
+    "domMotion": 1.903714294257086,
+    "nonDomMotion": 1.105761902672904,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 55
+  },
+  {
+    "gloss": "Màu tím",
+    "ratio": 0.6117798254492375,
+    "domMotion": 1.9266190488955803,
+    "nonDomMotion": 1.178666665440514,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Màu vàng",
+    "ratio": 0.523783676411768,
+    "domMotion": 1.8419999878387898,
+    "nonDomMotion": 0.9648095255806333,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 73
+  },
+  {
+    "gloss": "Màu xanh da trời",
+    "ratio": 0.5305768613949868,
+    "domMotion": 2.5268095334370932,
+    "nonDomMotion": 1.340666671593984,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Màu xanh lá cây",
+    "ratio": 0.8330106176624651,
+    "domMotion": 2.336333331607637,
+    "nonDomMotion": 1.9461904716278826,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Màu đen",
+    "ratio": 0.5977584918500117,
+    "domMotion": 2.0521904677152634,
+    "nonDomMotion": 1.226714278970446,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Màu đỏ",
+    "ratio": 0.727023717976626,
+    "domMotion": 1.7906666709930592,
+    "nonDomMotion": 1.3018571408022017,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Mách",
+    "ratio": 0.5883572395497685,
+    "domMotion": 1.9754761831635343,
+    "nonDomMotion": 1.1622857139224099,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Mát mẻ",
+    "ratio": 0.9506253229214727,
+    "domMotion": 1.9761428431208645,
+    "nonDomMotion": 1.878571428380729,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Máy bay",
+    "ratio": 0.3662735564079662,
+    "domMotion": 2.309619049231211,
+    "nonDomMotion": 0.8459523831095014,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Máy chiếu",
+    "ratio": 0.6789949596957547,
+    "domMotion": 2.1643333353456997,
+    "nonDomMotion": 1.4695714258012318,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Máy giặt",
+    "ratio": 0.9268677980566539,
+    "domMotion": 1.5972381078061604,
+    "nonDomMotion": 1.4804285679544722,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 74
+  },
+  {
+    "gloss": "Máy tính cầm tay",
+    "ratio": 1.0060193849431323,
+    "domMotion": 1.6454761993317377,
+    "nonDomMotion": 1.6553809539902777,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Máy điều hòa",
+    "ratio": 0.9202518813616245,
+    "domMotion": 1.9812381015647025,
+    "nonDomMotion": 1.8232380903902508,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 72
+  },
+  {
+    "gloss": "Mì gói",
+    "ratio": 0.47249918718426387,
+    "domMotion": 1.7575238015103554,
+    "nonDomMotion": 0.8304285676706404,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Mùa hè",
+    "ratio": 0.5084057492294746,
+    "domMotion": 2.4274761847087314,
+    "nonDomMotion": 1.234142848423549,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 93
+  },
+  {
+    "gloss": "Mùa khô",
+    "ratio": 0.9478467191327308,
+    "domMotion": 2.468000006108057,
+    "nonDomMotion": 2.3392857086090815,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 66
+  },
+  {
+    "gloss": "Mùa mưa",
+    "ratio": 0.9358685380806544,
+    "domMotion": 2.5995714323861256,
+    "nonDomMotion": 2.432857116063436,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Mùa thu",
+    "ratio": 0.4273159196810984,
+    "domMotion": 2.535761899891354,
+    "nonDomMotion": 1.0835714283443632,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 70
+  },
+  {
+    "gloss": "Mùa xuân",
+    "ratio": 0.9434826853253971,
+    "domMotion": 2.057523818597907,
+    "nonDomMotion": 1.9412380974917185,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Mùa đông",
+    "ratio": 0.9552022987445387,
+    "domMotion": 1.9771428812472593,
+    "nonDomMotion": 1.8885714251137826,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 72
+  },
+  {
+    "gloss": "Múa",
+    "ratio": 1.0177566412560173,
+    "domMotion": 2.2339047690232596,
+    "nonDomMotion": 2.273571414606912,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Mũ",
+    "ratio": 0.5398684690969761,
+    "domMotion": 2.7441428559167043,
+    "nonDomMotion": 1.4814762026071548,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 54
+  },
+  {
+    "gloss": "Mũ bảo hiểm",
+    "ratio": 0.7332463773770597,
+    "domMotion": 2.70161904891332,
+    "nonDomMotion": 1.9809523806685494,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Mưa",
+    "ratio": 0.9297745624974978,
+    "domMotion": 2.4228095298721675,
+    "nonDomMotion": 2.2526666706516627,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Mạnh",
+    "ratio": 0.9553931277825394,
+    "domMotion": 2.0912857133717764,
+    "nonDomMotion": 1.9979999987852006,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Mập",
+    "ratio": 0.9547702735636673,
+    "domMotion": 1.0012380919374881,
+    "nonDomMotion": 0.9559523669415197,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Mặn",
+    "ratio": 0.6009946294542364,
+    "domMotion": 2.068238095690807,
+    "nonDomMotion": 1.242999987942832,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Mẹ",
+    "ratio": 0.6813939074914912,
+    "domMotion": 1.7600476125343925,
+    "nonDomMotion": 1.1992857200758797,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Mềm",
+    "ratio": 0.966687706446493,
+    "domMotion": 1.961238092787209,
+    "nonDomMotion": 1.8959047537119615,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Mền",
+    "ratio": 0.9578269553746547,
+    "domMotion": 1.908238105121113,
+    "nonDomMotion": 1.827761894358056,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 66
+  },
+  {
+    "gloss": "Mệt",
+    "ratio": 0.4343069678479141,
+    "domMotion": 1.7150476154860197,
+    "nonDomMotion": 0.7448571295965285,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Mới",
+    "ratio": 0.7653939148467436,
+    "domMotion": 2.0478095202928497,
+    "nonDomMotion": 1.5673809455973762,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Mỹ",
+    "ratio": 0.9093421036354083,
+    "domMotion": 1.551095234496253,
+    "nonDomMotion": 1.4104762034756797,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Nghe",
+    "ratio": 0.4429571711457474,
+    "domMotion": 2.1558571440123377,
+    "nonDomMotion": 0.9549523819060552,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 75
+  },
+  {
+    "gloss": "Nghèo",
+    "ratio": 1.0828791978162995,
+    "domMotion": 1.5116666647649946,
+    "nonDomMotion": 1.6369523853063583,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Nghề nghiệp",
+    "ratio": 0.8354758705355764,
+    "domMotion": 1.707666659638995,
+    "nonDomMotion": 1.4267142890464692,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 78
+  },
+  {
+    "gloss": "Nghỉ ngơi",
+    "ratio": 0.9772565120379241,
+    "domMotion": 1.80271428304037,
+    "nonDomMotion": 1.761714272444979,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Ngoan",
+    "ratio": 0.5119168236953772,
+    "domMotion": 1.9280476044153882,
+    "nonDomMotion": 0.9870000055858067,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Ngon miệng",
+    "ratio": 0.5184130040084258,
+    "domMotion": 2.0559999978258494,
+    "nonDomMotion": 1.0658571351142156,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Ngu ngốc",
+    "ratio": 0.6272207690560548,
+    "domMotion": 2.3077619004817236,
+    "nonDomMotion": 1.4474761940184093,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Ngày",
+    "ratio": 0.44626958826366925,
+    "domMotion": 2.208999997093564,
+    "nonDomMotion": 0.9858095191773915,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 88
+  },
+  {
+    "gloss": "Ngày Nhà giáo Việt Nam",
+    "ratio": 0.8796065810494227,
+    "domMotion": 2.3142380913098655,
+    "nonDomMotion": 2.0356190552314124,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 73
+  },
+  {
+    "gloss": "Ngày Quốc tế Lao động",
+    "ratio": 0.9104615908506314,
+    "domMotion": 2.210809508249873,
+    "nonDomMotion": 2.0128571419488814,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Ngày Quốc tế Phụ nữ",
+    "ratio": 0.8648174554209402,
+    "domMotion": 2.307285711878822,
+    "nonDomMotion": 1.9953809582761355,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 69
+  },
+  {
+    "gloss": "Ngày Quốc tế Thiếu nhi",
+    "ratio": 0.9404417168142715,
+    "domMotion": 2.2035238104207173,
+    "nonDomMotion": 2.0722857153131846,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Ngân hàng",
+    "ratio": 1.0246476239399265,
+    "domMotion": 1.8952857058140493,
+    "nonDomMotion": 1.941999995149672,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 65
+  },
+  {
+    "gloss": "Ngắn",
+    "ratio": 0.949130678116423,
+    "domMotion": 1.6241428507935434,
+    "nonDomMotion": 1.5415238053316163,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 67
+  },
+  {
+    "gloss": "Ngọt",
+    "ratio": 0.5872062307365672,
+    "domMotion": 1.529761893408639,
+    "nonDomMotion": 0.8982857153529212,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 69
+  },
+  {
+    "gloss": "Ngủ",
+    "ratio": 0.5300168490548793,
+    "domMotion": 2.1480000075839816,
+    "nonDomMotion": 1.1384761957895189,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Ngửi",
+    "ratio": 0.42090575126605184,
+    "domMotion": 1.9452380960186322,
+    "nonDomMotion": 0.8187619021960667,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Nhanh",
+    "ratio": 0.9366647682859955,
+    "domMotion": 1.5856666646543003,
+    "nonDomMotion": 1.4852380990272476,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 64
+  },
+  {
+    "gloss": "Nhà",
+    "ratio": 0.9260286056427898,
+    "domMotion": 2.1642857115893137,
+    "nonDomMotion": 2.0041904797156653,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 61
+  },
+  {
+    "gloss": "Nhà hàng",
+    "ratio": 0.9504983664732884,
+    "domMotion": 2.135571430126826,
+    "nonDomMotion": 2.0298571558225724,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Nhà sách",
+    "ratio": 0.9325065219353962,
+    "domMotion": 2.154000006261326,
+    "nonDomMotion": 2.008619054087571,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 64
+  },
+  {
+    "gloss": "Nhà trọ",
+    "ratio": 0.9208570490210675,
+    "domMotion": 2.133571437249581,
+    "nonDomMotion": 1.9647142975812866,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 64
+  },
+  {
+    "gloss": "Nhân viên phục vụ",
+    "ratio": 0.9349618450795755,
+    "domMotion": 2.3217142898411978,
+    "nonDomMotion": 2.1707142761775424,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 53
+  },
+  {
+    "gloss": "Nhân viên văn phòng",
+    "ratio": 0.9741778969159772,
+    "domMotion": 1.5509047706921895,
+    "nonDomMotion": 1.5108571478298731,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 54
+  },
+  {
+    "gloss": "Nhạt",
+    "ratio": 0.5767713243075221,
+    "domMotion": 2.0155714207461903,
+    "nonDomMotion": 1.162523797580174,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 70
+  },
+  {
+    "gloss": "Nhảy cao",
+    "ratio": 0.8815575214965196,
+    "domMotion": 1.7255714251881553,
+    "nonDomMotion": 1.5211904687540871,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 61
+  },
+  {
+    "gloss": "Nhảy dây",
+    "ratio": 1.093228729625809,
+    "domMotion": 1.2503809531529744,
+    "nonDomMotion": 1.3669523809637343,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 61
+  },
+  {
+    "gloss": "Nhầm lẫn",
+    "ratio": 0.8873309625150813,
+    "domMotion": 1.531666643562771,
+    "nonDomMotion": 1.3590952370847975,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Nhật Bản",
+    "ratio": 0.4725534327303987,
+    "domMotion": 2.1166666696468988,
+    "nonDomMotion": 1.0002381006876628,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 61
+  },
+  {
+    "gloss": "Nhẹ",
+    "ratio": 0.9788517594204195,
+    "domMotion": 1.4680952522016706,
+    "nonDomMotion": 1.4370476206143696,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 85
+  },
+  {
+    "gloss": "Nên",
+    "ratio": 0.8023293119286292,
+    "domMotion": 1.7867619026441215,
+    "nonDomMotion": 1.4335714479287465,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 71
+  },
+  {
+    "gloss": "Nói",
+    "ratio": 0.6414960547902224,
+    "domMotion": 1.6118571360905964,
+    "nonDomMotion": 1.0339999936875843,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Nói chuyện",
+    "ratio": 0.9555152584362206,
+    "domMotion": 1.9953333189090092,
+    "nonDomMotion": 1.906571431883744,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Nóng",
+    "ratio": 0.4283357519449838,
+    "domMotion": 2.1648571533816203,
+    "nonDomMotion": 0.9272857166471935,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Nông dân",
+    "ratio": 1.1471663059027049,
+    "domMotion": 1.4855238114084517,
+    "nonDomMotion": 1.70414286306394,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Năm",
+    "ratio": 0.8924246399918786,
+    "domMotion": 1.647571413289933,
+    "nonDomMotion": 1.4703333253661792,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Nước",
+    "ratio": 0.5274728282407318,
+    "domMotion": 1.6960476225330716,
+    "nonDomMotion": 0.8946190362884885,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Nướng",
+    "ratio": 0.40819341569644785,
+    "domMotion": 1.5145714311372667,
+    "nonDomMotion": 0.6182380857921782,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Nấu",
+    "ratio": 1.0840251307131692,
+    "domMotion": 1.462714277562641,
+    "nonDomMotion": 1.5856190359308606,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Nắng",
+    "ratio": 0.46796793897128264,
+    "domMotion": 2.5250000017029897,
+    "nonDomMotion": 1.1816190466994332,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 86
+  },
+  {
+    "gloss": "Nặng",
+    "ratio": 0.9733204636013303,
+    "domMotion": 1.6777619059153257,
+    "nonDomMotion": 1.6329999960781563,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 78
+  },
+  {
+    "gloss": "Nếm",
+    "ratio": 0.632349498851765,
+    "domMotion": 1.6262857090859186,
+    "nonDomMotion": 1.028380953130268,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 63
+  },
+  {
+    "gloss": "Nồi cơm điện",
+    "ratio": 0.8301564907471068,
+    "domMotion": 1.7862380821523922,
+    "nonDomMotion": 1.4828571379184723,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 69
+  },
+  {
+    "gloss": "Phút",
+    "ratio": 0.8929603603547951,
+    "domMotion": 1.7959523728682794,
+    "nonDomMotion": 1.6037142780565081,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Phơi đồ",
+    "ratio": 0.936204207081778,
+    "domMotion": 2.5930952486537753,
+    "nonDomMotion": 2.4276666811534335,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 65
+  },
+  {
+    "gloss": "Phở",
+    "ratio": 0.958839609852756,
+    "domMotion": 1.8811428656945715,
+    "nonDomMotion": 1.8037142914198783,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Quan sát",
+    "ratio": 0.4795473286144361,
+    "domMotion": 2.019761901881014,
+    "nonDomMotion": 0.9685714244842529,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Quen",
+    "ratio": 0.4605304894518392,
+    "domMotion": 1.500857141755876,
+    "nonDomMotion": 0.691190474090122,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Quán cà phê",
+    "ratio": 0.9915976674016411,
+    "domMotion": 1.9495714290422343,
+    "nonDomMotion": 1.9331904814711638,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 63
+  },
+  {
+    "gloss": "Quạt (đứng)",
+    "ratio": 0.3687667352841814,
+    "domMotion": 2.240285725820632,
+    "nonDomMotion": 0.8261428532146272,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 75
+  },
+  {
+    "gloss": "Quả bơ",
+    "ratio": 0.9039531030605716,
+    "domMotion": 1.7298095057762803,
+    "nonDomMotion": 1.5636666704501425,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Quả cam",
+    "ratio": 0.4142318436471107,
+    "domMotion": 1.7552857183008677,
+    "nonDomMotion": 0.7270952392192114,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Quả chuối",
+    "ratio": 0.9035187011565046,
+    "domMotion": 1.9352380934925306,
+    "nonDomMotion": 1.7485238086609614,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Quả dâu",
+    "ratio": 0.44691536621790895,
+    "domMotion": 2.171285715131533,
+    "nonDomMotion": 0.9703809505417234,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Quả dứa",
+    "ratio": 0.8532997054345268,
+    "domMotion": 1.6992857175923528,
+    "nonDomMotion": 1.4500000022706532,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Quả dừa",
+    "ratio": 0.8020220364481861,
+    "domMotion": 2.039428586406367,
+    "nonDomMotion": 1.63566666806028,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Quả mận",
+    "ratio": 0.9614649377258604,
+    "domMotion": 1.8931428451711934,
+    "nonDomMotion": 1.8201904677386795,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 63
+  },
+  {
+    "gloss": "Quả xoài",
+    "ratio": 0.833096333256231,
+    "domMotion": 1.908714275984537,
+    "nonDomMotion": 1.5901428645565396,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Quả đu đủ",
+    "ratio": 1.168818042254104,
+    "domMotion": 2.0252857017109083,
+    "nonDomMotion": 2.367190468878973,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Quả đào",
+    "ratio": 0.9648864766400954,
+    "domMotion": 2.072190481637205,
+    "nonDomMotion": 1.9994285727540653,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Quả địa cầu",
+    "ratio": 0.9328214192812704,
+    "domMotion": 2.1208571362353505,
+    "nonDomMotion": 1.9783809639158703,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 61
+  },
+  {
+    "gloss": "Quần thun",
+    "ratio": 0.9708882864781775,
+    "domMotion": 1.722428567286226,
+    "nonDomMotion": 1.6722857202735864,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Quần tây",
+    "ratio": 0.5592568182855401,
+    "domMotion": 1.6710952470699947,
+    "nonDomMotion": 0.9345714109284537,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Quần đùi",
+    "ratio": 0.8729090463194277,
+    "domMotion": 0.49533332813353764,
+    "nonDomMotion": 0.4323809430712745,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 65
+  },
+  {
+    "gloss": "Rượu",
+    "ratio": 0.5500306386539233,
+    "domMotion": 1.942142858303019,
+    "nonDomMotion": 1.0682380767095656,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Rạp chiếu phim",
+    "ratio": 0.8872213833151228,
+    "domMotion": 2.255999989452816,
+    "nonDomMotion": 2.00157143140123,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 66
+  },
+  {
+    "gloss": "Rẻ",
+    "ratio": 0.5177509204076503,
+    "domMotion": 1.7691904703332555,
+    "nonDomMotion": 0.9159999943914867,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Rộng",
+    "ratio": 0.9496241840055177,
+    "domMotion": 1.7865714337676764,
+    "nonDomMotion": 1.6965714399591976,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 67
+  },
+  {
+    "gloss": "Rửa chén",
+    "ratio": 0.9775501007708257,
+    "domMotion": 1.4826666627611433,
+    "nonDomMotion": 1.4493809455916995,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Rửa mặt",
+    "ratio": 0.9584866935689343,
+    "domMotion": 2.3159523726928803,
+    "nonDomMotion": 2.2198095321655273,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Rửa tay",
+    "ratio": 0.9515716013307073,
+    "domMotion": 1.4877142735889979,
+    "nonDomMotion": 1.4156666536416327,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 81
+  },
+  {
+    "gloss": "Sai",
+    "ratio": 0.5706205406007239,
+    "domMotion": 1.7595714306724923,
+    "nonDomMotion": 1.0040476009959267,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Sinh viên",
+    "ratio": 0.48502526887241504,
+    "domMotion": 2.4406190457798185,
+    "nonDomMotion": 1.1837619088944935,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 54
+  },
+  {
+    "gloss": "Siêu thị",
+    "ratio": 0.9667746810158242,
+    "domMotion": 1.8517142797243737,
+    "nonDomMotion": 1.7901904821129782,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 64
+  },
+  {
+    "gloss": "Sách",
+    "ratio": 0.9438322512083934,
+    "domMotion": 1.8236190511989185,
+    "nonDomMotion": 1.7211904744395898,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 61
+  },
+  {
+    "gloss": "Sáng tạo",
+    "ratio": 0.9627449605548714,
+    "domMotion": 2.6292380889256797,
+    "nonDomMotion": 2.531285720212119,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Sạch sẽ",
+    "ratio": 0.6956448418944422,
+    "domMotion": 1.6947619131810607,
+    "nonDomMotion": 1.1789523831435613,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Sớm",
+    "ratio": 0.5199261021266406,
+    "domMotion": 1.6238571547326588,
+    "nonDomMotion": 0.8442857208706084,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 67
+  },
+  {
+    "gloss": "Sữa",
+    "ratio": 0.8377674271345326,
+    "domMotion": 1.7182857261172362,
+    "nonDomMotion": 1.439523811851229,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Taxi",
+    "ratio": 0.8669844050922006,
+    "domMotion": 1.6485714220574923,
+    "nonDomMotion": 1.4292857136045183,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 74
+  },
+  {
+    "gloss": "Tham lam",
+    "ratio": 1.0071977293183514,
+    "domMotion": 1.0783809579554058,
+    "nonDomMotion": 1.0861428521928334,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Tham ăn",
+    "ratio": 0.9265063721531437,
+    "domMotion": 2.212047611673673,
+    "nonDomMotion": 2.049476207721801,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Thay đổi",
+    "ratio": 0.9576019088407479,
+    "domMotion": 1.9531428562920718,
+    "nonDomMotion": 1.8703333274239586,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Thuyền",
+    "ratio": 1.0056058457544983,
+    "domMotion": 1.4780476157154356,
+    "nonDomMotion": 1.4863333226669402,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 55
+  },
+  {
+    "gloss": "Thành phố",
+    "ratio": 0.9258728603731391,
+    "domMotion": 2.2599523890586126,
+    "nonDomMotion": 2.092428582764807,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 65
+  },
+  {
+    "gloss": "Thái Lan",
+    "ratio": 0.5845007853049123,
+    "domMotion": 1.6621428506360167,
+    "nonDomMotion": 0.9715238014856974,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Tháng",
+    "ratio": 0.9051377381370705,
+    "domMotion": 1.8703809470004802,
+    "nonDomMotion": 1.6929523798226866,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Tháng ba",
+    "ratio": 0.7687101834829454,
+    "domMotion": 2.040523809735619,
+    "nonDomMotion": 1.5685714321831863,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Tháng bảy",
+    "ratio": 0.7807997687683278,
+    "domMotion": 1.9136666582808608,
+    "nonDomMotion": 1.4941904842853546,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Tháng chín",
+    "ratio": 0.7926931422432365,
+    "domMotion": 1.9329523854844628,
+    "nonDomMotion": 1.5322381002562386,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Tháng hai",
+    "ratio": 0.772825095381387,
+    "domMotion": 1.991333335238908,
+    "nonDomMotion": 1.5389523747421445,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Tháng mười",
+    "ratio": 0.7801839916161322,
+    "domMotion": 1.915238097930948,
+    "nonDomMotion": 1.4942381041390556,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 66
+  },
+  {
+    "gloss": "Tháng mười hai",
+    "ratio": 0.7684563844133897,
+    "domMotion": 1.9724761777158295,
+    "nonDomMotion": 1.515761911869049,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 64
+  },
+  {
+    "gloss": "Tháng mười một",
+    "ratio": 0.7399571184857056,
+    "domMotion": 2.0210952443913337,
+    "nonDomMotion": 1.4955238132249742,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 63
+  },
+  {
+    "gloss": "Tháng một",
+    "ratio": 0.8174161582900892,
+    "domMotion": 1.8658095225691795,
+    "nonDomMotion": 1.5251428520395642,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 61
+  },
+  {
+    "gloss": "Tháng năm",
+    "ratio": 0.7947778857738538,
+    "domMotion": 2.015238089575654,
+    "nonDomMotion": 1.6016666681638785,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Tháng sáu",
+    "ratio": 0.7641814637080616,
+    "domMotion": 1.987000011994193,
+    "nonDomMotion": 1.5184285775536583,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 61
+  },
+  {
+    "gloss": "Tháng tám",
+    "ratio": 0.8054585572579039,
+    "domMotion": 1.9227142736670517,
+    "nonDomMotion": 1.5486666648870422,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Tháng tư",
+    "ratio": 0.7836262795186294,
+    "domMotion": 2.018333333943571,
+    "nonDomMotion": 1.581619041306632,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 59
+  },
+  {
+    "gloss": "Thèm",
+    "ratio": 0.6131100504468757,
+    "domMotion": 1.6265237939854462,
+    "nonDomMotion": 0.9972380853834606,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 61
+  },
+  {
+    "gloss": "Thích",
+    "ratio": 0.5702227101837759,
+    "domMotion": 1.6698571408078784,
+    "nonDomMotion": 0.9521904644511995,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 77
+  },
+  {
+    "gloss": "Thông minh",
+    "ratio": 0.5137611246589767,
+    "domMotion": 2.5105238187880743,
+    "nonDomMotion": 1.2898095406237102,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 61
+  },
+  {
+    "gloss": "Thú vị",
+    "ratio": 0.9317771361105991,
+    "domMotion": 1.7666190411185934,
+    "nonDomMotion": 1.6460952307319356,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 73
+  },
+  {
+    "gloss": "Thơm",
+    "ratio": 0.5784016960324346,
+    "domMotion": 1.8877142894613956,
+    "nonDomMotion": 1.0918571466491336,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 81
+  },
+  {
+    "gloss": "Thư ký",
+    "ratio": 0.8745470779875213,
+    "domMotion": 1.5638571360281535,
+    "nonDomMotion": 1.3676666887033553,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 53
+  },
+  {
+    "gloss": "Thước kẻ",
+    "ratio": 0.9602525344723674,
+    "domMotion": 1.4556190641153426,
+    "nonDomMotion": 1.397761895543053,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 61
+  },
+  {
+    "gloss": "Thấp (đồ vật)",
+    "ratio": 0.32863489028556125,
+    "domMotion": 2.0472857173354853,
+    "nonDomMotion": 0.6728095170997438,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Thể dục (thể thao)",
+    "ratio": 0.935249184918558,
+    "domMotion": 2.3629047714528584,
+    "nonDomMotion": 2.2099047615414573,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 55
+  },
+  {
+    "gloss": "Thịt",
+    "ratio": 0.8246560575094197,
+    "domMotion": 1.7652380815041917,
+    "nonDomMotion": 1.4557142768587386,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Thời gian",
+    "ratio": 0.7889576396682049,
+    "domMotion": 1.5929999908521062,
+    "nonDomMotion": 1.2568095127741497,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 61
+  },
+  {
+    "gloss": "Thời tiết",
+    "ratio": 0.41657787508348637,
+    "domMotion": 2.5920952388218472,
+    "nonDomMotion": 1.0798095266024272,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 64
+  },
+  {
+    "gloss": "Thứ ba",
+    "ratio": 0.4892159107323532,
+    "domMotion": 1.8832857197017543,
+    "nonDomMotion": 0.921333338533129,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Thứ bảy",
+    "ratio": 0.5524206665021302,
+    "domMotion": 1.9071904766328989,
+    "nonDomMotion": 1.0535714342480613,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Thứ hai",
+    "ratio": 0.5196521449063473,
+    "domMotion": 1.9602857089291017,
+    "nonDomMotion": 1.0186666732742673,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 63
+  },
+  {
+    "gloss": "Thứ năm",
+    "ratio": 0.6371025716626282,
+    "domMotion": 1.7927142616272682,
+    "nonDomMotion": 1.1421428663390023,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Thứ sáu",
+    "ratio": 0.5229434562292503,
+    "domMotion": 1.8772857199434103,
+    "nonDomMotion": 0.9817142827170235,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 70
+  },
+  {
+    "gloss": "Thứ tư",
+    "ratio": 0.6339687887120946,
+    "domMotion": 1.8184761855795624,
+    "nonDomMotion": 1.1528571446736653,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Thức dậy",
+    "ratio": 0.555533544994414,
+    "domMotion": 2.163428571962175,
+    "nonDomMotion": 1.2018571439243497,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 74
+  },
+  {
+    "gloss": "Thử",
+    "ratio": 0.5292022021803935,
+    "domMotion": 1.938047611731149,
+    "nonDomMotion": 1.0256190640585763,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Tivi",
+    "ratio": 0.6213876012005047,
+    "domMotion": 2.199761905840465,
+    "nonDomMotion": 1.3669047738824571,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 71
+  },
+  {
+    "gloss": "Tiếp tục",
+    "ratio": 0.9363111362471193,
+    "domMotion": 1.682285721014653,
+    "nonDomMotion": 1.575142854935534,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 71
+  },
+  {
+    "gloss": "Trung Quốc",
+    "ratio": 0.3960078616124409,
+    "domMotion": 1.3073333473432631,
+    "nonDomMotion": 0.5177142832960401,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 63
+  },
+  {
+    "gloss": "Trung thu",
+    "ratio": 0.8112489744517838,
+    "domMotion": 1.727142849537943,
+    "nonDomMotion": 1.4011428654193878,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 63
+  },
+  {
+    "gloss": "Trà",
+    "ratio": 0.7620581263257498,
+    "domMotion": 1.8481904701773255,
+    "nonDomMotion": 1.4084285667964391,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Trường Cao đẳng",
+    "ratio": 0.9165266920022695,
+    "domMotion": 2.041142856613511,
+    "nonDomMotion": 1.870761910276044,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Trường học",
+    "ratio": 0.921343093020204,
+    "domMotion": 2.049285706664835,
+    "nonDomMotion": 1.8880952314606734,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 63
+  },
+  {
+    "gloss": "Trường Đại học",
+    "ratio": 0.8838742197500761,
+    "domMotion": 2.080666658424196,
+    "nonDomMotion": 1.8390476192746843,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 68
+  },
+  {
+    "gloss": "Trẻ",
+    "ratio": 0.9630037734930408,
+    "domMotion": 2.0748571299371266,
+    "nonDomMotion": 1.9980952455883934,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Trễ",
+    "ratio": 0.6039077141868228,
+    "domMotion": 1.0650476217269897,
+    "nonDomMotion": 0.6431904747372582,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Trứng",
+    "ratio": 0.4840076259585859,
+    "domMotion": 2.3493333345367793,
+    "nonDomMotion": 1.1370952498345148,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 63
+  },
+  {
+    "gloss": "Trực thăng",
+    "ratio": 0.8784071479980736,
+    "domMotion": 1.81166667222888,
+    "nonDomMotion": 1.5913809546757312,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 55
+  },
+  {
+    "gloss": "Tàu hỏa",
+    "ratio": 1.0537319088735797,
+    "domMotion": 1.5260952377603167,
+    "nonDomMotion": 1.6080952480080581,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 70
+  },
+  {
+    "gloss": "Tìm",
+    "ratio": 0.41517174964796616,
+    "domMotion": 1.8687618932065864,
+    "nonDomMotion": 0.7758571448780242,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Túi xách",
+    "ratio": 0.6693354835615092,
+    "domMotion": 1.6474761977082206,
+    "nonDomMotion": 1.1027142774491083,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 54
+  },
+  {
+    "gloss": "Tường",
+    "ratio": 0.9529116013156441,
+    "domMotion": 2.14085714448066,
+    "nonDomMotion": 2.040047609735103,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 67
+  },
+  {
+    "gloss": "Tắm rửa",
+    "ratio": 0.6558644429671491,
+    "domMotion": 1.7368571471944008,
+    "nonDomMotion": 1.1391428453581673,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Tết Âm lịch",
+    "ratio": 0.9422745050572404,
+    "domMotion": 1.7933809502005933,
+    "nonDomMotion": 1.6898571472293475,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Tỉnh",
+    "ratio": 0.9882013370941752,
+    "domMotion": 2.062380962960777,
+    "nonDomMotion": 2.0380476251954125,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 72
+  },
+  {
+    "gloss": "Tốt bụng",
+    "ratio": 0.3743813457339874,
+    "domMotion": 1.876238089897448,
+    "nonDomMotion": 0.7024285410131726,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Tủ lạnh",
+    "ratio": 0.8034254378818665,
+    "domMotion": 1.776619048755882,
+    "nonDomMotion": 1.4273809371959596,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 68
+  },
+  {
+    "gloss": "Từ chối",
+    "ratio": 0.5558677073150146,
+    "domMotion": 2.237428578592482,
+    "nonDomMotion": 1.2437142942632948,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 71
+  },
+  {
+    "gloss": "Uống",
+    "ratio": 0.5210018407289487,
+    "domMotion": 1.8898571313004053,
+    "nonDomMotion": 0.9846190441222418,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Viên phấn",
+    "ratio": 0.9682657980914313,
+    "domMotion": 1.469047630117053,
+    "nonDomMotion": 1.422428576009614,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Viết",
+    "ratio": 0.4589451635465607,
+    "domMotion": 1.7317142920302493,
+    "nonDomMotion": 0.7947618989717393,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 54
+  },
+  {
+    "gloss": "Việt Nam",
+    "ratio": 0.6262918702753234,
+    "domMotion": 1.7600952334968107,
+    "nonDomMotion": 1.1023333356493996,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Vâng lời",
+    "ratio": 0.8557439659785604,
+    "domMotion": 2.1202381001341912,
+    "nonDomMotion": 1.8143809606276808,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Vòng tay",
+    "ratio": 1.007841011691603,
+    "domMotion": 2.022333336550565,
+    "nonDomMotion": 2.0381904758867764,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Võ",
+    "ratio": 1.040526454589874,
+    "domMotion": 1.233761908397788,
+    "nonDomMotion": 1.2837619043531872,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Vở",
+    "ratio": 0.9347315890747336,
+    "domMotion": 1.6029047632501239,
+    "nonDomMotion": 1.498285716488248,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 63
+  },
+  {
+    "gloss": "Vợ",
+    "ratio": 0.7194119496056416,
+    "domMotion": 1.9985238091931457,
+    "nonDomMotion": 1.4377619099049341,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 66
+  },
+  {
+    "gloss": "Xa",
+    "ratio": 0.9527944372396909,
+    "domMotion": 1.7713809480691063,
+    "nonDomMotion": 1.6877619135526143,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 63
+  },
+  {
+    "gloss": "Xe buýt",
+    "ratio": 0.8598082119708489,
+    "domMotion": 1.8274285749842722,
+    "nonDomMotion": 1.5712380955616634,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 55
+  },
+  {
+    "gloss": "Xe máy",
+    "ratio": 0.9223742957935344,
+    "domMotion": 1.5483333383287703,
+    "nonDomMotion": 1.4281428725946517,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 53
+  },
+  {
+    "gloss": "Xe tải",
+    "ratio": 0.8580025935885927,
+    "domMotion": 1.7961428496498792,
+    "nonDomMotion": 1.541095223455202,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Xe đạp",
+    "ratio": 1.0178768529734032,
+    "domMotion": 1.5103333266008467,
+    "nonDomMotion": 1.537333333421321,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 54
+  },
+  {
+    "gloss": "Xem",
+    "ratio": 0.5957257386522976,
+    "domMotion": 1.8716666700673246,
+    "nonDomMotion": 1.1150000095367432,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 70
+  },
+  {
+    "gloss": "Xin",
+    "ratio": 0.9676557308440086,
+    "domMotion": 1.8889047638014225,
+    "nonDomMotion": 1.827809519710995,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Xin lỗi",
+    "ratio": 0.9905432504762057,
+    "domMotion": 1.6163809505246935,
+    "nonDomMotion": 1.601095240740549,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 60
+  },
+  {
+    "gloss": "Xôi",
+    "ratio": 0.5126687163508501,
+    "domMotion": 1.6087619066238403,
+    "nonDomMotion": 0.8247619015829903,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 75
+  },
+  {
+    "gloss": "Xấu (người)",
+    "ratio": 0.4519923257416974,
+    "domMotion": 2.036380952312833,
+    "nonDomMotion": 0.9204285627319699,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Xấu (vật)",
+    "ratio": 0.5422038486678343,
+    "domMotion": 2.1200952430566153,
+    "nonDomMotion": 1.1495238003276644,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Y tá",
+    "ratio": 0.4683732307731905,
+    "domMotion": 2.693619044054122,
+    "nonDomMotion": 1.261619054135822,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 55
+  },
+  {
+    "gloss": "Yên tĩnh",
+    "ratio": 0.9569783777247447,
+    "domMotion": 1.6957142761065847,
+    "nonDomMotion": 1.6227618970331692,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 61
+  },
+  {
+    "gloss": "Yêu thương",
+    "ratio": 0.5964158279318971,
+    "domMotion": 1.894571413596471,
+    "nonDomMotion": 1.129952378216244,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 54
+  },
+  {
+    "gloss": "Yếu",
+    "ratio": 0.7024293912822996,
+    "domMotion": 1.5680952426933108,
+    "nonDomMotion": 1.1014761867977323,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 55
+  },
+  {
+    "gloss": "Áo sơ mi",
+    "ratio": 0.9469245292371458,
+    "domMotion": 1.8293809639733463,
+    "nonDomMotion": 1.732285708105857,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 54
+  },
+  {
+    "gloss": "Áo thun",
+    "ratio": 0.9748232716126067,
+    "domMotion": 1.8592380954041368,
+    "nonDomMotion": 1.8124285628686525,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 55
+  },
+  {
+    "gloss": "Áo đầm",
+    "ratio": 0.8034327653893627,
+    "domMotion": 1.5758571340924217,
+    "nonDomMotion": 1.26609525510243,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 55
+  },
+  {
+    "gloss": "Ô tô",
+    "ratio": 0.9252700225771214,
+    "domMotion": 1.785476203564377,
+    "nonDomMotion": 1.6520476071829242,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 55
+  },
+  {
+    "gloss": "Ông ngoại",
+    "ratio": 0.48714678247104226,
+    "domMotion": 1.9042857022778619,
+    "nonDomMotion": 0.9276666527702695,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 66
+  },
+  {
+    "gloss": "Ông nội",
+    "ratio": 0.45248547309824755,
+    "domMotion": 2.1477142863330387,
+    "nonDomMotion": 0.9718095149312701,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 67
+  },
+  {
+    "gloss": "Ăn",
+    "ratio": 0.6446666223985578,
+    "domMotion": 1.9004285641103273,
+    "nonDomMotion": 1.2251428635347457,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Đau",
+    "ratio": 0.5185850883522936,
+    "domMotion": 1.8550476168193633,
+    "nonDomMotion": 0.9620000322659811,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 72
+  },
+  {
+    "gloss": "Đi",
+    "ratio": 0.43425711336218265,
+    "domMotion": 1.7887142854520963,
+    "nonDomMotion": 0.7767619022301265,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Điền kinh",
+    "ratio": 0.9747373761029268,
+    "domMotion": 1.5004285758449918,
+    "nonDomMotion": 1.4625238130489986,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Điện thoại",
+    "ratio": 0.6295054052250059,
+    "domMotion": 1.902476183471403,
+    "nonDomMotion": 1.1976190408070881,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Đá cầu",
+    "ratio": 0.9504640024996646,
+    "domMotion": 1.8370476141571999,
+    "nonDomMotion": 1.7460476281343116,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Đúng",
+    "ratio": 0.5937096698558995,
+    "domMotion": 1.5867142875989277,
+    "nonDomMotion": 0.9420476158459982,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Đầu bếp",
+    "ratio": 0.9630525754304717,
+    "domMotion": 3.2079047589074996,
+    "nonDomMotion": 3.089380939801534,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 55
+  },
+  {
+    "gloss": "Đậm",
+    "ratio": 0.8288145742241562,
+    "domMotion": 1.7458095219695853,
+    "nonDomMotion": 1.4469523756276994,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Đắng",
+    "ratio": 0.62421432026994,
+    "domMotion": 1.8485714256142576,
+    "nonDomMotion": 1.1539047559102376,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Đắt",
+    "ratio": 0.5026871851733352,
+    "domMotion": 1.9227142736670517,
+    "nonDomMotion": 0.9665238261222839,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Đẹp (người)",
+    "ratio": 0.5685400995987308,
+    "domMotion": 1.9453333417574565,
+    "nonDomMotion": 1.106000011875516,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 63
+  },
+  {
+    "gloss": "Đẹp (vật)",
+    "ratio": 0.8222805805632074,
+    "domMotion": 1.722619050492843,
+    "nonDomMotion": 1.416476192928496,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 62
+  },
+  {
+    "gloss": "Đọc",
+    "ratio": 0.8456043995744097,
+    "domMotion": 2.1666666581517173,
+    "nonDomMotion": 1.8321428585442758,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 57
+  },
+  {
+    "gloss": "Đồ buộc tóc",
+    "ratio": 0.8530272423812596,
+    "domMotion": 2.6363809534481595,
+    "nonDomMotion": 2.2489047745863595,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Đồ dùng",
+    "ratio": 0.9132529368739543,
+    "domMotion": 1.5320952378568196,
+    "nonDomMotion": 1.39919047554334,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 67
+  },
+  {
+    "gloss": "Đồng hồ đeo tay",
+    "ratio": 0.763828161399966,
+    "domMotion": 1.688238095137335,
+    "nonDomMotion": 1.2895238002141316,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 66
+  },
+  {
+    "gloss": "Đồng ý",
+    "ratio": 0.45985018671846956,
+    "domMotion": 1.9960952396726324,
+    "nonDomMotion": 0.9179047686713082,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 56
+  },
+  {
+    "gloss": "Ướt",
+    "ratio": 0.6547464198589483,
+    "domMotion": 1.4647619128227234,
+    "nonDomMotion": 0.9590476183664232,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 86
+  },
+  {
+    "gloss": "Ấm",
+    "ratio": 0.9604215951754956,
+    "domMotion": 1.7890952457008618,
+    "nonDomMotion": 1.7182857097969169,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 53
+  },
+  {
+    "gloss": "Ốm",
+    "ratio": 1.0822228435913308,
+    "domMotion": 2.161952391266823,
+    "nonDomMotion": 2.3397142645858584,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 58
+  },
+  {
+    "gloss": "Ồn ào",
+    "ratio": 0.559363840667019,
+    "domMotion": 2.0270476156756994,
+    "nonDomMotion": 1.1338571395192827,
+    "staticDom": false,
+    "frameCount": 60,
+    "sampleCount": 63
+  }
+]

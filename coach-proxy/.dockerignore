@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+.env
+.env.*
+.git
+.gitignore
+.DS_Store
+README.md
+DEPLOY.md
+test.js
+*.md
+# Never bake secrets or dev-only files into the image.

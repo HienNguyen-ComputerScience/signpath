@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Practice Results - The SignPath</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#fd795a",
+                    "secondary-container": "#ffdcc5",
+                    "on-secondary-container": "#674c39",
+                    "error": "#a73b21",
+                    "tertiary-fixed": "#f9eca6",
+                    "on-primary-fixed": "#0f0400",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error": "#fff7f6",
+                    "tertiary-fixed-dim": "#eade99",
+                    "surface-tint": "#954b00",
+                    "on-primary": "#fff7f4",
+                    "background": "#fef8f1",
+                    "tertiary-dim": "#5c541d",
+                    "surface-container-highest": "#e9e2d6",
+                    "surface-container-low": "#f9f3ea",
+                    "tertiary": "#686028",
+                    "outline": "#7f7a71",
+                    "on-surface-variant": "#635f56",
+                    "surface-dim": "#e0d9ce",
+                    "primary-container": "#f68a2f",
+                    "secondary-fixed-dim": "#f3cdb5",
+                    "on-primary-fixed-variant": "#502500",
+                    "on-tertiary": "#fff9e7",
+                    "on-background": "#35322a",
+                    "primary-fixed": "#f68a2f",
+                    "surface-container-high": "#eee7dd",
+                    "on-surface": "#35322a",
+                    "surface-variant": "#e9e2d6",
+                    "on-tertiary-container": "#605721",
+                    "primary-dim": "#834100",
+                    "error-dim": "#791903",
+                    "on-primary-container": "#421e00",
+                    "surface": "#fef8f1",
+                    "inverse-surface": "#0f0e0a",
+                    "on-secondary-fixed-variant": "#725642",
+                    "on-secondary-fixed": "#533a28",
+                    "tertiary-container": "#f9eca6",
+                    "primary-fixed-dim": "#e57d21",
+                    "on-error-container": "#6e1400",
+                    "surface-container": "#f4ede3",
+                    "primary": "#954b00",
+                    "secondary-fixed": "#ffdcc5",
+                    "surface-bright": "#fef8f1",
+                    "secondary": "#755946",
+                    "on-tertiary-fixed-variant": "#6a622a",
+                    "outline-variant": "#b7b1a7",
+                    "inverse-primary": "#f68a2f",
+                    "on-tertiary-fixed": "#4d450f",
+                    "inverse-on-surface": "#a19c96",
+                    "secondary-dim": "#684d3b",
+                    "on-secondary": "#fff7f4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Be Vietnam Pro"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Be Vietnam Pro"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tonal-transition { transition: background-color 0.3s ease; }
+        .no-line { border: none !important; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- Mock Background Content (Blurred Lesson Screen) -->
+<div class="fixed inset-0 z-0 overflow-hidden blur-2xl opacity-40">
+<div class="max-w-4xl mx-auto p-8 pt-24">
+<div class="aspect-video bg-surface-container-high rounded-lg mb-8 flex items-center justify-center">
+<img alt="" class="rounded-lg object-cover w-full h-full" data-alt="a professional demonstration of American Sign Language against a neutral warm background with soft cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIADeOUYjZTtIJAKtfhJctJl8pdgZzGv5Nta3efpDzwVK9APd3fhVxzi7SjPcSW1bVujnEOCD5GZPzj3Qm6lEqN8my540rOUx8Druamg4eKoN99nc05b3CTYHfLRmZg6h-CSVbQ0y3F1yqEKPS5XAQbtNW4O0GZuSC1-9IUPMiiRdjVDltHTBUYipj9j1lonRt8qMO2ZPREf2zPv3kbfBZdwK8qxWhyQvzHYILSJQdDcCYKM2t-h0fgFFC8Hcn86CTTHZlsNtaR-A"/>
+</div>
+<div class="h-8 w-64 bg-surface-container-highest rounded-full mb-4"></div>
+<div class="h-4 w-full bg-surface-container-low rounded-full mb-2"></div>
+<div class="h-4 w-3/4 bg-surface-container-low rounded-full"></div>
+</div>
+</div>
+<!-- Top App Bar (From Shared Components) -->
+<header class="fixed top-0 w-full z-50 bg-white/70 dark:bg-stone-900/70 backdrop-blur-3xl shadow-[0_12px_32px_-4px_rgba(149,75,0,0.08)]">
+<div class="flex items-center justify-between px-6 py-4 w-full">
+<button class="material-symbols-outlined text-orange-700 dark:text-orange-400 active:scale-95 duration-200" data-icon="close">close</button>
+<h1 class="font-['Be_Vietnam_Pro'] text-[1.75rem] font-semibold text-orange-700 dark:text-orange-400">Practice Results</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</div>
+</header>
+<!-- Overlay & Modal Container -->
+<main class="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6 bg-on-background/10">
+<div class="w-full max-w-2xl bg-white/85 backdrop-blur-[24px] rounded-[2rem] shadow-[0_12px_32px_-4px_rgba(149,75,0,0.08)] overflow-hidden relative">
+<!-- Close Button (Top Right) -->
+<button class="absolute top-6 right-6 p-2 rounded-full hover:bg-orange-50 transition-colors material-symbols-outlined text-stone-500" data-icon="close">close</button>
+<div class="p-8 sm:p-12">
+<!-- Headline -->
+<p class="text-primary font-semibold text-[1.75rem] mb-4">Keep trying!</p>
+<!-- Main Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+<!-- Score Section -->
+<div class="md:col-span-5">
+<h2 class="text-primary font-bold text-[3.5rem] leading-none mb-2 tracking-tighter">42/100</h2>
+<span class="text-stone-500 font-semibold uppercase tracking-widest text-[0.75rem]">Overall Accuracy</span>
+</div>
+<!-- Coaching Feedback -->
+<div class="md:col-span-7">
+<div class="bg-tertiary-container p-6 rounded-lg">
+<div class="flex gap-3 items-start">
+<span class="material-symbols-outlined text-on-tertiary-container mt-0.5" data-icon="lightbulb">lightbulb</span>
+<p class="text-on-tertiary-container text-[1rem] leading-relaxed">
+                                    You're getting close! Try to keep your palm more vertical and focus on the wrist rotation for the final part of the sign.
+                                </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Per-Finger Accuracy Section -->
+<div class="mt-12">
+<h3 class="text-on-surface font-semibold text-[1.375rem] mb-6">Finger Alignment Analysis</h3>
+<div class="flex flex-wrap gap-4">
+<!-- Thumb -->
+<div class="flex flex-col items-center gap-3 p-4 bg-surface-container-low rounded-lg min-w-[100px] flex-1">
+<div class="relative w-12 h-12 flex items-center justify-center">
+<svg class="absolute inset-0 w-full h-full -rotate-90">
+<circle class="text-outline-variant/15" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-stone-400" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-dasharray="125.6" stroke-dashoffset="69.1" stroke-width="4"></circle>
+</svg>
+<span class="text-[0.75rem] font-bold text-stone-500">45%</span>
+</div>
+<span class="text-[0.75rem] font-semibold text-stone-400">Thumb</span>
+</div>
+<!-- Index -->
+<div class="flex flex-col items-center gap-3 p-4 bg-surface-container-low rounded-lg min-w-[100px] flex-1">
+<div class="relative w-12 h-12 flex items-center justify-center">
+<svg class="absolute inset-0 w-full h-full -rotate-90">
+<circle class="text-outline-variant/15" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-primary-container" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-dasharray="125.6" stroke-dashoffset="60.3" stroke-width="4"></circle>
+</svg>
+<span class="text-[0.75rem] font-bold text-on-surface">52%</span>
+</div>
+<span class="text-[0.75rem] font-semibold text-stone-500">Index</span>
+</div>
+<!-- Middle -->
+<div class="flex flex-col items-center gap-3 p-4 bg-surface-container-low rounded-lg min-w-[100px] flex-1 opacity-60">
+<div class="relative w-12 h-12 flex items-center justify-center">
+<svg class="absolute inset-0 w-full h-full -rotate-90">
+<circle class="text-outline-variant/15" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-stone-400" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-dasharray="125.6" stroke-dashoffset="77.9" stroke-width="4"></circle>
+</svg>
+<span class="text-[0.75rem] font-bold text-stone-500">38%</span>
+</div>
+<span class="text-[0.75rem] font-semibold text-stone-400">Middle</span>
+</div>
+<!-- Ring -->
+<div class="flex flex-col items-center gap-3 p-4 bg-surface-container-low rounded-lg min-w-[100px] flex-1 opacity-60">
+<div class="relative w-12 h-12 flex items-center justify-center">
+<svg class="absolute inset-0 w-full h-full -rotate-90">
+<circle class="text-outline-variant/15" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-stone-400" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-dasharray="125.6" stroke-dashoffset="87.9" stroke-width="4"></circle>
+</svg>
+<span class="text-[0.75rem] font-bold text-stone-500">30%</span>
+</div>
+<span class="text-[0.75rem] font-semibold text-stone-400">Ring</span>
+</div>
+<!-- Pinky -->
+<div class="flex flex-col items-center gap-3 p-4 bg-surface-container-low rounded-lg min-w-[100px] flex-1 opacity-60">
+<div class="relative w-12 h-12 flex items-center justify-center">
+<svg class="absolute inset-0 w-full h-full -rotate-90">
+<circle class="text-outline-variant/15" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-stone-400" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-dasharray="125.6" stroke-dashoffset="94.2" stroke-width="4"></circle>
+</svg>
+<span class="text-[0.75rem] font-bold text-stone-500">25%</span>
+</div>
+<span class="text-[0.75rem] font-semibold text-stone-400">Pinky</span>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="mt-12 flex flex-col sm:flex-row gap-4">
+<button class="flex-1 bg-gradient-to-br from-primary to-primary-container text-on-primary font-semibold py-4 rounded-xl active:scale-[0.98] transition-transform">
+                        Try Again
+                    </button>
+<button class="flex-1 bg-secondary-container text-on-secondary-container font-semibold py-4 rounded-xl active:scale-[0.98] transition-transform">
+                        Back to Lesson
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (From Shared Components) -->
+<nav class="fixed bottom-0 w-full z-50 bg-white/70 dark:bg-stone-900/70 backdrop-blur-3xl rounded-t-[3rem] shadow-[0_-8px_24px_-4px_rgba(149,75,0,0.05)]">
+<div class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-2">
+<div class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 hover:text-orange-600 dark:hover:text-orange-300 transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-semibold tracking-wide uppercase">Learn</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-orange-100 dark:bg-orange-900/40 text-orange-900 dark:text-orange-100 rounded-full px-6 py-2 transition-transform">
+<span class="material-symbols-outlined" data-icon="gesture" style="font-variation-settings: 'FILL' 1;">gesture</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-semibold tracking-wide uppercase">Practice</span>
+</div>
+<div class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 hover:text-orange-600 dark:hover:text-orange-300 transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-semibold tracking-wide uppercase">Progress</span>
+</div>
+<div class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 hover:text-orange-600 dark:hover:text-orange-300 transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-semibold tracking-wide uppercase">Profile</span>
+</div>
+</div>
+</nav>
+</body></html>

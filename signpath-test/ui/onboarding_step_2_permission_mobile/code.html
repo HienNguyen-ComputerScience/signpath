@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Camera Setup - SignPath</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#fef8f1",
+                    "on-tertiary-fixed-variant": "#6a622a",
+                    "surface-container-low": "#f9f3ea",
+                    "primary-dim": "#834100",
+                    "on-background": "#35322a",
+                    "error": "#a73b21",
+                    "inverse-on-surface": "#a19c96",
+                    "surface-container": "#f4ede3",
+                    "surface-container-high": "#eee7dd",
+                    "surface-container-highest": "#e9e2d6",
+                    "surface-tint": "#954b00",
+                    "surface-dim": "#e0d9ce",
+                    "tertiary-container": "#f9eca6",
+                    "error-container": "#fd795a",
+                    "secondary-dim": "#684d3b",
+                    "on-surface": "#35322a",
+                    "tertiary-fixed": "#f9eca6",
+                    "primary": "#954b00",
+                    "on-tertiary-fixed": "#4d450f",
+                    "on-primary-fixed-variant": "#502500",
+                    "error-dim": "#791903",
+                    "surface-bright": "#fef8f1",
+                    "tertiary-dim": "#5c541d",
+                    "on-secondary": "#fff7f4",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#e9e2d6",
+                    "tertiary": "#686028",
+                    "secondary": "#755946",
+                    "inverse-surface": "#0f0e0a",
+                    "on-error-container": "#6e1400",
+                    "outline": "#7f7a71",
+                    "tertiary-fixed-dim": "#eade99",
+                    "primary-fixed-dim": "#e57d21",
+                    "on-primary": "#fff7f4",
+                    "on-secondary-fixed": "#533a28",
+                    "on-error": "#fff7f6",
+                    "on-tertiary": "#fff9e7",
+                    "on-surface-variant": "#635f56",
+                    "primary-fixed": "#f68a2f",
+                    "outline-variant": "#b7b1a7",
+                    "on-primary-container": "#421e00",
+                    "on-tertiary-container": "#605721",
+                    "on-secondary-fixed-variant": "#725642",
+                    "on-secondary-container": "#674c39",
+                    "secondary-fixed": "#ffdcc5",
+                    "secondary-fixed-dim": "#f3cdb5",
+                    "on-primary-fixed": "#0f0400",
+                    "secondary-container": "#ffdcc5",
+                    "primary-container": "#f68a2f",
+                    "inverse-primary": "#f68a2f",
+                    "background": "#fef8f1"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Be Vietnam Pro"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Be Vietnam Pro"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            vertical-align: middle;
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #954b00 0%, #f68a2f 100%);
+        }
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #fef8f1;
+            color: #35322a;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen flex flex-col overflow-x-hidden">
+<!-- Header Predicted Component: TopAppBar -->
+<header class="w-full top-0 sticky bg-[#fef8f1] dark:bg-slate-950 z-50">
+<div class="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="active:scale-95 transition-transform duration-200 text-[#954b00] dark:text-[#f68a2f]">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-['Be_Vietnam_Pro'] text-xl font-bold tracking-tight text-[#954b00] dark:text-[#f68a2f]">
+                    SignPath
+                </h1>
+</div>
+<button class="font-['Be_Vietnam_Pro'] text-[#954b00] dark:text-[#f68a2f] font-bold hover:opacity-80 transition-opacity active:scale-95">
+                Skip
+            </button>
+</div>
+</header>
+<main class="flex-grow flex flex-col items-center px-6 pt-8 pb-12 max-w-2xl mx-auto w-full relative">
+<!-- Floating Decorative Element (Asymmetric Layout) -->
+<div class="absolute -top-12 -right-12 w-64 h-64 bg-primary-container/10 rounded-full blur-3xl -z-10"></div>
+<!-- Headline -->
+<div class="w-full mb-10 mt-4">
+<span class="text-primary font-bold label-md uppercase tracking-widest mb-2 block">Step 02 — Calibration</span>
+<h2 class="font-headline text-[1.75rem] font-semibold leading-tight text-on-surface">
+                Let's set up your camera
+            </h2>
+</div>
+<!-- Camera Preview Area (Center) -->
+<div class="w-full aspect-[4/5] md:aspect-video bg-surface-container-high rounded-xl relative overflow-hidden flex items-center justify-center group mb-8">
+<!-- Background Image Placeholder (Blurred studio or soft room) -->
+<img class="absolute inset-0 w-full h-full object-cover opacity-30 grayscale blur-sm" data-alt="blurred bright airy creative studio workspace with warm natural sunlight and soft shadows for camera calibration background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFwwPIc1PvzgK6TbJrHJu9iUTqqA_gUUlGCRRMfreVvL9I_TKYBecChj6z3Lc-flyffvQb6j9rqkmI79l46aMbF2OAQCCMqCB2m58yA4GOdnvonIai_FpHSr1C2PkOp3q_dVnkN3z0mt9RRltBXhPyjiYn7zIK5264j_nUnntGKbsOkx96mWAxjxiVi64hrvRhdUy6VhSZNUW0ss3rioHkJRonETzfuAm5Y-iPRNxicf55oS9yfFXzNlj3anD_QqM8hajcpsjHsLY"/>
+<!-- Silhouette Overlay -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-48 h-48 md:w-64 md:h-64 border-4 border-dashed border-primary/40 rounded-full flex items-center justify-center">
+<div class="w-32 h-32 md:w-44 md:h-44 border-4 border-dashed border-primary/20 rounded-full"></div>
+</div>
+<div class="w-64 h-40 md:w-80 md:h-56 border-4 border-dashed border-primary/40 rounded-t-full -mt-4"></div>
+<!-- Instruction Overlay -->
+<div class="absolute inset-0 flex items-end justify-center pb-8 pointer-events-none">
+<p class="bg-surface/90 backdrop-blur-md px-6 py-3 rounded-full text-center text-on-surface-variant font-medium text-sm shadow-sm border border-outline-variant/10">
+                        Stand where your hands and face are visible. Good lighting helps.
+                    </p>
+</div>
+</div>
+<!-- Permission Prompt Tint -->
+<div class="absolute inset-0 bg-on-background/40 flex items-center justify-center p-8 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<span class="text-surface font-semibold">Camera Access Pending...</span>
+</div>
+</div>
+<!-- Privacy Card (Asymmetric Offset) -->
+<div class="w-full mb-12 self-end lg:max-w-[90%] transform lg:translate-x-4">
+<div class="bg-tertiary-container p-6 rounded-lg flex gap-4 items-start relative overflow-hidden">
+<!-- Tonal accent -->
+<div class="absolute top-0 right-0 w-24 h-24 bg-tertiary-dim/5 rounded-full -mr-12 -mt-12"></div>
+<div class="bg-on-tertiary-container/10 p-3 rounded-full shrink-0">
+<span class="material-symbols-outlined text-on-tertiary-container" data-icon="shield">shield</span>
+</div>
+<div>
+<h3 class="font-bold text-on-tertiary-container mb-1">Your privacy matters</h3>
+<p class="text-on-tertiary-container/80 text-sm leading-relaxed">
+                        Camera data is processed locally on your device for movement tracking. We never store or transmit video recordings to our servers.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="w-full flex flex-col gap-4 items-center">
+<button class="primary-gradient w-full py-5 rounded-xl text-on-primary font-bold text-lg shadow-lg hover:opacity-90 active:scale-95 transition-all">
+                Allow Camera
+            </button>
+<button class="text-primary font-semibold py-2 hover:underline decoration-2 underline-offset-4 transition-all">
+                Why do you need this?
+            </button>
+</div>
+</main>
+<!-- Bottom Navigation Suppressed (Transactional Page Rule) -->
+<!-- Decorative Bottom Blob -->
+<div class="fixed -bottom-24 -left-24 w-80 h-80 bg-tertiary-container/20 rounded-full blur-[100px] -z-10"></div>
+</body></html>

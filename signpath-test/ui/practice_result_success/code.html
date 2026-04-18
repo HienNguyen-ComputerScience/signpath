@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#fd795a",
+                        "secondary-container": "#ffdcc5",
+                        "on-secondary-container": "#674c39",
+                        "error": "#a73b21",
+                        "tertiary-fixed": "#f9eca6",
+                        "on-primary-fixed": "#0f0400",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#fff7f6",
+                        "tertiary-fixed-dim": "#eade99",
+                        "surface-tint": "#954b00",
+                        "on-primary": "#fff7f4",
+                        "background": "#fef8f1",
+                        "tertiary-dim": "#5c541d",
+                        "surface-container-highest": "#e9e2d6",
+                        "surface-container-low": "#f9f3ea",
+                        "tertiary": "#686028",
+                        "outline": "#7f7a71",
+                        "on-surface-variant": "#635f56",
+                        "surface-dim": "#e0d9ce",
+                        "primary-container": "#f68a2f",
+                        "secondary-fixed-dim": "#f3cdb5",
+                        "on-primary-fixed-variant": "#502500",
+                        "on-tertiary": "#fff9e7",
+                        "on-background": "#35322a",
+                        "primary-fixed": "#f68a2f",
+                        "surface-container-high": "#eee7dd",
+                        "on-surface": "#35322a",
+                        "surface-variant": "#e9e2d6",
+                        "on-tertiary-container": "#605721",
+                        "primary-dim": "#834100",
+                        "error-dim": "#791903",
+                        "on-primary-container": "#421e00",
+                        "surface": "#fef8f1",
+                        "inverse-surface": "#0f0e0a",
+                        "on-secondary-fixed-variant": "#725642",
+                        "on-secondary-fixed": "#533a28",
+                        "tertiary-container": "#f9eca6",
+                        "primary-fixed-dim": "#e57d21",
+                        "on-error-container": "#6e1400",
+                        "surface-container": "#f4ede3",
+                        "primary": "#954b00",
+                        "secondary-fixed": "#ffdcc5",
+                        "surface-bright": "#fef8f1",
+                        "secondary": "#755946",
+                        "on-tertiary-fixed-variant": "#6a622a",
+                        "outline-variant": "#b7b1a7",
+                        "inverse-primary": "#f68a2f",
+                        "on-tertiary-fixed": "#4d450f",
+                        "inverse-on-surface": "#a19c96",
+                        "secondary-dim": "#684d3b",
+                        "on-secondary": "#fff7f4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Be Vietnam Pro"],
+                        "body": ["Be Vietnam Pro"],
+                        "label": ["Be Vietnam Pro"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        .no-line { border: none !important; }
+        .glass-overlay { backdrop-filter: blur(24px); background-color: rgba(254, 248, 241, 0.85); }
+        .burnt-sienna-gradient { background: linear-gradient(135deg, #954b00 0%, #f68a2f 100%); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen relative overflow-hidden">
+<!-- Background Content (Blurred Lesson Screen) -->
+<main class="w-full h-screen p-8 filter blur-lg opacity-40 flex flex-col gap-8">
+<header class="flex justify-between items-center">
+<div class="h-8 w-32 bg-surface-container-high rounded-full"></div>
+<div class="h-8 w-8 bg-surface-container-high rounded-full"></div>
+</header>
+<section class="flex-1 bg-surface-container-low rounded-lg p-12 flex flex-col items-center justify-center gap-12">
+<div class="w-64 h-64 bg-surface-container-highest rounded-full"></div>
+<div class="space-y-4 w-full max-w-md">
+<div class="h-6 w-3/4 bg-surface-container-high rounded-full mx-auto"></div>
+<div class="h-6 w-1/2 bg-surface-container-high rounded-full mx-auto"></div>
+</div>
+</section>
+<footer class="flex justify-around p-4">
+<div class="h-12 w-12 bg-surface-container-high rounded-full"></div>
+<div class="h-12 w-12 bg-surface-container-high rounded-full"></div>
+<div class="h-12 w-12 bg-surface-container-high rounded-full"></div>
+</footer>
+</main>
+<!-- Success Modal Overlay -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+<!-- Modal Container -->
+<div class="glass-overlay relative w-full max-w-2xl rounded-lg shadow-[0_12px_32px_-4px_rgba(149,75,0,0.08)] overflow-hidden flex flex-col md:flex-row">
+<!-- Close Button -->
+<button class="absolute top-6 right-6 z-50 text-stone-500 hover:bg-orange-50 p-2 rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined">close</span>
+</button>
+<!-- Decorative Visual Column -->
+<div class="hidden md:flex w-1/3 burnt-sienna-gradient p-8 flex-col justify-end relative overflow-hidden">
+<div class="absolute -top-12 -left-12 w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
+<div class="relative z-10">
+<span class="material-symbols-outlined text-white/40 text-7xl mb-4" data-weight="fill" style="font-variation-settings: 'FILL' 1;">celebration</span>
+<p class="text-white font-bold text-headline-md leading-tight">Amazing Progress!</p>
+</div>
+</div>
+<!-- Content Column -->
+<div class="flex-1 p-8 sm:p-12 space-y-8">
+<!-- Stars Section -->
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-4xl text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-4xl text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-4xl text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<!-- Score & Badges -->
+<div class="flex flex-col gap-6">
+<div class="space-y-1">
+<h1 class="text-[3.5rem] font-bold text-primary tracking-tight leading-none -ml-1">87/100</h1>
+<p class="text-label-md text-outline uppercase tracking-widest font-semibold">Current Accuracy Score</p>
+</div>
+<div class="flex flex-wrap gap-3">
+<div class="inline-flex items-center gap-2 bg-primary-container/20 text-on-primary-container px-4 py-2 rounded-full">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+<span class="text-label-md font-bold">+45 XP</span>
+</div>
+<div class="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-4 py-2 rounded-full">
+<span class="material-symbols-outlined text-[18px]">trending_up</span>
+<span class="text-label-md font-bold">Leveled up! L3 -&gt; L4</span>
+</div>
+</div>
+</div>
+<!-- Feedback Card -->
+<div class="bg-tertiary-container/60 p-6 rounded-lg flex items-start gap-4">
+<span class="material-symbols-outlined text-tertiary mt-1">info</span>
+<p class="text-body-lg text-on-tertiary-container leading-relaxed">
+                        Bring your hand closer to your chest on the downward motion.
+                    </p>
+</div>
+<!-- Finger Accuracy Breakdown -->
+<div class="space-y-4">
+<h3 class="text-label-md font-bold text-on-surface-variant uppercase tracking-wider">Per-finger accuracy</h3>
+<div class="flex flex-wrap gap-6 items-end">
+<!-- Thumb -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-12 h-12 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary-container font-bold text-xs ring-4 ring-tertiary/20">92%</div>
+<span class="text-[10px] font-bold text-outline uppercase">Thumb</span>
+</div>
+<!-- Index -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-12 h-12 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary-container font-bold text-xs ring-4 ring-tertiary/20">85%</div>
+<span class="text-[10px] font-bold text-outline uppercase">Index</span>
+</div>
+<!-- Middle -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-800 font-bold text-xs ring-4 ring-orange-200">78%</div>
+<span class="text-[10px] font-bold text-outline uppercase">Middle</span>
+</div>
+<!-- Ring -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-800 font-bold text-xs ring-4 ring-orange-200">65%</div>
+<span class="text-[10px] font-bold text-outline uppercase">Ring</span>
+</div>
+<!-- Pinky -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant font-bold text-xs ring-2 ring-outline-variant/10">40%</div>
+<span class="text-[10px] font-bold text-outline uppercase">Pinky</span>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col sm:flex-row gap-4 pt-4">
+<button class="flex-1 bg-secondary-container text-on-secondary-container py-4 rounded-xl font-bold hover:brightness-95 active:scale-95 transition-all text-center">
+                        Try Again
+                    </button>
+<button class="flex-1 burnt-sienna-gradient text-on-primary py-4 px-8 rounded-xl font-bold flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/20 active:scale-95 transition-all">
+                        Next Sign
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Page Specific Visual Accents -->
+<div class="fixed top-20 left-[10%] w-32 h-32 bg-primary/5 rounded-full blur-[60px] pointer-events-none"></div>
+<div class="fixed bottom-20 right-[15%] w-64 h-64 bg-tertiary/5 rounded-full blur-[80px] pointer-events-none"></div>
+</body></html>

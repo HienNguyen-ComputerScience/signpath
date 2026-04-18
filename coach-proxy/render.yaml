@@ -1,0 +1,42 @@
+# render.yaml — declarative Render.com deployment for signpath-coach-proxy.
+#
+# Usage:
+#   - If you connect this repo to Render, Render auto-detects this file and
+#     creates the service per its spec on first deploy.
+#   - If you prefer the GUI, you can ignore this file and configure the same
+#     settings by hand in the Render dashboard (see DEPLOY.md).
+#
+# Secrets are NOT committed here. Set `GEMINI_API_KEY` and (if you want)
+# `ALLOWED_ORIGIN_SUFFIXES` via the Render dashboard "Environment" tab —
+# mark them secret. See DEPLOY.md for step-by-step instructions.
+
+services:
+  - type: web
+    name: signpath-coach
+    runtime: docker
+    region: singapore          # closest to Vietnam demo venue
+    plan: free                 # upgrade later if cold-start hurts
+    rootDir: coach-proxy       # Render copies from repo root; our code lives here
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeploy: true           # auto-deploy on push to the connected branch
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Render injects PORT automatically; leaving it here as documentation.
+      # Our server.js reads PORT with a sensible 8787 fallback.
+      - key: PORT
+        value: "3000"
+      # Safe default — empty allowlist means no browser can reach /coach.
+      # Override ALLOWED_ORIGINS + ALLOWED_ORIGIN_SUFFIXES in the dashboard
+      # once you know the Netlify URL.
+      - key: ALLOWED_ORIGINS
+        value: http://localhost:8000
+      # Secrets — NOT committed. Create these in the Render dashboard:
+      #   GEMINI_API_KEY           (sync: false marks it as secret)
+      #   ALLOWED_ORIGIN_SUFFIXES  (e.g. ".netlify.app")
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: ALLOWED_ORIGIN_SUFFIXES
+        sync: false

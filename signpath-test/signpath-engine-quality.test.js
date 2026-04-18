@@ -136,10 +136,15 @@ async function run() {
     const simHi = I._cosineSimilarityWeightedPrenormed(user, tmpl, I.WEIGHTS_SQ_HIGH, 0, N, nUH, nTH)
     const simLo = I._cosineSimilarityWeightedPrenormed(user, tmpl, I.WEIGHTS_SQ_LOW, 0, N, nUL, nTL)
     assert.ok(simLo > simHi, `low ${simLo} should exceed high ${simHi}`)
-    // Golden values (derivable by hand — see QUALITY_TIER_REPORT.md):
-    //   simHi = 1 / (sqrt(2) * sqrt(2)) = 0.5
-    //   simLo = 2.25 / (sqrt(2.34) * sqrt(2.34)) ≈ 0.9615
-    assert.ok(Math.abs(simHi - 0.5) < 1e-6)
+    // Golden values derivable by hand (see SCORING_FIX_REPORT.md).
+    // High: WEIGHTS_HIGH now hand=1.15, pose=0.7 → wSq hand=1.3225, pose=0.49
+    //   dot        = 1.3225·1·1 + 0.49·1·0 + 0.49·0·1 = 1.3225
+    //   |user|²    = 1.3225 + 0.49 = 1.8125  →  |user| = √1.8125
+    //   simHi      = 1.3225 / (√1.8125)² = 1.3225 / 1.8125 ≈ 0.7297
+    // Low: WEIGHTS_LOW unchanged (hand=1.5, pose=0.3) →
+    //   simLo      = 2.25 / 2.34 ≈ 0.9615
+    assert.ok(Math.abs(simHi - (1.3225 / 1.8125)) < 1e-6,
+      `simHi expected ≈${(1.3225/1.8125).toFixed(4)}, got ${simHi}`)
     assert.ok(Math.abs(simLo - (2.25 / 2.34)) < 1e-6)
   })
 

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#fef8f1",
+                    "on-tertiary-fixed-variant": "#6a622a",
+                    "surface-container-low": "#f9f3ea",
+                    "primary-dim": "#834100",
+                    "on-background": "#35322a",
+                    "error": "#a73b21",
+                    "inverse-on-surface": "#a19c96",
+                    "surface-container": "#f4ede3",
+                    "surface-container-high": "#eee7dd",
+                    "surface-container-highest": "#e9e2d6",
+                    "surface-tint": "#954b00",
+                    "surface-dim": "#e0d9ce",
+                    "tertiary-container": "#f9eca6",
+                    "error-container": "#fd795a",
+                    "secondary-dim": "#684d3b",
+                    "on-surface": "#35322a",
+                    "tertiary-fixed": "#f9eca6",
+                    "primary": "#954b00",
+                    "on-tertiary-fixed": "#4d450f",
+                    "on-primary-fixed-variant": "#502500",
+                    "error-dim": "#791903",
+                    "surface-bright": "#fef8f1",
+                    "tertiary-dim": "#5c541d",
+                    "on-secondary": "#fff7f4",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#e9e2d6",
+                    "tertiary": "#686028",
+                    "secondary": "#755946",
+                    "inverse-surface": "#0f0e0a",
+                    "on-error-container": "#6e1400",
+                    "outline": "#7f7a71",
+                    "tertiary-fixed-dim": "#eade99",
+                    "primary-fixed-dim": "#e57d21",
+                    "on-primary": "#fff7f4",
+                    "on-secondary-fixed": "#533a28",
+                    "on-error": "#fff7f6",
+                    "on-tertiary": "#fff9e7",
+                    "on-surface-variant": "#635f56",
+                    "primary-fixed": "#f68a2f",
+                    "outline-variant": "#b7b1a7",
+                    "on-primary-container": "#421e00",
+                    "on-tertiary-container": "#605721",
+                    "on-secondary-fixed-variant": "#725642",
+                    "on-secondary-container": "#674c39",
+                    "secondary-fixed": "#ffdcc5",
+                    "secondary-fixed-dim": "#f3cdb5",
+                    "on-primary-fixed": "#0f0400",
+                    "secondary-container": "#ffdcc5",
+                    "primary-container": "#f68a2f",
+                    "inverse-primary": "#f68a2f",
+                    "background": "#fef8f1"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Be Vietnam Pro"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Be Vietnam Pro"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hero-image-skew {
+            transform: perspective(1000px) rotateY(-8deg) rotateX(4deg) rotateZ(2deg);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopAppBar -->
+<nav class="w-full top-0 sticky bg-[#fef8f1] dark:bg-slate-950 z-50">
+<div class="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#954b00] dark:text-[#f68a2f] cursor-pointer active:scale-95 transition-transform duration-200">arrow_back</span>
+<h1 class="text-xl font-bold tracking-tight text-[#954b00] dark:text-[#f68a2f]">SignPath</h1>
+</div>
+<button class="text-[#b7b1a7] dark:text-slate-500 font-['Be_Vietnam_Pro'] headline-md font-semibold hover:opacity-80 transition-opacity">Skip</button>
+</div>
+</nav>
+<main class="max-w-7xl mx-auto px-6 pt-12 pb-24 min-h-[calc(100vh-80px)] flex flex-col">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start lg:mt-16">
+<!-- Left Column: Content -->
+<div class="lg:col-span-7 flex flex-col">
+<div class="space-y-6">
+<span class="text-on-tertiary-fixed-variant font-semibold tracking-widest text-xs uppercase bg-tertiary-container px-4 py-1.5 rounded-full inline-block">ONBOARDING STEP 01</span>
+<h2 class="text-6xl lg:text-7xl font-bold text-primary leading-[1.1] tracking-tight">
+                        Learn Vietnamese Sign Language
+                    </h2>
+<p class="text-body-lg text-on-surface-variant max-w-xl leading-relaxed text-lg lg:text-xl">
+                        Welcome to a space where culture meets communication. Begin your journey into the rich tapestry of VSL with an editorial approach to learning.
+                    </p>
+</div>
+<!-- Language Selection Section -->
+<div class="mt-16 space-y-4">
+<p class="text-label-md text-outline font-bold tracking-wider">CHOOSE YOUR INTERFACE LANGUAGE</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl">
+<!-- Tiếng Việt Card -->
+<div class="group relative overflow-hidden rounded-lg bg-surface-container-lowest p-6 transition-all hover:bg-white hover:shadow-[0_12px_32px_-4px_rgba(149,75,0,0.08)] cursor-pointer">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="text-xl font-semibold text-on-surface">Tiếng Việt</h3>
+<p class="text-sm text-outline">Ngôn ngữ mẹ đẻ</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">check_circle</span>
+</div>
+<div class="absolute bottom-0 left-0 h-1 w-0 bg-primary transition-all group-hover:w-full"></div>
+</div>
+<!-- English Card (Active State) -->
+<div class="group relative overflow-hidden rounded-lg bg-surface-container-lowest p-6 border-2 border-primary shadow-[0_12px_32px_-4px_rgba(149,75,0,0.08)] cursor-pointer">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="text-xl font-semibold text-primary">English</h3>
+<p class="text-sm text-primary/70">International Standard</p>
+</div>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="absolute bottom-0 left-0 h-1 w-full bg-primary"></div>
+</div>
+</div>
+</div>
+<!-- CTA -->
+<div class="mt-16">
+<button class="bg-gradient-to-r from-primary to-primary-container text-on-primary px-12 py-5 rounded-xl font-bold text-lg flex items-center gap-3 hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-primary/20">
+                        Continue
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Right Column: Visual Hero -->
+<div class="lg:col-span-5 relative">
+<!-- Decorative Elements -->
+<div class="absolute -top-12 -right-12 w-64 h-64 bg-tertiary-container/30 rounded-full blur-3xl -z-10"></div>
+<div class="absolute -bottom-12 -left-12 w-48 h-48 bg-primary-container/20 rounded-full blur-3xl -z-10"></div>
+<!-- Main Hero Container -->
+<div class="hero-image-skew relative group">
+<div class="overflow-hidden rounded-lg aspect-[3/4] bg-surface-container-highest shadow-2xl">
+<img alt="Cultural Portrait" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Stunning portrait of a young Vietnamese woman in traditional Ao Dai dress performing graceful sign language hand gestures in soft golden sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7lQkBjt9ytim0e5uqFkhUAm8qa8UPZVXxodyC8Uof5tK3ksWKCHb1O2N3j5fXjnHu_5Zze7Hw1Gdj46LO3q_0_Vg5bEPg8eBEAGfp3Rmh2TFSg46Y1nEYB2we-n8sBqGAc8QlQJHUE1a4Wx_cLkPZtQOc07NGd1X1DZupM_JsojZsoquZLHiBWrjL1K2QTNLFI_lgeL-UY0hMN6dY3jPArDvSWGe1WfyWAr2-CVPctIe4DzHHfnmgZeeBluuQbIF6V2aNh6W55Lk"/>
+</div>
+<!-- Floating Badge -->
+<div class="absolute -bottom-6 -right-6 bg-surface-container-lowest p-6 rounded-lg shadow-xl max-w-[200px] border border-outline-variant/10">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">diversity_2</span>
+<span class="text-xs font-bold text-outline uppercase tracking-tighter">Cultural Hub</span>
+</div>
+<p class="text-sm font-medium text-on-surface leading-snug">
+                            Vibrant community of over 500k learners worldwide.
+                        </p>
+</div>
+<!-- Decorative Border Accent -->
+<div class="absolute -inset-4 border-2 border-primary/20 rounded-lg -z-10 transition-transform duration-500 group-hover:translate-x-2 group-hover:translate-y-2"></div>
+</div>
+<!-- Quote Backdrop -->
+<div class="mt-20 lg:mt-32 border-l-4 border-tertiary pl-8">
+<p class="text-2xl font-medium italic text-on-surface-variant leading-relaxed">
+                        "Sign language is the noblest gift God has given to deaf people."
+                    </p>
+<cite class="block mt-4 text-on-tertiary-fixed-variant font-bold not-italic">— George Veditz</cite>
+</div>
+</div>
+</div>
+</main>
+<!-- Success Feedback (Ghost Element) -->
+<div class="fixed top-8 right-8 pointer-events-none opacity-0">
+<div class="bg-tertiary-container px-6 py-3 rounded-full flex items-center gap-3 text-on-tertiary-container shadow-lg">
+<span class="material-symbols-outlined">celebration</span>
+<span class="font-bold">Perfect choice!</span>
+</div>
+</div>
+</body></html>

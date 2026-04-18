@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#fef8f1",
+                        "on-tertiary-fixed-variant": "#6a622a",
+                        "surface-container-low": "#f9f3ea",
+                        "primary-dim": "#834100",
+                        "on-background": "#35322a",
+                        "error": "#a73b21",
+                        "inverse-on-surface": "#a19c96",
+                        "surface-container": "#f4ede3",
+                        "surface-container-high": "#eee7dd",
+                        "surface-container-highest": "#e9e2d6",
+                        "surface-tint": "#954b00",
+                        "surface-dim": "#e0d9ce",
+                        "tertiary-container": "#f9eca6",
+                        "error-container": "#fd795a",
+                        "secondary-dim": "#684d3b",
+                        "on-surface": "#35322a",
+                        "tertiary-fixed": "#f9eca6",
+                        "primary": "#954b00",
+                        "on-tertiary-fixed": "#4d450f",
+                        "on-primary-fixed-variant": "#502500",
+                        "error-dim": "#791903",
+                        "surface-bright": "#fef8f1",
+                        "tertiary-dim": "#5c541d",
+                        "on-secondary": "#fff7f4",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#e9e2d6",
+                        "tertiary": "#686028",
+                        "secondary": "#755946",
+                        "inverse-surface": "#0f0e0a",
+                        "on-error-container": "#6e1400",
+                        "outline": "#7f7a71",
+                        "tertiary-fixed-dim": "#eade99",
+                        "primary-fixed-dim": "#e57d21",
+                        "on-primary": "#fff7f4",
+                        "on-secondary-fixed": "#533a28",
+                        "on-error": "#fff7f6",
+                        "on-tertiary": "#fff9e7",
+                        "on-surface-variant": "#635f56",
+                        "primary-fixed": "#f68a2f",
+                        "outline-variant": "#b7b1a7",
+                        "on-primary-container": "#421e00",
+                        "on-tertiary-container": "#605721",
+                        "on-secondary-fixed-variant": "#725642",
+                        "on-secondary-container": "#674c39",
+                        "secondary-fixed": "#ffdcc5",
+                        "secondary-fixed-dim": "#f3cdb5",
+                        "on-primary-fixed": "#0f0400",
+                        "secondary-container": "#ffdcc5",
+                        "primary-container": "#f68a2f",
+                        "inverse-primary": "#f68a2f",
+                        "background": "#fef8f1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Be Vietnam Pro"],
+                        "body": ["Be Vietnam Pro"],
+                        "label": ["Be Vietnam Pro"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #fef8f1;
+        }
+        .editorial-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
+        }
+        .sunset-gradient {
+            background: linear-gradient(135deg, #954b00 0%, #f68a2f 100%);
+        }
+    </style>
+</head>
+<body class="text-on-surface antialiased overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-50 bg-[#fef8f1] dark:bg-slate-950">
+<div class="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="p-2 active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined text-[#954b00] dark:text-[#f68a2f]">arrow_back</span>
+</button>
+<span class="text-xl font-bold tracking-tight text-[#954b00] dark:text-[#f68a2f]">SignPath</span>
+</div>
+<button class="font-['Be_Vietnam_Pro'] font-semibold text-[#35322a] dark:text-[#fef8f1] hover:opacity-80 transition-opacity">
+                Skip
+            </button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-8 pt-16 pb-32">
+<div class="editorial-grid items-start">
+<!-- Left Column: Goal Selection -->
+<div class="flex flex-col gap-12">
+<div class="space-y-4">
+<span class="text-primary font-semibold tracking-wider text-xs uppercase">Step 3 of 3</span>
+<h1 class="text-[3.5rem] font-bold text-primary leading-[1.1] tracking-tight">Set your daily goal</h1>
+<p class="text-lg text-on-surface-variant max-w-md">Small habits lead to big changes. Choose a pace that feels sustainable for your journey.</p>
+</div>
+<!-- Horizontal Goal Selection Cards -->
+<div class="flex gap-4">
+<!-- Goal: Casual -->
+<div class="group flex-1 p-6 bg-surface-container-lowest rounded-lg border-2 border-transparent hover:border-primary cursor-pointer transition-all duration-300">
+<div class="mb-8 w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined">lightbulb</span>
+</div>
+<h3 class="text-xl font-semibold mb-1">Casual</h3>
+<p class="text-on-surface-variant text-sm mb-4">5 mins / day</p>
+<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-1/4"></div>
+</div>
+</div>
+<!-- Goal: Regular (Active State) -->
+<div class="flex-1 p-6 bg-surface-container-lowest rounded-lg border-2 border-primary cursor-pointer shadow-[0_12px_32px_-4px_rgba(149,75,0,0.08)]">
+<div class="mb-8 w-12 h-12 rounded-full bg-primary text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined">bolt</span>
+</div>
+<h3 class="text-xl font-semibold mb-1">Regular</h3>
+<p class="text-on-surface-variant text-sm mb-4">15 mins / day</p>
+<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full sunset-gradient w-1/2"></div>
+</div>
+</div>
+<!-- Goal: Intense -->
+<div class="group flex-1 p-6 bg-surface-container-lowest rounded-lg border-2 border-transparent hover:border-primary cursor-pointer transition-all duration-300">
+<div class="mb-8 w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined">art_track</span>
+</div>
+<h3 class="text-xl font-semibold mb-1">Serious</h3>
+<p class="text-on-surface-variant text-sm mb-4">30 mins / day</p>
+<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-full"></div>
+</div>
+</div>
+</div>
+<!-- CTA -->
+<div class="mt-8">
+<button class="sunset-gradient text-on-primary px-10 py-5 rounded-xl font-bold text-lg flex items-center gap-3 shadow-[0_12px_32px_-4px_rgba(149,75,0,0.2)] hover:scale-[1.02] active:scale-95 transition-all">
+                        Start learning
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Right Column: Sign Preview Card -->
+<div class="relative">
+<div class="bg-surface-container-low p-10 rounded-xl relative overflow-hidden">
+<div class="flex justify-between items-start mb-12">
+<div>
+<span class="label-md bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded-full text-xs font-bold">YOUR FIRST SIGN</span>
+<h2 class="text-3xl font-semibold mt-4 text-on-background">"Hello"</h2>
+</div>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">volume_up</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+</div>
+<!-- Video Preview Container -->
+<div class="aspect-[4/5] rounded-lg overflow-hidden bg-surface-container-highest relative group">
+<img class="w-full h-full object-cover" data-alt="Close up of graceful hands performing the VSL sign for hello in a bright room with warm sunset light streaming through a window" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbmWwXgfcF7qI2XMX-RC3mWdUkBTpZSyMWlSJadMnHtj6kji8Gdit1ICSNkWQzgR1fljVsy8XRAdj6YaXYoK6DgTJoQixmrcM1MTBbJDFdEFjtlVMiKbu2--vhbP42pEqBVKnHxarhns7cLjqLAbL9fvxfRX0teiS-4G5rcckhLEYoCybQtybnmKAl6uqatTM1CoQzhUdJ-1RGppoxa8vKMd2WGBsnl4vxiN2idpYRbkIC5oz8CLpFWHKMVFQPIJQn06ekHr0frFo"/>
+<div class="absolute inset-0 bg-black/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<div class="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30">
+<span class="material-symbols-outlined text-white text-4xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+</div>
+<div class="mt-8 flex items-center gap-6">
+<div class="flex -space-x-4">
+<div class="w-12 h-12 rounded-full border-4 border-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a smiling sign language instructor with a warm friendly expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDC7sc8eYMppTlm0KQ1ezHwybUygvARZ31fvXz9-B9fVhU7KNE_uWUkpmylOlopCvfZEidPbZgjEIvsL8sMm4FiKBSSXvasI-u_xnbzBM2MG0lAO5PRppIjyzC64qp7C1zr4Ozse4_tOkqwcHxzIuRdYJTvbIPz4mkWEu5QFhQ0jbu8aYAm4bDlFqlHzQaXkgLhSTemQDLcdiSY-KJ7U7dgq4IiuC5O-dRY09HFEA7YIuk-3iRzz6BdonMnhF4iRd3OrptskXG4jkQ"/>
+</div>
+<div class="w-12 h-12 rounded-full border-4 border-surface-container-low overflow-hidden bg-primary flex items-center justify-center text-on-primary text-xs font-bold">
+                                +12
+                            </div>
+</div>
+<p class="text-sm text-on-surface-variant font-medium">1,240 students learned this sign today</p>
+</div>
+<!-- Floating Badge -->
+<div class="absolute top-1/2 -right-4 translate-y-24 rotate-3 bg-tertiary-container p-6 rounded-lg shadow-xl max-w-[200px]">
+<span class="material-symbols-outlined text-tertiary mb-2">auto_awesome</span>
+<p class="text-sm font-semibold text-on-tertiary-container">Pro Tip: Keep your palm facing outwards and move your hand from your forehead.</p>
+</div>
+</div>
+<!-- Abstract Decorative Element -->
+<div class="absolute -bottom-10 -left-10 w-40 h-40 sunset-gradient rounded-full opacity-10 blur-3xl -z-10"></div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Suppressed for focused onboarding journey as per mandate) -->
+</body></html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#fef8f1",
+                    "on-tertiary-fixed-variant": "#6a622a",
+                    "surface-container-low": "#f9f3ea",
+                    "primary-dim": "#834100",
+                    "on-background": "#35322a",
+                    "error": "#a73b21",
+                    "inverse-on-surface": "#a19c96",
+                    "surface-container": "#f4ede3",
+                    "surface-container-high": "#eee7dd",
+                    "surface-container-highest": "#e9e2d6",
+                    "surface-tint": "#954b00",
+                    "surface-dim": "#e0d9ce",
+                    "tertiary-container": "#f9eca6",
+                    "error-container": "#fd795a",
+                    "secondary-dim": "#684d3b",
+                    "on-surface": "#35322a",
+                    "tertiary-fixed": "#f9eca6",
+                    "primary": "#954b00",
+                    "on-tertiary-fixed": "#4d450f",
+                    "on-primary-fixed-variant": "#502500",
+                    "error-dim": "#791903",
+                    "surface-bright": "#fef8f1",
+                    "tertiary-dim": "#5c541d",
+                    "on-secondary": "#fff7f4",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#e9e2d6",
+                    "tertiary": "#686028",
+                    "secondary": "#755946",
+                    "inverse-surface": "#0f0e0a",
+                    "on-error-container": "#6e1400",
+                    "outline": "#7f7a71",
+                    "tertiary-fixed-dim": "#eade99",
+                    "primary-fixed-dim": "#e57d21",
+                    "on-primary": "#fff7f4",
+                    "on-secondary-fixed": "#533a28",
+                    "on-error": "#fff7f6",
+                    "on-tertiary": "#fff9e7",
+                    "on-surface-variant": "#635f56",
+                    "primary-fixed": "#f68a2f",
+                    "outline-variant": "#b7b1a7",
+                    "on-primary-container": "#421e00",
+                    "on-tertiary-container": "#605721",
+                    "on-secondary-fixed-variant": "#725642",
+                    "on-secondary-container": "#674c39",
+                    "secondary-fixed": "#ffdcc5",
+                    "secondary-fixed-dim": "#f3cdb5",
+                    "on-primary-fixed": "#0f0400",
+                    "secondary-container": "#ffdcc5",
+                    "primary-container": "#f68a2f",
+                    "inverse-primary": "#f68a2f",
+                    "background": "#fef8f1"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Be Vietnam Pro"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Be Vietnam Pro"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-primary-gradient {
+            background: linear-gradient(135deg, #954b00 0%, #f68a2f 100%);
+        }
+        .glass-nav {
+            background: rgba(254, 248, 241, 0.7);
+            backdrop-filter: blur(24px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- Top Navigation (Contextually Suppressed labels, simplified for onboarding) -->
+<header class="w-full top-0 sticky bg-[#fef8f1] dark:bg-slate-950 flex justify-between items-center px-6 py-4 max-w-7xl mx-auto z-50">
+<button class="text-[#954b00] dark:text-[#f68a2f] active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-['Be_Vietnam_Pro'] text-xl font-bold tracking-tight text-[#954b00] dark:text-[#f68a2f]">SignPath</h1>
+<button class="font-['Be_Vietnam_Pro'] text-[#954b00] dark:text-[#f68a2f] font-semibold hover:opacity-80 transition-opacity">Skip</button>
+</header>
+<main class="max-w-4xl mx-auto px-6 pt-12 pb-32">
+<!-- Header Section -->
+<section class="mb-12">
+<span class="text-primary font-semibold label-md tracking-widest uppercase mb-4 block">Step 03 — Commitment</span>
+<h2 class="text-5xl md:text-6xl font-bold text-primary tracking-tight leading-tight mt-4 max-w-2xl">
+                Set your daily goal.
+            </h2>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left Side: Goal Selection Grid (2x2) -->
+<div class="lg:col-span-7 grid grid-cols-2 gap-4">
+<!-- Casual -->
+<div class="bg-surface-container-low p-8 rounded-lg flex flex-col justify-between aspect-square hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary">coffee</span>
+</div>
+<div>
+<h3 class="text-xl font-semibold mb-1">Casual</h3>
+<p class="text-on-surface-variant text-sm">5 mins / day</p>
+</div>
+</div>
+<!-- Regular (Selected) -->
+<div class="bg-primary-gradient p-8 rounded-lg flex flex-col justify-between aspect-square shadow-[0_12px_32px_-4px_rgba(149,75,0,0.15)] active:scale-95 transition-transform">
+<div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<div>
+<h3 class="text-xl font-semibold text-on-primary mb-1">Regular</h3>
+<p class="text-on-primary/80 text-sm">15 mins / day</p>
+</div>
+</div>
+<!-- Serious -->
+<div class="bg-surface-container-low p-8 rounded-lg flex flex-col justify-between aspect-square hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary">school</span>
+</div>
+<div>
+<h3 class="text-xl font-semibold mb-1">Serious</h3>
+<p class="text-on-surface-variant text-sm">30 mins / day</p>
+</div>
+</div>
+<!-- Intense -->
+<div class="bg-surface-container-low p-8 rounded-lg flex flex-col justify-between aspect-square hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary">local_fire_department</span>
+</div>
+<div>
+<h3 class="text-xl font-semibold mb-1">Intense</h3>
+<p class="text-on-surface-variant text-sm">60 mins / day</p>
+</div>
+</div>
+</div>
+<!-- Right Side: Sign Preview (Asymmetric Placement) -->
+<div class="lg:col-span-5 lg:mt-16">
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden border border-[#b7b1a7]/10 shadow-[0_20px_50px_rgba(149,75,0,0.05)]">
+<div class="p-6">
+<span class="text-tertiary font-bold text-xs tracking-widest uppercase block mb-2">Your first sign</span>
+<div class="flex items-center justify-between">
+<h4 class="text-2xl font-semibold">Chào (Hello)</h4>
+<div class="flex gap-2">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-semibold">Basic</span>
+</div>
+</div>
+</div>
+<div class="relative group">
+<img class="w-full aspect-[4/3] object-cover" data-alt="Close-up of friendly teacher hands demonstrating 'Hello' sign in sign language with warm golden afternoon studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYu_nT9tslkB98GnvRERy6pQrFUMnjQa55Vtg7wpLycxnjC99LnI1R-cxZeitMvyVwVlUH1TuV7UrUod66wheRYiq77fEII-v8_3HsTVrOyo21w2VsB9FH5bqRcna7gnxY5KoL4BW4vBMtSur-X2Znqjw9R5hNzzfPL0i2z1kHS3EJQwmGQyiFaUSojGZB0gdHTSAvpQn_xG5BYFiVwJwD0-csDP4bbwQGIiFtKsv6o5B0Pu4btLrzlPJdPcAUeibGup2Z19Suf5k"/>
+<div class="absolute inset-0 bg-black/10 flex items-center justify-center opacity-100 group-hover:bg-black/20 transition-all">
+<button class="w-16 h-16 rounded-full bg-white/90 text-primary flex items-center justify-center shadow-lg active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+</div>
+<div class="p-6 bg-surface-container-low/50">
+<div class="flex items-center gap-3">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Smiling female student avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDI_Q-0lS8m0Hf6vyuxNuiLKyLpqOYsUTxDlBPJK7PLhriRSNNVnAp-Gd0xa6wbE81DZumYZxY1s418UXixYb-kAfUOFJg3gDsGniKh-wH7jT9MXd3IAbb6m4QeDIaCzn3p3BnZw_75XxD_o6hDzZ6Z3SF6bpKB49juhCiYrNPK4UMNzZcVjqZ1u_gf3_VxLggi7_ApLYo9sMeoatNK0-qlkDfVRd8Hp6UrRNi7Tu_SjPQU8Eo_wO91R-MoJoG43GcCf28BETJ0uyE"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-surface overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Smiling male student avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYx2VZj6Ys0nySWqJDk39gaFbY3m40rBv_AIGXRWR7St4-iN0nDcbuaQ7vkUHhtv_zoeDc_ols1G3c04m0rFSrw5aZVO5dUZG2rhz0AhWIoW79bAEvH0qSvmewe6-CPEfTv5thuDksbkmtkygiVnfXkqX7xwCmrZnPhBkuxkG4taMe8tg12XL8gJY8h1r4aXiICfy_07DkpB7LehrvZCL4boEc-1Gu21Ki7KqObufGDDb_4EQuANl3Nd_yksVAau37bwL01hakTQk"/>
+</div>
+</div>
+<p class="text-sm text-on-surface-variant">Join <span class="font-bold text-on-surface">1,240 learners</span> starting today.</p>
+</div>
+</div>
+</div>
+<!-- Descriptive Tip (Floating Style) -->
+<div class="mt-8 p-6 bg-tertiary-container rounded-lg relative overflow-hidden">
+<div class="relative z-10 flex gap-4">
+<span class="material-symbols-outlined text-on-tertiary-container">lightbulb</span>
+<p class="text-sm text-on-tertiary-container leading-relaxed">
+<strong>Why "Regular"?</strong> Research shows 15 minutes is the sweet spot for muscle memory in sign language.
+                        </p>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-8xl" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Action -->
+<footer class="fixed bottom-0 left-0 w-full bg-surface/80 backdrop-blur-xl px-6 py-8 z-50">
+<div class="max-w-4xl mx-auto">
+<button class="w-full bg-primary-gradient py-5 rounded-xl text-on-primary text-xl font-bold flex items-center justify-center gap-3 shadow-[0_12px_32px_-4px_rgba(149,75,0,0.25)] hover:scale-[1.02] active:scale-95 transition-all">
+                Start learning
+                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</footer>
+</body></html>

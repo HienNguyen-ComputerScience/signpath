@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SignPath - Study Path</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#6a622a",
+                    "surface-dim": "#e0d9ce",
+                    "error-container": "#fd795a",
+                    "surface-container-low": "#f9f3ea",
+                    "secondary-container": "#ffdcc5",
+                    "tertiary-container": "#f9eca6",
+                    "error-dim": "#791903",
+                    "primary-dim": "#834100",
+                    "surface-container-highest": "#e9e2d6",
+                    "primary-container": "#f68a2f",
+                    "on-error": "#fff7f6",
+                    "outline": "#7f7a71",
+                    "tertiary-fixed-dim": "#eade99",
+                    "outline-variant": "#b7b1a7",
+                    "secondary-fixed-dim": "#f3cdb5",
+                    "on-secondary": "#fff7f4",
+                    "on-tertiary": "#fff9e7",
+                    "on-primary-fixed-variant": "#502500",
+                    "surface": "#fef8f1",
+                    "tertiary": "#686028",
+                    "secondary": "#755946",
+                    "on-primary-fixed": "#0f0400",
+                    "on-primary": "#fff7f4",
+                    "surface-variant": "#e9e2d6",
+                    "inverse-on-surface": "#a19c96",
+                    "on-secondary-container": "#674c39",
+                    "on-primary-container": "#421e00",
+                    "on-secondary-fixed-variant": "#725642",
+                    "surface-bright": "#fef8f1",
+                    "secondary-fixed": "#ffdcc5",
+                    "surface-container-high": "#eee7dd",
+                    "tertiary-dim": "#5c541d",
+                    "secondary-dim": "#684d3b",
+                    "surface-tint": "#954b00",
+                    "primary-fixed": "#f68a2f",
+                    "tertiary-fixed": "#f9eca6",
+                    "primary": "#954b00",
+                    "on-surface-variant": "#635f56",
+                    "on-background": "#35322a",
+                    "on-tertiary-container": "#605721",
+                    "primary-fixed-dim": "#e57d21",
+                    "surface-container": "#f4ede3",
+                    "inverse-surface": "#0f0e0a",
+                    "on-tertiary-fixed": "#4d450f",
+                    "on-surface": "#35322a",
+                    "background": "#fef8f1",
+                    "on-error-container": "#6e1400",
+                    "on-secondary-fixed": "#533a28",
+                    "error": "#a73b21",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#f68a2f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Be Vietnam Pro"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Be Vietnam Pro"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .path-curve {
+            stroke-dasharray: 8 8;
+        }
+        .active-glow {
+            box-shadow: 0 0 30px 10px rgba(246, 138, 47, 0.2);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface selection:bg-primary-container/30">
+<!-- Top Navigation Anchor -->
+<header class="sticky top-0 z-50 bg-[#fef8f1] dark:bg-stone-950 flex justify-between items-center w-full px-8 max-w-screen-xl mx-auto py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden">
+<img alt="Student Profile" class="w-full h-full object-cover" data-alt="Close up portrait of a young student smiling warmly in soft sunlight with educational book in hand" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB38ZTBCTtGenE05EVp02Bknh9GiL1_fnmlwYlrRmAGliAA1pGYTXRcmCEgi_HAJvbXKDtzmhjva84O32GZSbvMrzyzzUear7tnLG657aFpAvMBLcosI6d2ANaP_z0DOKABowAXEl5AH8LWx6ffJRoiLcn46OPjxsAqa6kewFLyjUsZLLy2z3JNBem8aAvuEyQKqboajXBwiKLq2elAJ7-ruNuoC74WZkbLzkq83QeG32ADJruIeGD_6ijkkHBgrikvgfEOoFobevQ"/>
+</div>
+<span class="text-2xl font-bold tracking-tight text-[#954b00] dark:text-orange-500 font-headline">SignPath</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-8">
+<a class="text-[#954b00] font-bold font-be-vietnam-pro headline-md hover:opacity-80 transition-opacity" href="#">Learn</a>
+<a class="text-[#35322a] opacity-70 font-be-vietnam-pro headline-md hover:opacity-80 transition-opacity" href="#">Review</a>
+<a class="text-[#35322a] opacity-70 font-be-vietnam-pro headline-md hover:opacity-80 transition-opacity" href="#">Dictionary</a>
+</div>
+<button class="active:scale-95 duration-200 text-[#954b00] dark:text-orange-400">
+<span class="material-symbols-outlined text-2xl" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="text-sm font-bold ml-1">12</span>
+</button>
+</div>
+</header>
+<main class="max-w-xl mx-auto px-6 pb-40 pt-12">
+<!-- Hero Section -->
+<section class="mb-16">
+<h1 class="text-5xl font-bold text-primary font-headline leading-tight tracking-tight mt-16 mb-4">Master the <br/>Silence.</h1>
+<p class="text-on-surface-variant text-lg max-w-[280px]">Continue your journey through VSL with tactile focus.</p>
+</section>
+<!-- Vertical Learning Path -->
+<div class="relative flex flex-col items-center">
+<!-- Subtle Path Line SVG -->
+<svg class="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-full pointer-events-none opacity-20" fill="none" viewbox="0 0 100 800">
+<path class="path-curve" d="M50 0 C 80 100, 20 200, 50 300 C 80 400, 20 500, 50 600 C 80 700, 20 800, 50 900" stroke="url(#gradient-path)" stroke-linecap="round" stroke-width="4"></path>
+<defs>
+<lineargradient id="gradient-path" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#954b00"></stop>
+<stop offset="100%" stop-color="#f68a2f"></stop>
+</lineargradient>
+</defs>
+</svg>
+<!-- Unit Nodes -->
+<!-- Unit 1: Completed -->
+<div class="relative z-10 w-full flex justify-start mb-24 -ml-12 md:-ml-24">
+<div class="group flex flex-col items-center">
+<div class="w-24 h-24 rounded-full bg-tertiary-container flex items-center justify-center border-4 border-surface shadow-sm transition-transform duration-300 group-hover:scale-110">
+<span class="material-symbols-outlined text-tertiary text-4xl" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<span class="mt-4 font-bold text-on-surface-variant label-md">Greetings</span>
+</div>
+</div>
+<!-- Unit 2: Active -->
+<div class="relative z-10 w-full flex justify-end mb-24 -mr-12 md:-mr-24">
+<div class="group flex flex-col items-center">
+<div class="relative">
+<div class="absolute inset-0 bg-primary-container blur-2xl opacity-20 rounded-full"></div>
+<button class="relative w-32 h-32 rounded-full bg-gradient-to-tr from-primary to-primary-container active-glow flex items-center justify-center border-8 border-surface-container-low transition-all duration-300 active:scale-90">
+<span class="material-symbols-outlined text-white text-5xl" data-icon="school" style="font-variation-settings: 'FILL' 1;">school</span>
+</button>
+<div class="absolute -top-4 -right-4 bg-tertiary text-on-tertiary text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">Current</div>
+</div>
+<span class="mt-4 font-bold text-primary text-xl font-headline">Yes / No</span>
+</div>
+</div>
+<!-- Unit 3: Locked -->
+<div class="relative z-10 w-full flex justify-start mb-24 -ml-8 md:-ml-16">
+<div class="flex flex-col items-center opacity-40">
+<div class="w-24 h-24 rounded-full bg-surface-container-high flex items-center justify-center border-4 border-surface grayscale">
+<span class="material-symbols-outlined text-on-surface-variant text-4xl" data-icon="lock">lock</span>
+</div>
+<span class="mt-4 font-semibold text-on-surface-variant label-md">Family</span>
+</div>
+</div>
+<!-- Unit 4: Locked -->
+<div class="relative z-10 w-full flex justify-center mb-32">
+<div class="flex flex-col items-center opacity-30">
+<div class="w-20 h-20 rounded-full bg-surface-container-high flex items-center justify-center border-4 border-surface grayscale">
+<span class="material-symbols-outlined text-on-surface-variant text-3xl" data-icon="explore">explore</span>
+</div>
+<span class="mt-4 font-semibold text-on-surface-variant label-md">Numbers</span>
+</div>
+</div>
+</div>
+<!-- Weekend Challenge Card -->
+<section class="mt-8 mb-20">
+<div class="bg-surface-container-lowest rounded-xl p-1 shadow-[0_12px_32px_-4px_rgba(149,75,0,0.08)] overflow-hidden relative">
+<div class="flex flex-col md:flex-row bg-surface-container-low rounded-[2.8rem] overflow-hidden">
+<div class="w-full md:w-2/5 h-48 md:h-auto overflow-hidden">
+<img alt="VSL Challenge" class="w-full h-full object-cover" data-alt="Hands performing graceful sign language movements against a blurred warm golden background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuASRA86oHoRlhasp2LCOVRNY4guIT-hsl_5IAfbZufjgf_oJMKZCFYilayey-7Xl8XKFd0ghdXXQEiQ-QhazvG8LrZ83vbngIkt6lRTJG7yUOVoR_ZLagfpHjFykrJxHVtRw6MJS2oLYey93m38KWNyn5wHnzo_T7wVqMyCgzJDIBv6KPyirXAkFpr7yTGlR18nXdn_-GBC21YI0HtkBUd5KoEyD9TEPoEpwz-y6WJzcIqNT3wddUHR-I158GJVZqilpbyrytEqC74"/>
+</div>
+<div class="flex-1 p-8 md:p-10">
+<div class="flex items-center gap-2 mb-4">
+<span class="bg-error text-on-error text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-tighter">Limited Time</span>
+<span class="text-on-tertiary-fixed-variant font-bold text-xs">Weekend Challenge</span>
+</div>
+<h3 class="text-3xl font-bold text-on-surface font-headline mb-3 leading-tight">The Finger Spelling Sprint</h3>
+<p class="text-on-surface-variant body-lg mb-8 leading-relaxed">Boost your speed by 40% with our timed recognition exercises. Earn the Sunburst Badge.</p>
+<button class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold py-4 rounded-xl text-lg active:scale-95 transition-transform">
+                            Start Challenge
+                        </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-[#ffffff]/70 dark:bg-stone-900/70 backdrop-blur-xl rounded-t-[3rem] shadow-[0_-12px_32px_-4px_rgba(149,75,0,0.08)]">
+<!-- Active Tab: Learn -->
+<a class="flex flex-col items-center justify-center bg-gradient-to-tr from-[#954b00] to-[#f68a2f] text-white rounded-full px-6 py-2 active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="school" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="font-be-vietnam-pro label-md font-semibold">Learn</span>
+</a>
+<!-- Inactive Tab: Review -->
+<a class="flex flex-col items-center justify-center text-[#674c39] dark:text-stone-400 px-6 py-2 hover:bg-[#f9f3ea] dark:hover:bg-stone-800 rounded-full transition-colors active:scale-90 duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-be-vietnam-pro label-md font-semibold">Review</span>
+</a>
+<!-- Inactive Tab: Dictionary -->
+<a class="flex flex-col items-center justify-center text-[#674c39] dark:text-stone-400 px-6 py-2 hover:bg-[#f9f3ea] dark:hover:bg-stone-800 rounded-full transition-colors active:scale-90 duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-be-vietnam-pro label-md font-semibold">Dictionary</span>
+</a>
+<!-- Inactive Tab: Profile -->
+<a class="flex flex-col items-center justify-center text-[#674c39] dark:text-stone-400 px-6 py-2 hover:bg-[#f9f3ea] dark:hover:bg-stone-800 rounded-full transition-colors active:scale-90 duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-be-vietnam-pro label-md font-semibold">Profile</span>
+</a>
+</nav>
+<!-- Floating Action Button Contextual Check (Home/Learn only) -->
+<div class="fixed right-6 bottom-28 z-40 hidden md:block">
+<button class="bg-primary-container text-on-primary-container p-5 rounded-full shadow-lg active:scale-95 duration-200 group">
+<span class="material-symbols-outlined text-3xl group-hover:rotate-12 transition-transform" data-icon="add">add</span>
+</button>
+</div>
+</body></html>

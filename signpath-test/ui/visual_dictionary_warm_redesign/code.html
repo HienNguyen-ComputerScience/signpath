@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#6a622a",
+                    "surface-dim": "#e0d9ce",
+                    "error-container": "#fd795a",
+                    "surface-container-low": "#f9f3ea",
+                    "secondary-container": "#ffdcc5",
+                    "tertiary-container": "#f9eca6",
+                    "error-dim": "#791903",
+                    "primary-dim": "#834100",
+                    "surface-container-highest": "#e9e2d6",
+                    "primary-container": "#f68a2f",
+                    "on-error": "#fff7f6",
+                    "outline": "#7f7a71",
+                    "tertiary-fixed-dim": "#eade99",
+                    "outline-variant": "#b7b1a7",
+                    "secondary-fixed-dim": "#f3cdb5",
+                    "on-secondary": "#fff7f4",
+                    "on-tertiary": "#fff9e7",
+                    "on-primary-fixed-variant": "#502500",
+                    "surface": "#fef8f1",
+                    "tertiary": "#686028",
+                    "secondary": "#755946",
+                    "on-primary-fixed": "#0f0400",
+                    "on-primary": "#fff7f4",
+                    "surface-variant": "#e9e2d6",
+                    "inverse-on-surface": "#a19c96",
+                    "on-secondary-container": "#674c39",
+                    "on-primary-container": "#421e00",
+                    "on-secondary-fixed-variant": "#725642",
+                    "surface-bright": "#fef8f1",
+                    "secondary-fixed": "#ffdcc5",
+                    "surface-container-high": "#eee7dd",
+                    "tertiary-dim": "#5c541d",
+                    "secondary-dim": "#684d3b",
+                    "surface-tint": "#954b00",
+                    "primary-fixed": "#f68a2f",
+                    "tertiary-fixed": "#f9eca6",
+                    "primary": "#954b00",
+                    "on-surface-variant": "#635f56",
+                    "on-background": "#35322a",
+                    "on-tertiary-container": "#605721",
+                    "primary-fixed-dim": "#e57d21",
+                    "surface-container": "#f4ede3",
+                    "inverse-surface": "#0f0e0a",
+                    "on-tertiary-fixed": "#4d450f",
+                    "on-surface": "#35322a",
+                    "background": "#fef8f1",
+                    "on-error-container": "#6e1400",
+                    "on-secondary-fixed": "#533a28",
+                    "error": "#a73b21",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#f68a2f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Be Vietnam Pro"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Be Vietnam Pro"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(24px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-50 bg-[#fef8f1] dark:bg-stone-950 w-full px-6 py-4">
+<div class="flex justify-between items-center w-full px-4 max-w-screen-xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden">
+<img alt="Student Profile" class="w-full h-full object-cover" data-alt="professional headshot of a smiling young woman with warm lighting and soft background focus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEL-r14BQf1UshigI5M_X7PeQ0OA9DXzonq7K0dc8gvbGjwYP5sTouN4X0T7GPq4ijvzspq94EbQ-UiIIeOgAHG9455n13zETRYGbB5XrDjJJRLoZlyzvcX443_MmN4ShiABXzQHP66ql6wY2kN51VbKtMLG1DZ9-6K7nmeIVWUmor0SJIKe4A8hUiRpC7a_z2Kq5xtEC1v5e5JlMH9xwv3wV7b258BhLkttvUlhDUX_IAWlD-HyjiqB6a42IjvPyeMIQbVizEA18"/>
+</div>
+<span class="font-be-vietnam-pro headline-md font-semibold text-[#35322a] dark:text-stone-100">SignPath</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#954b00] dark:text-orange-400 hover:opacity-80 transition-opacity cursor-pointer">local_fire_department</span>
+</div>
+</div>
+</header>
+<main class="max-w-screen-xl mx-auto px-6 pt-8 space-y-10">
+<!-- Search & Filter Section -->
+<section class="space-y-6">
+<div class="relative group">
+<div class="absolute inset-y-0 left-6 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">search</span>
+</div>
+<input class="w-full pl-14 pr-6 py-5 bg-surface-container-lowest rounded-xl border-none ring-1 ring-outline-variant/15 focus:ring-2 focus:ring-primary text-body-lg shadow-sm transition-all outline-none" placeholder="Search signs, phrases, or topics..." type="text"/>
+</div>
+<div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+<button class="px-6 py-2.5 bg-gradient-to-tr from-primary to-primary-container text-on-primary rounded-full font-semibold text-label-md whitespace-nowrap shadow-sm">All</button>
+<button class="px-6 py-2.5 bg-surface-container-high text-on-surface-variant rounded-full font-semibold text-label-md whitespace-nowrap hover:bg-surface-container-highest transition-colors">Greetings</button>
+<button class="px-6 py-2.5 bg-surface-container-high text-on-surface-variant rounded-full font-semibold text-label-md whitespace-nowrap hover:bg-surface-container-highest transition-colors">Yes/No</button>
+<button class="px-6 py-2.5 bg-surface-container-high text-on-surface-variant rounded-full font-semibold text-label-md whitespace-nowrap hover:bg-surface-container-highest transition-colors">Numbers</button>
+<button class="px-6 py-2.5 bg-surface-container-high text-on-surface-variant rounded-full font-semibold text-label-md whitespace-nowrap hover:bg-surface-container-highest transition-colors">Family</button>
+</div>
+</section>
+<!-- Dictionary Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1: Cảm Ơn -->
+<div class="group bg-surface-container-lowest p-5 rounded-lg transition-all hover:translate-y-[-4px]">
+<div class="relative aspect-video rounded-lg overflow-hidden mb-4">
+<img alt="Sign for Thank You" class="w-full h-full object-cover" data-alt="close-up of expressive hands performing a graceful sign language gesture in warm sunlight with soft focus greenery background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBx1jC2ivElxU7imdAJ2wzPyNKbw1A8CUX4GjA2BDyxho0GLqNClDHjkSP_5tk6Y9cin605klBf4u55JcI78BtAJOfxCEX_BJQytjG8Jh1RdjKiWug0DXqikhuxfKravRqjIC6-l5-yH3USzVXl4imfcOLf5mCpcn4_n-Yrs7MrsUftO61KjgwclCIq3kBVJovTQ2pltj9sReXiypTykl3eKxKK0a23Sj4Hc7v6iqYiZVwWv71b5a_lYJW2XpEjyJ5TFqPfbcScDpg"/>
+<div class="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1.5">
+<span class="material-symbols-outlined text-xs text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-md font-bold text-on-surface">Mastered</span>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-title-lg font-semibold text-on-surface">Cảm Ơn</h3>
+<p class="text-label-md text-on-surface-variant">Thank You</p>
+</div>
+<span class="px-3 py-1 bg-tertiary-container text-on-tertiary-container rounded-full text-[10px] font-bold tracking-wider uppercase">Greetings</span>
+</div>
+<div class="pt-4 flex items-center justify-between">
+<div class="flex -space-x-1">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<button class="text-primary font-bold text-label-md flex items-center gap-1 hover:underline">
+                            Practice <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2: Xin Lỗi -->
+<div class="group bg-surface-container-lowest p-5 rounded-lg transition-all hover:translate-y-[-4px]">
+<div class="relative aspect-video rounded-lg overflow-hidden mb-4">
+<img alt="Sign for Sorry" class="w-full h-full object-cover" data-alt="tender gesture of a hand placed over the heart conveying sincerity and apology in a warm cozy indoor setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTLl9GrCjyANnFUmoCYomLGm-n17YR8gp3ePkvX76UCJVX_V6MRGVhqz4BEn-1Ce8yXXGjcW9tOEjtGS1cCn2iD5zWTnJBGtn6Y8Uxs1gV3ZgsZO0hDwmtFh4agT9sv66t1I8JcTUeAD6B1XsOboYJgWIAxRuLvW6FZ3B1wy2vV-JUJAUDrnllXIcM3J4Q2Klye2ZVJAkjoC0T6bmqnoJiQMvVznZnTt_-qJgsfJA1MTeKe2Y5qTsuz1oMUHhXF55z73wXJlKBFFA"/>
+<div class="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1.5">
+<span class="material-symbols-outlined text-xs text-primary-container" style="font-variation-settings: 'FILL' 1;">star_half</span>
+<span class="text-label-md font-bold text-on-surface">Learning</span>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-title-lg font-semibold text-on-surface">Xin Lỗi</h3>
+<p class="text-label-md text-on-surface-variant">Sorry</p>
+</div>
+<span class="px-3 py-1 bg-tertiary-container text-on-tertiary-container rounded-full text-[10px] font-bold tracking-wider uppercase">Greetings</span>
+</div>
+<div class="pt-4 flex items-center justify-between">
+<div class="flex -space-x-1">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+</div>
+<button class="text-primary font-bold text-label-md flex items-center gap-1 hover:underline">
+                            Practice <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3: Muốn -->
+<div class="group bg-surface-container-lowest p-5 rounded-lg transition-all hover:translate-y-[-4px]">
+<div class="relative aspect-video rounded-lg overflow-hidden mb-4">
+<img alt="Sign for Want" class="w-full h-full object-cover" data-alt="dynamic hand motion illustrating a desire or pull towards the speaker with focused lighting on the hands and soft shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvvSzkuGV_Dg1Otzl08utPquT3BWDm5birIrnvE_iGpjmQucsPr97dg1MKL05YXducFGgZIhTQqFpfB5PGRD8aNb3e2XdhrCLVKroKcrXDE1T7xXrGRWfASmcf3V5F4TovtTcMR9W602Ekbn5-6rDi50U_ol66yZHaQvXWwzKjMPsjFS_--tC7-d_pXzTrNZlIrD-gQCAB0QrkuY4M3dNF6rKHhm2VLY4PFq8GzY27HYp6GyDJfR14eCqY03EYkJ5kIl-VAkG0gh8"/>
+<div class="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1.5">
+<span class="material-symbols-outlined text-xs text-outline" style="font-variation-settings: 'FILL' 0;">star</span>
+<span class="text-label-md font-bold text-on-surface">New</span>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-title-lg font-semibold text-on-surface">Muốn</h3>
+<p class="text-label-md text-on-surface-variant">Want</p>
+</div>
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold tracking-wider uppercase">Verbs</span>
+</div>
+<div class="pt-4 flex items-center justify-between">
+<div class="flex -space-x-1">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+</div>
+<button class="text-primary font-bold text-label-md flex items-center gap-1 hover:underline">
+                            Practice <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Daily Challenge Card -->
+<section class="mt-12">
+<div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#954b00] to-[#f68a2f] p-8 text-on-primary">
+<div class="relative z-10 grid md:grid-cols-2 gap-8 items-center">
+<div class="space-y-4">
+<span class="px-4 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-label-md font-bold inline-block">Daily Challenge</span>
+<h2 class="text-display-lg leading-tight font-bold">Refine Your "Greetings"</h2>
+<p class="text-body-lg opacity-90 max-w-sm">Master the 5 essential greetings used in everyday Vietnamese Sign Language conversations. Earn 50 bonus points!</p>
+<button class="mt-6 px-10 py-4 bg-surface-container-lowest text-primary rounded-xl font-bold text-title-lg hover:scale-105 active:scale-95 transition-all shadow-lg">Start Practicing</button>
+</div>
+<div class="hidden md:flex justify-end">
+<div class="w-64 h-64 bg-white/10 rounded-full flex items-center justify-center border border-white/20">
+<span class="material-symbols-outlined text-[8rem] text-white/40" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+</div>
+</div>
+</div>
+<!-- Ornamental background circles -->
+<div class="absolute -bottom-20 -right-20 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
+<div class="absolute -top-20 -left-20 w-60 h-60 bg-white/5 rounded-full blur-2xl"></div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-[#ffffff]/70 dark:bg-stone-900/70 backdrop-blur-xl rounded-t-[3rem] shadow-[0_-12px_32px_-4px_rgba(149,75,0,0.08)]">
+<a class="flex flex-col items-center justify-center text-[#674c39] dark:text-stone-400 px-6 py-2 hover:bg-[#f9f3ea] dark:hover:bg-stone-800 rounded-full transition-colors active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-be-vietnam-pro label-md font-semibold">Learn</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#674c39] dark:text-stone-400 px-6 py-2 hover:bg-[#f9f3ea] dark:hover:bg-stone-800 rounded-full transition-colors active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-be-vietnam-pro label-md font-semibold">Review</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-gradient-to-tr from-[#954b00] to-[#f68a2f] text-white rounded-full px-6 py-2 active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-be-vietnam-pro label-md font-semibold">Dictionary</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#674c39] dark:text-stone-400 px-6 py-2 hover:bg-[#f9f3ea] dark:hover:bg-stone-800 rounded-full transition-colors active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-be-vietnam-pro label-md font-semibold">Profile</span>
+</a>
+</nav>
+</body></html>
