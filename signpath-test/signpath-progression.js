@@ -76,6 +76,38 @@ const MASTERY_MASTERED_ATTEMPTS = 5
 const LESSON_UNLOCK_THRESHOLD = 0.8
 const DEDUPE_RING_SIZE = 50
 const DEFAULT_DAILY_GOAL_XP = 50
+// Rolling per-sign history retained for coach context (trend + previousBest).
+// Capped so localStorage doesn't bloat with long-term usage.
+const SIGN_HISTORY_CAP = 10
+// A gap of this length without a recorded attempt starts a new session for
+// the purposes of fatigue/attempts-this-session tracking.
+const SESSION_IDLE_RESET_MS = 30 * 60 * 1000
+
+// Hardcoded category tags for a representative subset of signs. Used to
+// detect a learner's weak/strong category. Unknown signs → null (skipped).
+const SIGN_CATEGORY_MAP = {
+  // dấu chạm mặt — hand contacts face/head
+  'Mẹ': 'dấu chạm mặt', 'Bố': 'dấu chạm mặt', 'Cảm ơn': 'dấu chạm mặt',
+  'Xin lỗi': 'dấu chạm mặt', 'Ăn': 'dấu chạm mặt', 'Uống': 'dấu chạm mặt',
+  'Nghe': 'dấu chạm mặt', 'Nói': 'dấu chạm mặt', 'Khóc': 'dấu chạm mặt',
+  'Ngủ': 'dấu chạm mặt', 'Suy nghĩ': 'dấu chạm mặt', 'Hát': 'dấu chạm mặt',
+  'Cười': 'dấu chạm mặt',
+  // dấu hai tay — both hands involved
+  'Gia đình': 'dấu hai tay', 'Họ hàng': 'dấu hai tay', 'Bóng đá': 'dấu hai tay',
+  'Bóng rổ': 'dấu hai tay', 'Bơi lội': 'dấu hai tay', 'Cắm trại': 'dấu hai tay',
+  'Trường học': 'dấu hai tay', 'Nhà': 'dấu hai tay', 'Bệnh viện': 'dấu hai tay',
+  'Sách': 'dấu hai tay', 'Laptop': 'dấu hai tay', 'Máy chiếu': 'dấu hai tay',
+  'Thời gian': 'dấu hai tay',
+  // dấu chuyển động — significant trajectory
+  'Xe máy': 'dấu chuyển động', 'Xe đạp': 'dấu chuyển động', 'Ô tô': 'dấu chuyển động',
+  'Xe buýt': 'dấu chuyển động', 'Chạy': 'dấu chuyển động', 'Đi': 'dấu chuyển động',
+  'Máy bay': 'dấu chuyển động', 'Tàu hỏa': 'dấu chuyển động', 'Múa': 'dấu chuyển động',
+  'Nhanh': 'dấu chuyển động', 'Chậm chạp': 'dấu chuyển động',
+  // dấu tĩnh — static / minimal movement
+  'Có': 'dấu tĩnh', 'Không': 'dấu tĩnh', 'Một': 'dấu tĩnh', 'Hai': 'dấu tĩnh',
+  'Ba': 'dấu tĩnh', 'Bốn': 'dấu tĩnh', 'Năm': 'dấu tĩnh',
+  'Đúng': 'dấu tĩnh', 'Sai': 'dấu tĩnh',
+}
 
 // ─── Pure helpers ────────────────────────────────────────────────────
 
@@ -119,6 +151,48 @@ function masteryLevel(best, attempts) {
   return 1
 }
 
+// Linear-regression slope over sequential scores, in "points per attempt".
+// Returns 0 for <2 samples.
+function _slope(scores) {
+  const n = scores.length
+  if (n < 2) return 0
+  let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0
+  for (let i = 0; i < n; i++) {
+    sumX += i; sumY += scores[i]
+    sumXY += i * scores[i]; sumXX += i * i
+  }
+  const denom = n * sumXX - sumX * sumX
+  if (!denom) return 0
+  return (n * sumXY - sumX * sumY) / denom
+}
+
+// Categorise the current attempt's place in the user's history with this
+// sign. `combined` is oldest-first and already includes the pending score.
+function _trendFrom(combined, previousBest, pending) {
+  if (combined.length <= 1) return 'first'
+  const last3 = combined.slice(-3).map(h => h.score)
+  const slope = _slope(last3)
+  if (pending != null && previousBest != null && pending > previousBest) return 'improving'
+  if (slope >= 2) return 'improving'
+  if (slope <= -5) return 'declining'
+  // attemptCount >= 3 and neither direction stuck out → plateaued.
+  // For 2 attempts, we have too little signal to call a plateau — treat
+  // the second attempt as a continuation of 'first-ish' via 'plateaued'
+  // so the prompt template still has a valid label.
+  return 'plateaued'
+}
+
+// Compare the first five attempts of this session to the last five. Fatigue
+// triggers if the tail is 10+ points below the head. Needs at least 10
+// samples to fire — short sessions are always called "not fatigued".
+function _fatigueSignalFrom(sessionAttempts) {
+  if (sessionAttempts.length < 10) return false
+  const firstFive = sessionAttempts.slice(0, 5)
+  const lastFive = sessionAttempts.slice(-5)
+  const avg = arr => arr.reduce((s, a) => s + a.score, 0) / arr.length
+  return avg(firstFive) - avg(lastFive) >= 10
+}
+
 // ─── In-memory storage shim (for Node / tests) ───────────────────────
 
 function memoryStorage() {
@@ -145,6 +219,12 @@ class SignPathProgression {
     this._lsKey = opts.lsKey || LS_KEY
 
     this._state = this._loadOrInit()
+
+    // Session-scope tracking lives in memory only. A page refresh or a 30+
+    // minute idle gap starts a fresh session, which is exactly what the
+    // coach means by "this session" (fatigue signal, attempts-this-session).
+    this._sessionAttempts = []   // [{ signKey, score, timestamp }, ...]
+    this._sessionStart = null
   }
 
   // ─── EVENTS ──────────────────────────────────────────────────────────
@@ -171,6 +251,7 @@ class SignPathProgression {
       longestStreak: 0,
       lastActiveDate: null,
       signAttempts: {},               // signKey → int
+      signHistory: {},                // signKey → [{score, timestamp}, ...] (capped)
       signMasteryCache: {},           // signKey → 0|1|2|3
       unlockedLessons: [],            // lesson IDs
       completedLessons: [],           // lesson IDs
@@ -287,6 +368,115 @@ class SignPathProgression {
     }
   }
 
+  /**
+   * Bundle everything the coach needs to write a context-aware sentence.
+   * Safe to call before OR after recordAttempt — pass opts.pendingScore to
+   * fold the not-yet-recorded current attempt into the returned numbers.
+   * Returns the shape documented in the ENRICHED_COACH task: sign / session /
+   * profile. No localStorage writes.
+   *
+   * @param {string} signKey
+   * @param {Object} [opts]
+   * @param {number} [opts.pendingScore] current attempt's score, not yet in history
+   * @param {number} [opts.now] override "now" for deterministic tests
+   */
+  getCoachContext(signKey, opts) {
+    opts = opts || {}
+    const now = typeof opts.now === 'number' ? opts.now : this._now()
+    const pending = (typeof opts.pendingScore === 'number') ? opts.pendingScore : null
+
+    const history = (this._state.signHistory[signKey] || []).slice()
+    const combined = pending != null
+      ? history.concat([{ score: pending, timestamp: now }])
+      : history
+
+    const attemptCount = combined.length
+    const recentScores = combined.slice(-5).map(h => h.score)
+    const previousBest = history.length
+      ? history.reduce((m, h) => h.score > m ? h.score : m, -Infinity)
+      : null
+    const trend = _trendFrom(combined, previousBest, pending)
+
+    let daysSinceLastAttempt = null
+    if (history.length) {
+      const lastTs = history[history.length - 1].timestamp
+      daysSinceLastAttempt = Math.max(0, Math.floor((now - lastTs) / 86400000))
+    }
+
+    // Session-scope. Fold the pending attempt in if caller provided one —
+    // getCoachContext is called from session._finish before recordAttempt.
+    const sessionAttempts = this._sessionAttempts.slice()
+    if (pending != null) {
+      const lastSessTs = sessionAttempts.length
+        ? sessionAttempts[sessionAttempts.length - 1].timestamp
+        : null
+      if (lastSessTs == null || (now - lastSessTs) > SESSION_IDLE_RESET_MS) {
+        sessionAttempts.length = 0  // fresh session, pending starts it
+      }
+      sessionAttempts.push({ signKey, score: pending, timestamp: now })
+    }
+    const attemptsThisSession = sessionAttempts.length
+    const fatigueSignal = _fatigueSignalFrom(sessionAttempts)
+
+    const profile = {
+      level: this.getLevel(),
+      totalSignsMastered: this.getMasteredCount(),
+    }
+    const catStats = this._getCategoryStats(pending != null ? { signKey, score: pending } : null)
+    profile.weakCategory = catStats.weak
+    profile.strongCategory = catStats.strong
+
+    return {
+      sign: {
+        attemptCount,
+        previousBest: (previousBest == null || previousBest === -Infinity) ? null : previousBest,
+        recentScores,
+        trend,
+        daysSinceLastAttempt,
+      },
+      session: {
+        attemptsThisSession,
+        fatigueSignal,
+      },
+      profile,
+    }
+  }
+
+  _getCategoryStats(pendingAttempt) {
+    // Aggregate per-category scores from signHistory + optional pending attempt.
+    const byCategory = {}
+    let overallSum = 0, overallCount = 0
+    const push = (signKey, score) => {
+      const cat = SIGN_CATEGORY_MAP[signKey]
+      if (!cat) return
+      if (!byCategory[cat]) byCategory[cat] = { sum: 0, count: 0 }
+      byCategory[cat].sum += score
+      byCategory[cat].count += 1
+      overallSum += score
+      overallCount += 1
+    }
+    for (const key in this._state.signHistory) {
+      for (const a of this._state.signHistory[key]) push(key, a.score)
+    }
+    if (pendingAttempt) push(pendingAttempt.signKey, pendingAttempt.score)
+
+    if (overallCount < 10) return { weak: null, strong: null }
+    const overallAvg = overallSum / overallCount
+    let minAvg = Infinity, minCat = null
+    let maxAvg = -Infinity, maxCat = null
+    for (const cat in byCategory) {
+      const s = byCategory[cat]
+      if (s.count < 3) continue  // too little signal for this category
+      const avg = s.sum / s.count
+      if (avg < minAvg) { minAvg = avg; minCat = cat }
+      if (avg > maxAvg) { maxAvg = avg; maxCat = cat }
+    }
+    return {
+      weak: (minCat && (overallAvg - minAvg) >= 10) ? minCat : null,
+      strong: (maxCat && (maxAvg - overallAvg) >= 10) ? maxCat : null,
+    }
+  }
+
   // ─── PUBLIC: MUTATE ──────────────────────────────────────────────────
 
   /**
@@ -324,6 +514,23 @@ class SignPathProgression {
 
     // 1. Attempts counter
     this._state.signAttempts[signKey] = (this._state.signAttempts[signKey] || 0) + 1
+
+    // 1b. Per-sign rolling history (for coach trend detection).
+    if (!this._state.signHistory[signKey]) this._state.signHistory[signKey] = []
+    this._state.signHistory[signKey].push({ score, timestamp })
+    if (this._state.signHistory[signKey].length > SIGN_HISTORY_CAP) {
+      this._state.signHistory[signKey].shift()
+    }
+
+    // 1c. In-memory session tracking. Idle gap → fresh session.
+    const lastSessionAttempt = this._sessionAttempts.length
+      ? this._sessionAttempts[this._sessionAttempts.length - 1].timestamp
+      : null
+    if (lastSessionAttempt == null || (timestamp - lastSessionAttempt) > SESSION_IDLE_RESET_MS) {
+      this._sessionStart = timestamp
+      this._sessionAttempts = []
+    }
+    this._sessionAttempts.push({ signKey, score, timestamp })
 
     // 2. XP
     const xpGained = xpForAttempt(score, stars)
@@ -488,7 +695,9 @@ global.SignPathProgression = SignPathProgression
 global.SignPathProgression._internals = {
   xpForAttempt, levelFromXp, nextThresholdForLevel,
   ymdLocal, previousYmd, masteryLevel,
+  _trendFrom, _fatigueSignalFrom, _slope,
   STAR_MULTIPLIER, LESSON_UNLOCK_THRESHOLD,
+  SIGN_CATEGORY_MAP, SESSION_IDLE_RESET_MS, SIGN_HISTORY_CAP,
 }
 
 })(typeof window !== 'undefined' ? window : this);

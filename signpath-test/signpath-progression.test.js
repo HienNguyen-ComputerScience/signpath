@@ -448,6 +448,109 @@ async function run() {
     assert.ok(snap.unlockedLessons.indexOf('greetings') !== -1)
   })
 
+  // ── getCoachContext — shape + trend/fatigue/category logic
+  console.log('getCoachContext')
+
+  await test('first attempt with pendingScore → trend=first, attemptCount=1, previousBest=null', () => {
+    const { prog } = makeProg()
+    const ctx = prog.getCoachContext('Mẹ', { pendingScore: 60 })
+    assert.strictEqual(ctx.sign.attemptCount, 1)
+    assert.strictEqual(ctx.sign.trend, 'first')
+    assert.strictEqual(ctx.sign.previousBest, null)
+    assert.deepStrictEqual(ctx.sign.recentScores, [60])
+    assert.strictEqual(ctx.sign.daysSinceLastAttempt, null)
+  })
+
+  await test('after three improving attempts → trend=improving, previousBest reflects history', () => {
+    const engine = new MockEngine({}, DEFAULT_LESSONS)
+    const { prog } = makeProg({ engine })
+    prog.recordAttempt({ signKey: 'Mẹ', finalScore: 50, stars: 0, attemptId: 'm1' })
+    prog.recordAttempt({ signKey: 'Mẹ', finalScore: 62, stars: 1, attemptId: 'm2' })
+    const ctx = prog.getCoachContext('Mẹ', { pendingScore: 78 })
+    assert.strictEqual(ctx.sign.attemptCount, 3)
+    assert.strictEqual(ctx.sign.previousBest, 62)
+    assert.deepStrictEqual(ctx.sign.recentScores, [50, 62, 78])
+    assert.strictEqual(ctx.sign.trend, 'improving', '78 > 62 previousBest → improving')
+  })
+
+  await test('declining trend: last 3 drop by 5+ per step', () => {
+    const { prog } = makeProg()
+    prog.recordAttempt({ signKey: 'Mẹ', finalScore: 85, stars: 2, attemptId: 'x1' })
+    prog.recordAttempt({ signKey: 'Mẹ', finalScore: 70, stars: 2, attemptId: 'x2' })
+    const ctx = prog.getCoachContext('Mẹ', { pendingScore: 55 })
+    assert.strictEqual(ctx.sign.trend, 'declining')
+  })
+
+  await test('plateaued: three similar attempts with no improvement', () => {
+    const { prog } = makeProg()
+    prog.recordAttempt({ signKey: 'Mẹ', finalScore: 70, stars: 2, attemptId: 'p1' })
+    prog.recordAttempt({ signKey: 'Mẹ', finalScore: 68, stars: 1, attemptId: 'p2' })
+    const ctx = prog.getCoachContext('Mẹ', { pendingScore: 69 })
+    assert.strictEqual(ctx.sign.trend, 'plateaued')
+  })
+
+  await test('session tracking: attemptsThisSession reflects in-memory session, resets after 30+ min gap', () => {
+    const clock = fakeClock('2026-04-17')
+    const { prog } = makeProg({ clock })
+    prog.recordAttempt({ signKey: 'Mẹ', finalScore: 60, stars: 1, attemptId: 's1' })
+    prog.recordAttempt({ signKey: 'Bố', finalScore: 65, stars: 1, attemptId: 's2' })
+    assert.strictEqual(prog.getCoachContext('Mẹ').session.attemptsThisSession, 2)
+    // Jump forward 45 minutes → next attempt starts a fresh session
+    clock.advanceDays(0); const t = clock.now()
+    const laterNow = t + 45 * 60 * 1000
+    prog.recordAttempt({ signKey: 'Mẹ', finalScore: 70, stars: 2, attemptId: 's3', timestamp: laterNow })
+    assert.strictEqual(prog.getCoachContext('Mẹ').session.attemptsThisSession, 1)
+  })
+
+  await test('fatigueSignal: false for short sessions; true when tail avg ≥10 below head', () => {
+    const { prog } = makeProg()
+    // 9 attempts — under the 10-sample floor → always false
+    for (let i = 0; i < 9; i++) {
+      prog.recordAttempt({ signKey: 'Mẹ', finalScore: 80, stars: 2, attemptId: `a${i}` })
+    }
+    assert.strictEqual(prog.getCoachContext('Mẹ').session.fatigueSignal, false)
+    // Now add 5 low-score attempts — head avg 80, tail avg ~50 → fatigue
+    for (let i = 0; i < 5; i++) {
+      prog.recordAttempt({ signKey: 'Mẹ', finalScore: 50, stars: 0, attemptId: `b${i}` })
+    }
+    assert.strictEqual(prog.getCoachContext('Mẹ').session.fatigueSignal, true)
+  })
+
+  await test('profile.weakCategory surfaces when a category averages 10+ below overall', () => {
+    const { prog } = makeProg()
+    // Strong at static signs
+    for (const k of ['Có', 'Không', 'Một', 'Hai']) {
+      prog.recordAttempt({ signKey: k, finalScore: 90, stars: 3, attemptId: `s_${k}` })
+      prog.recordAttempt({ signKey: k, finalScore: 88, stars: 3, attemptId: `s2_${k}` })
+    }
+    // Weak at movement signs
+    for (const k of ['Xe máy', 'Chạy', 'Đi']) {
+      prog.recordAttempt({ signKey: k, finalScore: 55, stars: 1, attemptId: `m_${k}` })
+      prog.recordAttempt({ signKey: k, finalScore: 60, stars: 1, attemptId: `m2_${k}` })
+    }
+    const ctx = prog.getCoachContext('Xe máy')
+    assert.strictEqual(ctx.profile.weakCategory, 'dấu chuyển động')
+    assert.strictEqual(ctx.profile.strongCategory, 'dấu tĩnh')
+  })
+
+  await test('profile categories are null when too little data', () => {
+    const { prog } = makeProg()
+    prog.recordAttempt({ signKey: 'Có', finalScore: 80, stars: 2, attemptId: 'c1' })
+    const ctx = prog.getCoachContext('Có')
+    assert.strictEqual(ctx.profile.weakCategory, null)
+    assert.strictEqual(ctx.profile.strongCategory, null)
+  })
+
+  await test('signHistory is capped so localStorage does not grow unbounded', () => {
+    const { prog } = makeProg()
+    for (let i = 0; i < 25; i++) {
+      prog.recordAttempt({ signKey: 'Mẹ', finalScore: 60 + i, stars: 1, attemptId: `cap_${i}` })
+    }
+    const raw = prog._getRawState()
+    assert.ok(raw.signHistory['Mẹ'].length <= internals.SIGN_HISTORY_CAP,
+      `signHistory should cap at ${internals.SIGN_HISTORY_CAP}, got ${raw.signHistory['Mẹ'].length}`)
+  })
+
   // ── ymd helpers
   console.log('Date helpers')
   await test('ymdLocal and previousYmd survive month/year boundaries', () => {

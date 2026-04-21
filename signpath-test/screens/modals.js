@@ -85,28 +85,35 @@
       )
     }
 
-    // Per-finger breakdown
+    // Per-finger breakdown — pass/partial/fail pills (not percentages).
+    // Signing is visual-interpretive; a "73%"-precise score implies clinical
+    // accuracy the engine can't back up. Three-state icons are honest and the
+    // user's mental model maps cleanly to them.
     let fingerSection = null
     const fingers = result.deviations && result.deviations.fingers
     if (fingers && fingers.length) {
       fingerSection = SP.h('div', { style:{ marginBottom:'1.5rem' }},
         SP.h('h3', { style:{ fontSize:'.875rem', fontWeight:700, color:'var(--sp-on-surface)', marginBottom:'.75rem', textTransform:'uppercase', letterSpacing:'.5px' }},
           'Chi tiết từng ngón'),
-        SP.h('div', { style:{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(10rem, 1fr))', gap:'.75rem' }},
-          ...fingers.map(f => SP.h('div', {
-            style:{ background:'var(--sp-surface-container-low)', padding:'.75rem 1rem', borderRadius:'.75rem' }
-          },
-            SP.h('div', { style:{ display:'flex', justifyContent:'space-between', marginBottom:'.375rem' }},
-              SP.h('span', { style:{ fontSize:'.875rem', color:'var(--sp-on-surface)' }}, f.nameVi || f.name),
-              SP.h('span', { style:{ fontSize:'.875rem', fontWeight:700, color: SP.scoreColor(f.score) }}, f.score + '%'),
-            ),
-            SP.h('div', { class:'sp-progress', style:{ height:'.375rem' }},
-              SP.h('div', { class:'sp-progress-fill', style:{
-                width: Math.max(2, Math.min(100, f.score)) + '%',
-                background: SP.scoreColor(f.score),
-              }})
-            ),
-          ))
+        SP.h('div', { style:{ display:'flex', flexWrap:'wrap', gap:'.5rem' }},
+          ...fingers.map(f => {
+            const status = fingerStatus(f.score || 0)
+            return SP.h('div', {
+              'aria-label': (f.nameVi || f.name) + ' — ' + status.label,
+              style:{
+                display:'flex', alignItems:'center', gap:'.5rem',
+                background: status.bg,
+                color: status.fg,
+                padding:'.5rem .875rem',
+                borderRadius:'999px',
+                fontSize:'.875rem',
+                fontWeight: 500,
+              }
+            },
+              SP.h('span', { style:{ fontSize:'1rem', lineHeight:1 }}, status.icon),
+              SP.h('span', {}, f.nameVi || f.name),
+            )
+          })
         )
       )
     }
@@ -151,4 +158,17 @@
       SP.h('div', { style:{ fontSize:'.6875rem', color:'var(--sp-on-surface-variant)' }}, subLabel),
     )
   }
+
+  // Helper: map finger score to a three-state visual (✓ pass / ⚠ partial /
+  // ✗ fail) + the design-system colour pair for the pill. Thresholds (70,
+  // 40) live in SCORE space — 70 matches the whole-frame passAt so "pass"
+  // on a finger means the same thing it does overall; 40 is near the
+  // midpoint of the lenient finger curve. Hardcoded fallbacks after the
+  // comma keep pills readable if a theme omits one of the tokens.
+  function fingerStatus(score) {
+    if (score >= 70) return { icon:'✓', bg:'var(--sp-primary-container, #d7edc9)',  fg:'var(--sp-on-primary-container, #1e4620)',  label:'Chính xác' }
+    if (score >= 40) return { icon:'⚠', bg:'var(--sp-tertiary-container, #f9eca6)', fg:'var(--sp-on-tertiary-container, #6b4a00)', label:'Gần đúng' }
+    return              { icon:'✗', bg:'var(--sp-error-container, #f7d6d0)',    fg:'var(--sp-on-error-container, #c0392b)',    label:'Sai' }
+  }
+  SP.modals.fingerStatus = fingerStatus  // exposed for tests / other screens
 })();

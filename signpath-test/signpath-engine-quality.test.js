@@ -77,12 +77,13 @@ async function run() {
 
   // A. _simToScore table for both tiers
   await test('A: _simToScore high/low table', () => {
-    // High: floor=0.55, ceiling=0.95
-    assert.strictEqual(I._simToScore(0.55, 'high'), 0)
-    assert.strictEqual(I._simToScore(0.95, 'high'), 100)
+    // [Leniency] Fix 2 — high curve: floor=0.45, ceiling=0.88 (was 0.55/0.95).
+    assert.strictEqual(I._simToScore(0.45, 'high'), 0)
+    assert.strictEqual(I._simToScore(0.88, 'high'), 100)
     assert.strictEqual(I._simToScore(0.40, 'high'), 0)   // below floor clamps to 0
-    assert.strictEqual(I._simToScore(0.75, 'high'), 50)  // midpoint
-    // Low: floor=0.40, ceiling=0.85
+    // midpoint: (0.45+0.88)/2 = 0.665 → (0.665-0.45)/0.43*100 = 50
+    assert.strictEqual(I._simToScore(0.665, 'high'), 50)
+    // Low: floor=0.40, ceiling=0.85 (unchanged)
     assert.strictEqual(I._simToScore(0.40, 'low'), 0)
     assert.strictEqual(I._simToScore(0.85, 'low'), 100)
     assert.strictEqual(I._simToScore(0.625, 'low'), 50) // midpoint
@@ -96,17 +97,19 @@ async function run() {
     assert.throws(() => I._simToScore(0.7, ''))
   })
 
-  // C. Same similarity: low mapping gives a higher numeric score
+  // C. Same similarity: low mapping gives a higher numeric score.
+  // [Leniency] Fix 2 — values changed because the high curve moved from
+  // 0.55/0.95 to 0.45/0.88. The INVARIANT (low score > high score at same
+  // sim) still holds because the low curve has the lower floor; below its
+  // ceiling a given sim is a larger fraction of the low band than the high.
   await test('C: sim 0.7 → low score > high score', () => {
     const hi = I._simToScore(0.7, 'high')
     const lo = I._simToScore(0.7, 'low')
     assert.ok(lo > hi, `expected lo > hi, got hi=${hi} lo=${lo}`)
-    // concrete values for golden check. Note: on paper (0.70-0.55)/0.40*100
-    // is 37.5, but IEEE-754 makes the computed value 37.4999… so Math.round
-    // returns 37, not 38. Don't "fix" this — just assert the real value.
-    // high: ≈ 37.499… → 37
-    // low:  ≈ 66.66… → 67
-    assert.strictEqual(hi, 37)
+    // Golden numbers after Fix 2:
+    //   high: (0.70-0.45)/(0.88-0.45)*100 = 25/43*100 ≈ 58.14 → 58 (was 37)
+    //   low:  (0.70-0.40)/(0.85-0.40)*100 = 30/45*100 ≈ 66.67 → 67 (unchanged)
+    assert.strictEqual(hi, 58)
     assert.strictEqual(lo, 67)
   })
 
@@ -210,23 +213,23 @@ async function run() {
 
   // J. passed flips at passAt for both tiers
   await test('J: passed flips across passAt (both tiers)', () => {
-    // High tier: sim=0.83 → score = round((0.83-0.55)/0.4*100) = round(70) = 70 → passed
+    // [Leniency] Fix 2 — high curve now 0.45/0.88, so the edge sims shift:
+    //   sim=0.76 → round((0.76-0.45)/0.43*100) = round(72.09) = 72 → passed
+    //   sim=0.74 → round((0.74-0.45)/0.43*100) = round(67.44) = 67 → not passed
     {
       const user = vec({ 0: 1 })
-      // Build a template whose sim with user is exactly 0.83: tmpl = [0.83, sqrt(1-0.83²), 0,...] is unit.
-      const s = 0.83
+      const s = 0.76
       const tmpl = vec({ 0: s, 1: Math.sqrt(1 - s * s) })
       const engine = stubEngine([makeTemplate('HQ', tmpl, 'high')], 'HQ', user)
       const ev = captureScore(engine)
       assert.strictEqual(ev.quality, 'high')
-      assert.strictEqual(ev.score, 70)
+      assert.strictEqual(ev.score, 72)
       assert.strictEqual(ev.passAt, 70)
       assert.strictEqual(ev.passed, true)
     }
-    // High tier: sim=0.82 → score = round((0.82-0.55)/0.4*100) = round(67.5) = 68 → not passed
     {
       const user = vec({ 0: 1 })
-      const s = 0.82
+      const s = 0.74
       const tmpl = vec({ 0: s, 1: Math.sqrt(1 - s * s) })
       const engine = stubEngine([makeTemplate('HQ', tmpl, 'high')], 'HQ', user)
       const ev = captureScore(engine)
@@ -256,15 +259,17 @@ async function run() {
   })
 
   // K. Top-5 ranks by similarity — the highest-value test.
-  //    HQ template: sim=0.80 → score=63 (high tier)
-  //    LQ template: sim=0.75 → score=78 (low tier, more generous mapping)
+  // [Leniency] Fix 2 — the sims had to move closer together because the new
+  // high curve (0.45/0.88) is more generous than the old one, shrinking the
+  // window where a low-tier score can outrank a high-tier score at the same
+  // sim. New setup:
+  //    HQ template: sim=0.75 → high score=70
+  //    LQ template: sim=0.72 → low score=71 (low mapping still slightly more generous)
   //    LQ has the higher NUMERIC score but LOWER similarity. We must rank HQ first.
   await test('K: top-5 ranks by similarity — LQ higher score does not leapfrog HQ higher sim', () => {
     const user = vec({ 0: 1 })
-    // HQ template: V = [0.80, 0.60] — cos(U, V) = 0.80
-    const hq = vec({ 0: 0.80, 1: 0.60 })
-    // LQ template: W = [0.75, sqrt(1-0.75²)] — cos(U, W) = 0.75
-    const lq = vec({ 0: 0.75, 1: Math.sqrt(1 - 0.75 * 0.75) })
+    const hq = vec({ 0: 0.75, 1: Math.sqrt(1 - 0.75 * 0.75) })  // cos(U, V) = 0.75
+    const lq = vec({ 0: 0.72, 1: Math.sqrt(1 - 0.72 * 0.72) })  // cos(U, W) = 0.72
     const engine = stubEngine([
       makeTemplate('HQ_sign', hq, 'high'),
       makeTemplate('LQ_sign', lq, 'low'),
@@ -332,13 +337,17 @@ async function run() {
     assert.strictEqual(evHigh.deviations.templateQuality, 'high')
   })
 
-  // N. Per-finger scores use quality-aware mapping
-  await test('N: per-finger scores pick up the tier-specific mapping', () => {
+  // N. Per-finger scores use the finger-specific curve
+  // [Leniency] Fix 1 — finger scoring is now tier-agnostic: _fingerSimToScore
+  // maps sim→score with FINGER_SIM_FLOOR=0.40, CEILING=0.85 regardless of
+  // whether the template is high- or low-quality. The `quality` parameter is
+  // still validated at the boundary, but the mapping itself does not branch
+  // on it. A finger either looks right or it doesn't; the quality tier of
+  // the surrounding template (which affects pose/face weighting) is
+  // irrelevant to what a correctly-shaped finger should score.
+  await test('N: per-finger scores use the tier-agnostic finger curve', () => {
     // Build user + template where the thumb-landmark (indices 1-4) similarity
-    // is 0.7 — so the per-finger mapping diff is identical to test C.
-    // Thumb occupies dominant-hand features at indices (1*3..4*3+2) = 3..14.
-    // Set user thumb = [1, 0, ...12 floats...], tmpl thumb = [0.7, 0.7141, ...]
-    // (unit vectors in first two thumb floats).
+    // is 0.7. Thumb occupies dom-hand features at indices 3..14.
     const user = vec({ 3: 1 })
     const thumbTmplLow = vec({ 3: 0.7, 4: Math.sqrt(1 - 0.49) })
 
@@ -361,13 +370,14 @@ async function run() {
     // Direct call — sidesteps _compareAndScore's frame buffer resampling.
     const scoresLow = engine._computeFingerScores(userFrames, 'TEST', 'low')
     const scoresHigh = engine._computeFingerScores(userFrames, 'TEST', 'high')
-    // The thumb group (indices 1,2,3,4) should have cosine similarity of 0.7.
     const thumbLow = scoresLow.find(f => f.name === 'Cái' || f.name === 'Thumb')
     const thumbHigh = scoresHigh.find(f => f.name === 'Cái' || f.name === 'Thumb')
     assert.ok(thumbLow && thumbHigh)
-    // sim ≈ 0.7 → high score 37 (IEEE float rounding, see test C),
-    //           low score 67. Asserting the real numbers, not the textbook ones.
-    assert.strictEqual(thumbHigh.score, 37)
+    // sim ≈ 0.7 → finger score (tier-agnostic): (0.7-0.40)/(0.85-0.40)*100
+    //   = 30/45*100 = 66.67 → 67 for BOTH tiers.
+    // Old expectations: thumbHigh=37 (old 0.55/0.95 high curve),
+    //                   thumbLow=67 (old 0.40/0.85 low curve).
+    assert.strictEqual(thumbHigh.score, 67)
     assert.strictEqual(thumbLow.score, 67)
   })
 

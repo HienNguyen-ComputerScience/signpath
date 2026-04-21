@@ -182,6 +182,24 @@
     )
     camWrap.appendChild(scoreOverlay)
 
+    // Permanent framing reminder — always visible below the webcam.
+    // Tells users to position themselves so their full body is in frame.
+    const framingHint = SP.h('div', { id:'sp-framing-hint',
+      style:{
+        marginTop:'.5rem',
+        padding:'.5rem .75rem',
+        textAlign:'center',
+        fontSize:'.875rem',
+        color:'var(--sp-on-surface-variant)',
+        lineHeight:1.45,
+        background:'var(--sp-surface-container-low)',
+        borderRadius:'.5rem',
+      }},
+      SP.h('div', {}, '📏 Đứng xa camera để thấy toàn thân'),
+      SP.h('div', { style:{ fontSize:'.75rem', opacity:.85, marginTop:'.125rem' }},
+        'Stand back so your whole body is visible'),
+    )
+
     // Record controls
     const progressWrap = SP.h('div', { style:{ flex:1, height:'.5rem', background:'var(--sp-surface-container-high)', borderRadius:'9999px', overflow:'hidden' }},
       SP.h('div', { id:'sp-rec-progress', style:{ height:'100%', width:'0%', background:'linear-gradient(90deg, #954b00 0%, #f68a2f 100%)', transition:'width 100ms linear' }})
@@ -218,6 +236,7 @@
         SP.h('div', { style:{ fontSize:'.75rem', color:'var(--sp-on-surface-variant)', fontWeight:600, textTransform:'uppercase', letterSpacing:'.5px', marginBottom:'.5rem' }},
           'Camera của bạn · Your camera'),
         camWrap,
+        framingHint,
         recordRow,
         coachBox,
         phantomBanner,
@@ -260,10 +279,6 @@
       }
       scoreEl.textContent = d.score
       scoreEl.style.color = SP.scoreColor(d.score)
-      if (!app.session.isActive() && d.deviations) {
-        const advice = app.coach.getLocalAdvice(d.deviations, d.score, app.engine.getLang())
-        if (advice) coachEl.textContent = advice
-      }
     })
 
     on('attempt:start', d => {

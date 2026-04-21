@@ -56,7 +56,6 @@ class MockEngine {
 }
 
 class MockCoach {
-  getLocalAdvice(dev, score) { return `advice for ${dev?.signKey} at ${score}` }
   async getAdvice() { return null }
 }
 

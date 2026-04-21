@@ -35,7 +35,15 @@ const CONFIG_PATH = 'models/model-config.json'
 const NUM_FEATURES = 162
 const POSE_IDX = [11, 12, 13, 14, 15, 16, 0]
 const FACE_IDX = [1, 10, 152, 234, 454]
-const SHOULDER_VIS = 0.5
+// [Leniency] Fix 3 — two-tier shoulder visibility. STRICT is the existing
+// "both shoulders confidently visible" primary path. LOOSE is used by the
+// new mid-path: if at least one shoulder clears LOOSE and the nose is
+// visible, we estimate the missing shoulder by mirroring across the nose
+// (approximate body symmetry, fine for signing). SHOULDER_VIS is kept as an
+// alias for the old strict threshold so any older reference still compiles.
+const SHOULDER_VIS_STRICT = 0.5
+const SHOULDER_VIS_LOOSE = 0.3
+const SHOULDER_VIS = SHOULDER_VIS_STRICT
 const MIN_SHOULDER_W = 0.01
 const MIN_PALM = 0.001
 
@@ -55,10 +63,26 @@ const MAX_BUFFER_FRAMES = 120    // rolling buffer cap
 // lower the pass threshold. All three knobs are v1 guesses — tune against
 // real low-tier data once it lands.
 
+// [Leniency] Fix 2 — loosen the overall score curve for the 'high' tier.
+// Whole-frame cosine of 0.80 (clearly-recognisable handshape with natural
+// body variation) used to map to ~63%; the new floor/ceiling maps it to ~81.
+// Pass/star thresholds are expressed in SCORE terms (70/88), not similarity,
+// so keeping passAt:70 works — getting 70 now requires less cosine than before.
+// Low-tier curve is untouched.
 const SIM_THRESHOLDS = {
-  high: { floor: 0.55, ceiling: 0.95, passAt: 70 },
+  high: { floor: 0.45, ceiling: 0.88, passAt: 70 },
   low:  { floor: 0.40, ceiling: 0.85, passAt: 55 },
 }
+
+// [Leniency] Fix 1 — dedicated finger-score curve, decoupled from the
+// whole-frame curve. Finger sub-vectors are small (4 landmarks × 3 coords),
+// so the cosine is dominated by a few noisy joints; a "clearly-recognisable"
+// finger shape sits around 0.80 cosine, which is near-failure on the old
+// high-tier curve. Tier-agnostic: a finger either looks right or it doesn't,
+// independent of whether the template is multi-signer (high) or single-signer (low).
+const FINGER_SIM_FLOOR = 0.40
+const FINGER_SIM_CEILING = 0.85
+const FINGER_SIM_WIDTH = FINGER_SIM_CEILING - FINGER_SIM_FLOOR  // 0.45
 
 // Fix 1 v2 — one-handed detection via template motion only. If the template's
 // non-dom hand barely moves across its 60 frames relative to its dom hand, the
@@ -329,12 +353,39 @@ const CATEGORIES = [
 
 function _pickOrigin(pose, rHand, lHand) {
   if (pose && pose.length > 16) {
-    const ls=pose[11], rs=pose[12]
-    const lv=ls.visibility!=null?ls.visibility:1, rv=rs.visibility!=null?rs.visibility:1
-    if (lv>SHOULDER_VIS && rv>SHOULDER_VIS) {
+    const ls=pose[11], rs=pose[12], nose=pose[0]
+    const lv=ls.visibility!=null?ls.visibility:1
+    const rv=rs.visibility!=null?rs.visibility:1
+
+    // PRIMARY: both shoulders confidently visible — unchanged legacy path.
+    if (lv>SHOULDER_VIS_STRICT && rv>SHOULDER_VIS_STRICT) {
       const ox=(ls.x+rs.x)/2, oy=(ls.y+rs.y)/2, oz=((ls.z||0)+(rs.z||0))/2
       const s=Math.sqrt((ls.x-rs.x)**2+(ls.y-rs.y)**2+((ls.z||0)-(rs.z||0))**2)
       if (s>MIN_SHOULDER_W) return {ox,oy,oz,scale:s,refType:'shoulder'}
+    }
+
+    // [Leniency] Fix 3 — middle path. One shoulder partially visible + nose →
+    // mirror the visible shoulder across the nose to estimate the cropped one.
+    // Body symmetry holds well enough at signing distances; shoulders sit at
+    // roughly the same y/z so we only mirror x. This keeps sitting / partially
+    // cropped users in shoulder-normalised space instead of dropping them into
+    // the palm-fallback coord system that templates can't be scored against.
+    const nv = nose && nose.visibility != null ? nose.visibility : (nose ? 1 : 0)
+    if (nose && nv > SHOULDER_VIS_STRICT) {
+      const lLoose = lv > SHOULDER_VIS_LOOSE
+      const rLoose = rv > SHOULDER_VIS_LOOSE
+      if (lLoose ^ rLoose) {
+        const visible = lLoose ? ls : rs
+        const mirroredX = 2 * nose.x - visible.x
+        // y/z mirrored through identity — shoulders roughly coplanar in the
+        // camera frame at typical signing distances.
+        const est = { x: mirroredX, y: visible.y, z: visible.z || 0 }
+        const left = lLoose ? visible : est
+        const right = lLoose ? est : visible
+        const ox=(left.x+right.x)/2, oy=(left.y+right.y)/2, oz=((left.z||0)+(right.z||0))/2
+        const s=Math.sqrt((left.x-right.x)**2+(left.y-right.y)**2+((left.z||0)-(right.z||0))**2)
+        if (s>MIN_SHOULDER_W) return {ox,oy,oz,scale:s,refType:'shoulder_estimated'}
+      }
     }
   }
   const h=rHand||lHand
@@ -356,13 +407,29 @@ function _buildFrame(rHand, lHand, pose, face, outMeta) {
   if (outMeta) outMeta.refType = o ? o.refType : 'none'
   if (!o) return f
   const {ox,oy,oz,scale}=o
-  const n=lm=>lm?[((lm.x||0)-ox)/scale,((lm.y||0)-oy)/scale,((lm.z||0)-oz)/scale]:null
+
+  // [Hand-Z] Browser MediaPipe Holistic emits hand landmark z in pose-space
+  // depth; Python emits it relative to the hand's own wrist (wrist z = 0
+  // exactly). Templates were built under the Python convention, so force the
+  // same here: subtract each hand's own wrist z before the shoulder
+  // normalization. This is a no-op for already-wrist-relative data (Python
+  // side → wrist z = 0 → subtracting 0) and a correction on the browser side.
+  // Without it, the dom-hand cosine collapses to ≈ -0.12 on face-involving
+  // signs (Mẹ, Bố, Cảm ơn) even when the user's hand is correct — see
+  // HAND_COORD_MISMATCH_REPORT.md.
+  const rwZ = (rHand && rHand[0]) ? (rHand[0].z || 0) : 0
+  const lwZ = (lHand && lHand[0]) ? (lHand[0].z || 0) : 0
+  console.debug('[hand-z-fix]', { rwZ, lwZ, refType: o.refType })
+
+  const n     = lm      => lm ? [((lm.x||0)-ox)/scale, ((lm.y||0)-oy)/scale, ((lm.z||0)-oz)/scale] : null
+  const nHand = (lm,wz) => lm ? [((lm.x||0)-ox)/scale, ((lm.y||0)-oy)/scale, ((lm.z||0)-wz-oz)/scale] : null
 
   let dom=rHand, nonDom=lHand
-  if (!dom&&nonDom){dom=nonDom;nonDom=null}
+  let domWZ=rwZ, nonDomWZ=lwZ
+  if (!dom&&nonDom){dom=nonDom;nonDom=null;domWZ=lwZ;nonDomWZ=0}
 
-  if (dom&&dom.length>=21) for(let i=0;i<21;i++){const v=n(dom[i]);if(v){f[i*3]=v[0];f[i*3+1]=v[1];f[i*3+2]=v[2]}}
-  if (nonDom&&nonDom.length>=21) for(let i=0;i<21;i++){const v=n(nonDom[i]);if(v){f[63+i*3]=v[0];f[63+i*3+1]=v[1];f[63+i*3+2]=v[2]}}
+  if (dom&&dom.length>=21) for(let i=0;i<21;i++){const v=nHand(dom[i],domWZ);if(v){f[i*3]=v[0];f[i*3+1]=v[1];f[i*3+2]=v[2]}}
+  if (nonDom&&nonDom.length>=21) for(let i=0;i<21;i++){const v=nHand(nonDom[i],nonDomWZ);if(v){f[63+i*3]=v[0];f[63+i*3+1]=v[1];f[63+i*3+2]=v[2]}}
   if (pose&&pose.length>16) for(let i=0;i<POSE_IDX.length;i++){const v=n(pose[POSE_IDX[i]]);if(v){f[126+i*3]=v[0];f[126+i*3+1]=v[1];f[126+i*3+2]=v[2]}}
   if (face&&face.length>454) for(let i=0;i<FACE_IDX.length;i++){const v=n(face[FACE_IDX[i]]);if(v){f[147+i*3]=v[0];f[147+i*3+1]=v[1];f[147+i*3+2]=v[2]}}
   return f
@@ -536,6 +603,16 @@ function _simToScore(sim, quality) {
   if (sim <= t.floor) return 0
   if (sim >= t.ceiling) return 100
   return Math.round(((sim - t.floor) / (t.ceiling - t.floor)) * 100)
+}
+
+// [Leniency] Fix 1 — finger-specific score curve. Deliberately tier-agnostic:
+// the whole-frame curve differs by tier because pose+face contribute, but a
+// finger sub-vector is just the handshape itself, which deserves the same
+// leniency regardless of which template set it came from.
+function _fingerSimToScore(sim) {
+  if (sim <= FINGER_SIM_FLOOR) return 0
+  if (sim >= FINGER_SIM_CEILING) return 100
+  return Math.round(((sim - FINGER_SIM_FLOOR) / FINGER_SIM_WIDTH) * 100)
 }
 
 function _starsForScore(score, quality) {
@@ -1070,6 +1147,11 @@ class SignPathEngine {
   // [Fix 3] Rate-check + emit palm-fallback warning. Extracted from _onResults
   // so unit tests can drive _originHistory directly without synthesizing
   // MediaPipe callbacks. Rate-limited to one emit per 2000ms.
+  //
+  // [Leniency] Fix 3 — only 'palm' is counted as degraded. 'shoulder_estimated'
+  // (new mid-path for sitting / partially-cropped users) lives in the same
+  // shoulder-normalised space as templates, so it's NOT a degraded coordinate
+  // system and must not trigger the warning banner.
   _maybeEmitDegraded() {
     if (this._originHistory.length < 15) return
     let palmCount = 0
@@ -1118,7 +1200,10 @@ class SignPathEngine {
       const sim = totalSim / nFrames
       return {
         name: _lang === 'vi' ? fg.nameVi : fg.name,
-        score: _simToScore(sim, quality),
+        // [Leniency] Fix 1 — the finger curve ignores `quality`; the mapping
+        // is the same for both tiers. `quality` is still validated at the
+        // function boundary (above) so misuse fails loud.
+        score: _fingerSimToScore(sim),
         similarity: sim,
       }
     })
@@ -1480,7 +1565,12 @@ global.SignPathEngine._internals = {
   WEIGHTS_HIGH, WEIGHTS_LOW,
   WEIGHTS_SQ_HIGH, WEIGHTS_SQ_LOW,
   NONDOM_MOTION_RATIO_THRESHOLD,        // [Fix 1 v2] exposed for M-series tests
+  FINGER_SIM_FLOOR,                     // [Leniency] Fix 1 — finger curve bounds
+  FINGER_SIM_CEILING,
+  SHOULDER_VIS_STRICT,                  // [Leniency] Fix 3 — both-shoulders threshold
+  SHOULDER_VIS_LOOSE,                   // [Leniency] Fix 3 — single-shoulder threshold
   _simToScore,
+  _fingerSimToScore,                    // [Leniency] Fix 1 — dedicated finger curve
   _starsForScore,
   _normalizeQuality,
   _frameNorm,

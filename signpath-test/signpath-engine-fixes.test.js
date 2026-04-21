@@ -506,6 +506,168 @@ async function run() {
       `tracking:degraded should be owned by engine, got ${owners['tracking:degraded']}`)
   })
 
+  // ══════════════════════════════════════════════════════════════════════
+  // LF — [Leniency] Fix 1: finger-score curve (FINGER_SIM_FLOOR/CEILING)
+  // ══════════════════════════════════════════════════════════════════════
+
+  // LF1: a clearly-recognisable finger (cosine 0.80) should score ≥85.
+  await test('LF1: finger cosine 0.80 maps to score ≥85 under new curve', () => {
+    const score = I._fingerSimToScore(0.80)
+    assert.ok(score >= 85, `expected score >= 85 for sim 0.80, got ${score}`)
+    // Golden number: (0.80-0.40)/(0.85-0.40)*100 = 40/45*100 = 88.89 → 89
+    assert.strictEqual(score, 89)
+  })
+
+  // LF2: middle-of-range finger lands in [20, 40].
+  await test('LF2: finger cosine 0.50 maps into [20, 40]', () => {
+    const score = I._fingerSimToScore(0.50)
+    assert.ok(score >= 20 && score <= 40,
+      `expected 20 <= score <= 40 for sim 0.50, got ${score}`)
+    // Golden: (0.50-0.40)/0.45*100 = 22.22 → 22
+    assert.strictEqual(score, 22)
+  })
+
+  // LF3: floor and ceiling clamps
+  await test('LF3: finger curve clamps at floor and ceiling', () => {
+    assert.strictEqual(I._fingerSimToScore(0.40), 0)   // at floor
+    assert.strictEqual(I._fingerSimToScore(0.30), 0)   // below floor
+    assert.strictEqual(I._fingerSimToScore(0.85), 100) // at ceiling
+    assert.strictEqual(I._fingerSimToScore(0.95), 100) // above ceiling
+  })
+
+  // ══════════════════════════════════════════════════════════════════════
+  // LO — [Leniency] Fix 2: overall score curve (high-tier 0.45/0.88)
+  // ══════════════════════════════════════════════════════════════════════
+
+  // LO1: a 0.65 cosine on the overall (high) curve should score ≥40.
+  await test('LO1: overall cosine 0.65 maps to score ≥40 on high tier', () => {
+    const score = I._simToScore(0.65, 'high')
+    assert.ok(score >= 40, `expected score >= 40 for sim 0.65, got ${score}`)
+    // Golden: (0.65-0.45)/0.43*100 = 46.51 → 47
+    assert.strictEqual(score, 47)
+  })
+
+  // LO2: a strong attempt (cosine 0.85) scores ≥90.
+  await test('LO2: overall cosine 0.85 maps to score ≥90 on high tier', () => {
+    const score = I._simToScore(0.85, 'high')
+    assert.ok(score >= 90, `expected score >= 90 for sim 0.85, got ${score}`)
+    // Golden: (0.85-0.45)/0.43*100 = 93.02 → 93
+    assert.strictEqual(score, 93)
+  })
+
+  // LO3: threshold constants on the exposed API match the intent.
+  await test('LO3: SIM_THRESHOLDS.high has new floor/ceiling, passAt unchanged', () => {
+    assert.strictEqual(I.SIM_THRESHOLDS.high.floor, 0.45)
+    assert.strictEqual(I.SIM_THRESHOLDS.high.ceiling, 0.88)
+    assert.strictEqual(I.SIM_THRESHOLDS.high.passAt, 70,
+      'passAt stays at 70 — only the curve shape loosens, not the pass bar')
+    // Low tier intentionally untouched.
+    assert.strictEqual(I.SIM_THRESHOLDS.low.floor, 0.40)
+    assert.strictEqual(I.SIM_THRESHOLDS.low.ceiling, 0.85)
+    assert.strictEqual(I.SIM_THRESHOLDS.low.passAt, 55)
+  })
+
+  // ══════════════════════════════════════════════════════════════════════
+  // SB — [Leniency] Fix 3: shoulder-estimated origin middle-path
+  // ══════════════════════════════════════════════════════════════════════
+
+  // Helper: build a pose landmark array MediaPipe-style. We care about
+  // indices 0 (nose), 11 (left shoulder), 12 (right shoulder). Fill the rest
+  // with placeholders so the guard `pose.length > 16` passes.
+  function buildPose({ lShoulder, rShoulder, nose }) {
+    const pose = new Array(33)
+    for (let i = 0; i < 33; i++) pose[i] = { x: 0, y: 0, z: 0, visibility: 0 }
+    if (nose)      pose[0]  = Object.assign({ x: 0, y: 0, z: 0, visibility: 1 }, nose)
+    if (lShoulder) pose[11] = Object.assign({ x: 0, y: 0, z: 0, visibility: 1 }, lShoulder)
+    if (rShoulder) pose[12] = Object.assign({ x: 0, y: 0, z: 0, visibility: 1 }, rShoulder)
+    return pose
+  }
+
+  // SB1: one shoulder visible, other cropped, nose visible → shoulder_estimated.
+  await test('SB1: one shoulder visible (0.8), other cropped (0.2), nose visible → shoulder_estimated', () => {
+    const pose = buildPose({
+      lShoulder: { x: 0.30, y: 0.40, z: 0, visibility: 0.8 },
+      rShoulder: { x: 0.70, y: 0.40, z: 0, visibility: 0.2 },  // partially cropped
+      nose:      { x: 0.50, y: 0.25, z: 0, visibility: 0.9 },
+    })
+    const o = I._pickOrigin(pose, null, null)
+    assert.ok(o, 'should return an origin')
+    assert.strictEqual(o.refType, 'shoulder_estimated',
+      `expected shoulder_estimated, got ${o ? o.refType : 'none'}`)
+    // Estimated right shoulder: mirror of left about nose.x → 2*0.50 - 0.30 = 0.70.
+    // Midpoint x: (0.30 + 0.70) / 2 = 0.50 (coincides with nose x, as symmetry implies).
+    assert.ok(Math.abs(o.ox - 0.50) < 1e-6, `origin x should be 0.50, got ${o.ox}`)
+    assert.ok(o.scale > 0.01, 'scale should be above MIN_SHOULDER_W')
+  })
+
+  // SB1b: mirror check the other way — right visible, left cropped.
+  await test('SB1b: right shoulder visible, left cropped → shoulder_estimated (mirror other side)', () => {
+    const pose = buildPose({
+      lShoulder: { x: 0.30, y: 0.40, z: 0, visibility: 0.2 },  // cropped
+      rShoulder: { x: 0.70, y: 0.40, z: 0, visibility: 0.8 },
+      nose:      { x: 0.50, y: 0.25, z: 0, visibility: 0.9 },
+    })
+    const o = I._pickOrigin(pose, null, null)
+    assert.ok(o && o.refType === 'shoulder_estimated')
+  })
+
+  // SB2: neither shoulder visible and no nose-based recovery path → palm.
+  await test('SB2: no shoulders + no nose → falls back to palm', () => {
+    const pose = buildPose({
+      lShoulder: { x: 0.30, y: 0.40, z: 0, visibility: 0.1 },
+      rShoulder: { x: 0.70, y: 0.40, z: 0, visibility: 0.1 },
+      nose:      { x: 0.50, y: 0.25, z: 0, visibility: 0.1 },  // nose also not visible
+    })
+    const rHand = []
+    // Need 10 landmarks for palm fallback; index 0 wrist, index 9 middle MCP.
+    for (let i = 0; i < 21; i++) rHand.push({ x: 0.50, y: 0.50, z: 0 })
+    rHand[0] = { x: 0.50, y: 0.50, z: 0 }
+    rHand[9] = { x: 0.52, y: 0.52, z: 0 }  // distance ~0.028 > MIN_PALM
+    const o = I._pickOrigin(pose, rHand, null)
+    assert.ok(o, 'should return a palm origin')
+    assert.strictEqual(o.refType, 'palm')
+  })
+
+  // SB3: tracking:degraded must NOT fire when origin is shoulder_estimated.
+  await test('SB3: tracking:degraded does NOT fire for shoulder_estimated (acceptable mode)', () => {
+    const engine = new SignPathEngine()
+    const events = []
+    engine.on('tracking:degraded', e => events.push(e))
+    // All 30 frames use the new middle path — good framing for sitting users.
+    engine._originHistory = []
+    for (let i = 0; i < 30; i++) engine._originHistory.push('shoulder_estimated')
+    engine._lastDegradedEmit = -1e12  // clear cooldown
+    engine._maybeEmitDegraded()
+    assert.strictEqual(events.length, 0,
+      'shoulder_estimated is not degraded — banner must not fire')
+  })
+
+  // SB4: still fire when PALM is dominant even if some estimated mixed in.
+  await test('SB4: tracking:degraded still fires when palm > 20% (estimated frames do not mask)', () => {
+    const engine = new SignPathEngine()
+    const events = []
+    engine.on('tracking:degraded', e => events.push(e))
+    engine._originHistory = []
+    for (let i = 0; i < 10; i++) engine._originHistory.push('palm')
+    for (let i = 0; i < 10; i++) engine._originHistory.push('shoulder_estimated')
+    for (let i = 0; i < 10; i++) engine._originHistory.push('shoulder')
+    engine._lastDegradedEmit = -1e12
+    engine._maybeEmitDegraded()
+    assert.strictEqual(events.length, 1,
+      'palm count alone (10/30 = 33%) must still cross the 20% threshold')
+  })
+
+  // SB5: primary path still wins when both shoulders confidently visible.
+  await test('SB5: both shoulders visible → refType="shoulder" (primary path unchanged)', () => {
+    const pose = buildPose({
+      lShoulder: { x: 0.30, y: 0.40, z: 0, visibility: 0.9 },
+      rShoulder: { x: 0.70, y: 0.40, z: 0, visibility: 0.9 },
+      nose:      { x: 0.50, y: 0.25, z: 0, visibility: 0.9 },
+    })
+    const o = I._pickOrigin(pose, null, null)
+    assert.ok(o && o.refType === 'shoulder', `expected shoulder (primary), got ${o && o.refType}`)
+  })
+
   console.log(`\n${_passed} passed, ${_failures} failed`)
   if (_failures) process.exit(1)
 }

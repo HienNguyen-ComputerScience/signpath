@@ -485,10 +485,6 @@
       }
       scoreNum.textContent = data.score
       scoreNum.style.color = scoreColor(data.score)
-      if (!app.session.isActive() && data.deviations) {
-        const advice = app.coach.getLocalAdvice(data.deviations, data.score, app.engine.getLang())
-        if (advice) coachBox.textContent = advice
-      }
     })
 
     // Session lifecycle — progress bar is driven off attempt:tick so the UI
