@@ -347,8 +347,11 @@
         scoreEl.textContent = '—'
         return
       }
-      scoreEl.textContent = d.score
-      scoreEl.style.color = SP.scoreColor(d.score)
+      // Engine emits raw scores; UI shows inflated. SP.inflateScore is
+      // the single source of the +20/clamp mapping (shared.js).
+      const display = SP.inflateScore ? SP.inflateScore(d.score) : d.score
+      scoreEl.textContent = display
+      scoreEl.style.color = SP.scoreColor(display)
     })
 
     on('attempt:start', d => {

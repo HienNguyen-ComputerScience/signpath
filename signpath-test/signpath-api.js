@@ -32,6 +32,27 @@
 ;(function(global) {
 'use strict'
 
+// Load the shared inflateScore helper. In the browser it's on window.SP
+// (loaded via <script src="shared.js">); in Node, require it directly so
+// tests can exercise the boundary without a DOM. Must stay in sync with
+// shared.js — single source of truth for the +20 / clamp-100 / gate-50
+// behaviour.
+const _inflateScore = (function() {
+  if (typeof require === 'function' && typeof module !== 'undefined') {
+    try { return require('./shared.js').inflateScore } catch(_) {}
+  }
+  if (typeof window !== 'undefined' && window.SP && typeof window.SP.inflateScore === 'function') {
+    return window.SP.inflateScore
+  }
+  // Last-resort fallback; must match shared.js math exactly.
+  return function(raw) {
+    if (typeof raw !== 'number' || !isFinite(raw)) return 0
+    const n = Math.round(raw) + 20
+    return n < 0 ? 0 : (n > 100 ? 100 : n)
+  }
+})()
+const _PASS_GATE = 50
+
 // Map each forwardable event to the sub-module that emits it.
 const EVENT_OWNERS = {
   // engine
@@ -166,6 +187,27 @@ class SignPathApp {
       })
     }
 
+    // Inflate at the engine→UI boundary. `finalScore` stays raw on the
+    // returned payload (existing tests + progression XP formula depend on
+    // raw). UI reads `inflatedFinalScore` and the new hard `passed` flag.
+    const inflatedFinalScore = _inflateScore(attempt.finalScore)
+    const passed = inflatedFinalScore >= _PASS_GATE
+
+    // HARD FAIL: below the inflated gate, there is no XP, no SRS mark, no
+    // mastery update, and no success tone. The fail modal still shows the
+    // coach advice computed by the session.
+    if (!passed) {
+      const toneTier = 'fail'
+      try { this.audio.playTone(toneTier) } catch(_) {}
+      return Object.assign({}, attempt, {
+        progression: null,
+        review: null,
+        inflatedFinalScore,
+        passed: false,
+        toneTier,
+      })
+    }
+
     const progResult = this.progression.recordAttempt({
       signKey: attempt.signKey,
       finalScore: attempt.finalScore,
@@ -191,6 +233,8 @@ class SignPathApp {
     return Object.assign({}, attempt, {
       progression: progResult,
       review: revResult,
+      inflatedFinalScore,
+      passed: true,
       toneTier,
     })
   }

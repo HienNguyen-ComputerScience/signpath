@@ -16,15 +16,30 @@
 
   /**
    * @param {object} result   — the practiceSign() payload
-   * @param {object} actions  — { onTryAgain, onNext }
-   *                             onNext is called for success; onBack for keep-trying
+   * @param {object} actions  — { onTryAgain, onNext, onBack }
+   *                             onNext is called for pass; onBack for fail
+   *
+   * `passed` is the hard v0.5 gate from api.js: inflateScore(raw) >= 50.
+   * Fail state renders a stripped-down "Chưa đạt" modal with retry only.
    */
   SP.modals.showResult = function(result, actions) {
     const mount = document.getElementById('sp-modal-mount')
     if (!mount) return
     mount.innerHTML = ''
 
-    const passed = result.passed
+    // Prefer api.js's pre-computed inflatedFinalScore; fall back to
+    // inflating here (keeps legacy callers that pass a raw attempt
+    // payload rendering sensibly).
+    const inflate = (SP.inflateScore || function(s) {
+      if (typeof s !== 'number' || !isFinite(s)) return 0
+      const n = Math.round(s) + 20
+      return n < 0 ? 0 : n > 100 ? 100 : n
+    })
+    const displayScore = (typeof result.inflatedFinalScore === 'number')
+      ? result.inflatedFinalScore
+      : inflate(result.finalScore)
+    const passed = typeof result.passed === 'boolean' ? result.passed : (displayScore >= 50)
+
     const scrim = SP.h('div', { class:'sp-modal-scrim', onclick: (e) => {
       if (e.target === scrim) close()
     }})
@@ -32,14 +47,60 @@
     const modal = SP.h('div', { class:'sp-modal sp-modal-lg', onclick: (e) => e.stopPropagation() })
     scrim.appendChild(modal)
 
+    // ── FAIL PATH ─────────────────────────────────────────────────────
+    // No stars, no XP, no progression update — just the score, a coach
+    // hint (if present) and a single retry button.
+    if (!passed) {
+      const failHeader = SP.h('div', { style:{ textAlign:'center', marginBottom:'1.25rem' }},
+        SP.h('div', { style:{ fontSize:'4rem', lineHeight:1, marginBottom:'.75rem' }}, '🌱'),
+        SP.h('h2', { style:{ fontSize:'2.25rem', fontWeight:800, color:'var(--sp-primary)', marginBottom:'.25rem' }}, 'Chưa đạt'),
+        SP.h('p', { style:{ color:'var(--sp-on-surface-variant)', fontSize:'1rem' }}, 'Not quite — try again'),
+      )
+      const failScoreBlock = SP.h('div', { style:{
+        padding:'1.25rem', background:'var(--sp-surface-container-low)',
+        borderRadius:'var(--sp-r-md)', marginBottom:'1.25rem', textAlign:'center',
+      }},
+        SP.h('div', { style:{ fontSize:'.75rem', fontWeight:600, color:'var(--sp-on-surface-variant)', textTransform:'uppercase', letterSpacing:'.5px' }}, 'Điểm số · Score'),
+        SP.h('div', { style:{ fontSize:'3rem', fontWeight:800, color:'var(--sp-primary)', lineHeight:1, marginTop:'.25rem' }},
+          String(displayScore)),
+        SP.h('div', { style:{ fontSize:'.8125rem', color:'var(--sp-on-surface-variant)', marginTop:'.375rem' }},
+          'Cần ≥ 50 để vượt qua · Need ≥ 50 to pass'),
+      )
+      let failAdvice = null
+      if (result.advice) {
+        failAdvice = SP.h('div', { style:{
+          background:'var(--sp-tertiary-fixed)', padding:'1rem 1.25rem',
+          borderRadius:'var(--sp-r-md)', marginBottom:'1.25rem',
+          display:'flex', gap:'.75rem', alignItems:'flex-start',
+        }},
+          SP.h('span', { class:'material-symbols-outlined', style:{ color:'var(--sp-tertiary)' }}, 'lightbulb'),
+          SP.h('div', { style:{ flex:1 }},
+            SP.h('div', { style:{ fontSize:'.75rem', fontWeight:600, color:'var(--sp-on-tertiary-container)', letterSpacing:'.5px' }}, 'LỜI KHUYÊN'),
+            SP.h('div', { style:{ color:'var(--sp-on-surface)', marginTop:'.25rem', fontSize:'.95rem' }}, result.advice),
+          )
+        )
+      }
+      const failActions = SP.h('div', { style:{ display:'flex', justifyContent:'center' }},
+        SP.h('button', { class:'sp-btn sp-btn-primary sp-btn-lg',
+          onclick: () => { close(); (actions && actions.onTryAgain) && actions.onTryAgain() }
+        },
+          SP.h('span', { class:'material-symbols-outlined' }, 'replay'),
+          SP.h('span', {}, 'Thử lại · Try again'),
+        )
+      )
+      modal.appendChild(failHeader)
+      modal.appendChild(failScoreBlock)
+      if (failAdvice) modal.appendChild(failAdvice)
+      modal.appendChild(failActions)
+      mount.appendChild(scrim)
+      return
+    }
+
+    // ── PASS PATH ─────────────────────────────────────────────────────
     // Header: emoji + title + score
-    const emoji = passed ? (result.stars === 3 ? '🌟' : result.stars === 2 ? '✨' : '👍') : '🌱'
-    const vtitle = passed
-      ? (result.stars === 3 ? 'Xuất sắc!' : result.stars === 2 ? 'Tốt lắm!' : 'Đạt rồi!')
-      : 'Cố gắng thêm chút nữa'
-    const etitle = passed
-      ? (result.stars === 3 ? 'Outstanding!' : result.stars === 2 ? 'Great job!' : 'You did it!')
-      : 'Keep trying'
+    const emoji = result.stars === 3 ? '🌟' : result.stars === 2 ? '✨' : '👍'
+    const vtitle = result.stars === 3 ? 'Xuất sắc!' : result.stars === 2 ? 'Tốt lắm!' : 'Đạt rồi!'
+    const etitle = result.stars === 3 ? 'Outstanding!' : result.stars === 2 ? 'Great job!' : 'You did it!'
 
     const header = SP.h('div', { style:{ textAlign:'center', marginBottom:'1.5rem' }},
       SP.h('div', { style:{ fontSize:'4rem', lineHeight:1, marginBottom:'.75rem' }}, emoji),
@@ -47,13 +108,13 @@
       SP.h('p', { style:{ color:'var(--sp-on-surface-variant)', fontSize:'1rem' }}, etitle),
     )
 
-    // Score + stars
+    // Score + stars — uses inflated display score, not the raw finalScore.
     const scoreRow = SP.h('div', { style:{
       display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:'1rem',
       padding:'1.5rem', background:'var(--sp-surface-container-low)',
       borderRadius:'var(--sp-r-md)', marginBottom:'1.5rem',
     }},
-      statBlock('Điểm số', String(result.finalScore != null ? result.finalScore : '—'), 'Score'),
+      statBlock('Điểm số', String(displayScore), 'Score'),
       statBlock('Đánh giá', SP.starsHTML(result.stars || 0, 3), 'Rating', true),
       statBlock('XP', result.progression ? '+' + result.progression.xpGained : '—', 'Experience'),
     )
@@ -97,7 +158,10 @@
           'Chi tiết từng ngón'),
         SP.h('div', { style:{ display:'flex', flexWrap:'wrap', gap:'.5rem' }},
           ...fingers.map(f => {
-            const status = fingerStatus(f.score || 0)
+            // Inflate per-finger at the display boundary too — pills live
+            // in the user-facing modal, so they use the same +20/clamp
+            // mapping as the top-line score.
+            const status = fingerStatus(inflate(f.score || 0))
             return SP.h('div', {
               'aria-label': (f.nameVi || f.name) + ' — ' + status.label,
               style:{

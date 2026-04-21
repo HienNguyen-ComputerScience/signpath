@@ -311,6 +311,75 @@ async function run() {
     assert.strictEqual(d.user.xpForLevel, 200)   // 300 - 100
   })
 
+  // ── Score inflation + hard fail gate (v0.5) ───────────────────────
+  await test('practiceSign: pass attaches inflatedFinalScore + passed:true (raw stays raw)', async () => {
+    const { app, engine } = buildApp()
+    engine.setBest('Chào', 82)
+    const p = app.practiceSign('Chào', 10_000)
+    engine.emit('score', compareScore('Chào', 82))
+    app.session.stopAttempt()
+    const r = await p
+    assert.strictEqual(r.finalScore, 82, 'raw finalScore preserved for engine consumers')
+    assert.strictEqual(r.inflatedFinalScore, 100, 'inflated = min(100, 82+20)')
+    assert.strictEqual(r.passed, true)
+    assert.ok(r.progression, 'XP recorded on pass')
+    assert.strictEqual(r.progression.xpGained, 48, 'XP formula still uses RAW score (48=max(0,82-50)*1.5)')
+  })
+
+  await test('practiceSign: hard fail when inflated < 50 (raw 20 → inflated 40)', async () => {
+    const { app, engine, audio } = buildApp()
+    const xpBefore = app.progression.getXp()
+    const p = app.practiceSign('Chào', 10_000)
+    engine.emit('score', compareScore('Chào', 20))
+    app.session.stopAttempt()
+    const r = await p
+    assert.strictEqual(r.finalScore, 20, 'raw stays raw')
+    assert.strictEqual(r.inflatedFinalScore, 40)
+    assert.strictEqual(r.passed, false)
+    assert.strictEqual(r.progression, null, 'no XP on hard fail')
+    assert.strictEqual(r.review, null, 'no SRS mark on hard fail')
+    assert.strictEqual(app.progression.getXp(), xpBefore, 'XP unchanged after fail')
+    assert.strictEqual(r.toneTier, 'fail', 'fail tone only')
+    assert.deepStrictEqual(audio.tones, ['fail'])
+  })
+
+  await test('practiceSign: bare-pass edge (raw 30 → inflated 50) records progression', async () => {
+    const { app, engine } = buildApp()
+    const p = app.practiceSign('Chào', 10_000)
+    engine.emit('score', compareScore('Chào', 30))
+    app.session.stopAttempt()
+    const r = await p
+    assert.strictEqual(r.inflatedFinalScore, 50)
+    assert.strictEqual(r.passed, true, 'gate is >=, so 50 passes')
+    assert.ok(r.progression, 'progression recorded on bare pass')
+    assert.ok(r.review, 'SRS recorded on bare pass')
+  })
+
+  await test('practiceSign: raw 29 fails (inflated 49 is one below gate)', async () => {
+    const { app, engine } = buildApp()
+    const p = app.practiceSign('Chào', 10_000)
+    engine.emit('score', compareScore('Chào', 29))
+    app.session.stopAttempt()
+    const r = await p
+    assert.strictEqual(r.inflatedFinalScore, 49)
+    assert.strictEqual(r.passed, false)
+    assert.strictEqual(r.progression, null)
+  })
+
+  await test('practiceSign: aborted attempt stays aborted (no inflated fields added)', async () => {
+    const { app } = buildApp()
+    const p = app.practiceSign('Chào', 10_000)
+    app.session.stopAttempt()
+    const r = await p
+    assert.strictEqual(r.aborted, true)
+    assert.strictEqual(r.progression, null)
+    assert.strictEqual(r.review, null)
+    // aborted payload does NOT carry inflated fields — it has no meaningful
+    // score to display.
+    assert.strictEqual(r.inflatedFinalScore, undefined)
+    assert.strictEqual(r.passed, undefined)
+  })
+
   console.log(`\n${_passed} passed, ${_failures} failed`)
   if (_failures) process.exit(1)
 }

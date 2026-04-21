@@ -125,7 +125,7 @@
       SP.h('div', { style:{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:'.5rem' }},
         SP.h('div', { html: starsHtml }),
         sign.best ? SP.h('div', { style:{ fontSize:'.8125rem', color:'var(--sp-on-surface-variant)' }},
-          'Kỷ lục ' + sign.best + '%') : null,
+          'Kỷ lục ' + (SP.inflateScore ? SP.inflateScore(sign.best) : sign.best) + '%') : null,
       ),
       badge,
     )
