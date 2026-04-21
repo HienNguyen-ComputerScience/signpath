@@ -151,6 +151,30 @@ function masteryLevel(best, attempts) {
   return 1
 }
 
+// Rank ladder (v0.5): one rank per 10 levels, lowest → highest. Plain
+// Vietnamese names only — no English aliases or tier numbers. The level
+// → rank mapping is derived, never stored, so the existing
+// levelFromXp / XP formulas stay untouched.
+//
+//   Lv 1–9    Đồng       (bronze)
+//   Lv 10–19  Bạc        (silver)
+//   Lv 20–29  Vàng       (gold)
+//   Lv 30–39  Bạch kim   (platinum)
+//   Lv 40+    Kim cương  (diamond)
+const RANK_NAMES = ['Đồng', 'Bạc', 'Vàng', 'Bạch kim', 'Kim cương']
+const RANK_MIN_LEVELS = [1, 10, 20, 30, 40]
+
+function rankForLevel(level) {
+  for (let i = RANK_MIN_LEVELS.length - 1; i >= 0; i--) {
+    if (level >= RANK_MIN_LEVELS[i]) return RANK_NAMES[i]
+  }
+  return RANK_NAMES[0]
+}
+
+function getRank(xp) {
+  return rankForLevel(levelFromXp(xp))
+}
+
 // Linear-regression slope over sequential scores, in "points per attempt".
 // Returns 0 for <2 samples.
 function _slope(scores) {
@@ -286,6 +310,10 @@ class SignPathProgression {
 
   getLevel() { return levelFromXp(this._state.xp) }
 
+  // Derived from the current level — not stored, so it stays correct
+  // even if XP is imported or the level formula changes.
+  getRank() { return rankForLevel(this.getLevel()) }
+
   getNextLevelThreshold() {
     return nextThresholdForLevel(this.getLevel())
   }
@@ -356,9 +384,11 @@ class SignPathProgression {
 
   getSnapshot() {
     this._refreshUnlocks()  // ensure fresh
+    const level = this.getLevel()
     return {
       xp: this._state.xp,
-      level: this.getLevel(),
+      level,
+      rank: rankForLevel(level),
       nextLevelThreshold: this.getNextLevelThreshold(),
       streak: this.getStreak(),
       dailyGoal: this.getDailyGoal(),
@@ -588,6 +618,14 @@ class SignPathProgression {
     // 8. Persist
     this._save()
 
+    // Rank — derived from levels, so a single level-up-that-crosses-a-
+    // 10-boundary fires one rank event, and an XP burst that skips past
+    // several boundaries still fires exactly one event for the highest
+    // new rank (see module header).
+    const rankBefore = rankForLevel(levelBefore)
+    const rankAfter = rankForLevel(levelAfter)
+    const rankChanged = rankBefore !== rankAfter
+
     // 9. Emit in a stable order
     if (xpGained > 0) this._emit('xp:gained', { amount: xpGained, source: 'attempt', totalXp: this._state.xp })
     if (streakExtended) this._emit('streak:updated', {
@@ -598,6 +636,10 @@ class SignPathProgression {
     if (levelAfter > levelBefore) {
       this._emit('level:up', { newLevel: levelAfter, prevLevel: levelBefore, xp: this._state.xp })
       achievements.push({ type: 'level', level: levelAfter })
+    }
+    if (rankChanged) {
+      this._emit('rank:up', { newRank: rankAfter, prevRank: rankBefore, newLevel: levelAfter, prevLevel: levelBefore })
+      achievements.push({ type: 'rank', rank: rankAfter })
     }
     if (masteryChange && masteryChange.after > masteryChange.before) {
       this._emit('mastery:gained', { signKey, masteryLevel: newMastery })
@@ -612,6 +654,9 @@ class SignPathProgression {
       xpGained,
       levelBefore,
       levelAfter,
+      rankBefore,
+      rankAfter,
+      rankChanged,
       streakExtended,
       masteryChange,
       achievementsUnlocked: achievements,
@@ -622,10 +667,15 @@ class SignPathProgression {
   // ─── INTERNAL ────────────────────────────────────────────────────────
 
   _noOpResult(duplicate) {
+    const lvl = this.getLevel()
+    const rk = rankForLevel(lvl)
     return {
       xpGained: 0,
-      levelBefore: this.getLevel(),
-      levelAfter: this.getLevel(),
+      levelBefore: lvl,
+      levelAfter: lvl,
+      rankBefore: rk,
+      rankAfter: rk,
+      rankChanged: false,
       streakExtended: false,
       masteryChange: null,
       achievementsUnlocked: [],
@@ -692,11 +742,16 @@ class SignPathProgression {
 }
 
 global.SignPathProgression = SignPathProgression
+global.SignPathProgression.getRank = getRank
+global.SignPathProgression.rankForLevel = rankForLevel
+global.SignPathProgression.RANK_NAMES = RANK_NAMES
 global.SignPathProgression._internals = {
   xpForAttempt, levelFromXp, nextThresholdForLevel,
   ymdLocal, previousYmd, masteryLevel,
   _trendFrom, _fatigueSignalFrom, _slope,
+  getRank, rankForLevel,
   STAR_MULTIPLIER, LESSON_UNLOCK_THRESHOLD,
+  RANK_NAMES, RANK_MIN_LEVELS,
   SIGN_CATEGORY_MAP, SESSION_IDLE_RESET_MS, SIGN_HISTORY_CAP,
 }
 

@@ -23,6 +23,8 @@
     const topbar = SP.topbar({
       streak: data ? data.streak.current : 0,
       xp: data ? data.user.xp : 0,
+      level: data ? data.user.level : null,
+      rank: data ? data.user.rank : null,
     })
 
     const hero = SP.h('section', { style:{ padding:'2rem 3rem 0' }},

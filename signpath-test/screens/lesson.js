@@ -29,7 +29,12 @@
 
     SP.setLastLesson(lessonId)
     const homeData = app.getHomeScreenData()
-    const topbar = SP.topbar({ streak: homeData.streak.current, xp: homeData.user.xp })
+    const topbar = SP.topbar({
+      streak: homeData.streak.current,
+      xp: homeData.user.xp,
+      level: homeData.user.level,
+      rank: homeData.user.rank,
+    })
 
     // Header
     const header = SP.h('section', { style:{ padding:'2rem 3rem 0' }},
@@ -125,7 +130,7 @@
       SP.h('div', { style:{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:'.5rem' }},
         SP.h('div', { html: starsHtml }),
         sign.best ? SP.h('div', { style:{ fontSize:'.8125rem', color:'var(--sp-on-surface-variant)' }},
-          'Kỷ lục ' + sign.best + '%') : null,
+          'Kỷ lục ' + (SP.inflateScore ? SP.inflateScore(sign.best) : sign.best) + '%') : null,
       ),
       badge,
     )

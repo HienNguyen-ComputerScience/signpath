@@ -551,6 +551,110 @@ async function run() {
       `signHistory should cap at ${internals.SIGN_HISTORY_CAP}, got ${raw.signHistory['Mẹ'].length}`)
   })
 
+  // ── Rank ladder (v0.5) ─────────────────────────────────────────────
+  console.log('Rank ladder')
+  await test('rankForLevel spans the 5-tier ladder', () => {
+    const r = internals.rankForLevel
+    assert.strictEqual(r(1),  'Đồng')
+    assert.strictEqual(r(9),  'Đồng')
+    assert.strictEqual(r(10), 'Bạc')
+    assert.strictEqual(r(19), 'Bạc')
+    assert.strictEqual(r(20), 'Vàng')
+    assert.strictEqual(r(29), 'Vàng')
+    assert.strictEqual(r(30), 'Bạch kim')
+    assert.strictEqual(r(39), 'Bạch kim')
+    assert.strictEqual(r(40), 'Kim cương')
+    assert.strictEqual(r(99), 'Kim cương')  // clamps at top
+  })
+
+  await test('getRank(xp) composes levelFromXp + rankForLevel', () => {
+    const g = internals.getRank
+    assert.strictEqual(g(0),    'Đồng')        // L1
+    assert.strictEqual(g(99),   'Đồng')        // still L1
+    assert.strictEqual(g(100),  'Đồng')        // L2
+    // Level 10 needs cumulative XP = 100 * 9 * 10 / 2 = 4500
+    assert.strictEqual(g(4500), 'Bạc')
+    assert.strictEqual(g(4499), 'Đồng')
+    // Level 20 needs 100 * 19 * 20 / 2 = 19_000
+    assert.strictEqual(g(19_000), 'Vàng')
+  })
+
+  await test('prog.getRank() reads the current xp (derived, never stored)', () => {
+    const { prog } = makeProg()
+    assert.strictEqual(prog.getRank(), 'Đồng')
+    prog._state.xp = 4500  // force L10
+    assert.strictEqual(prog.getRank(), 'Bạc')
+    prog._state.xp = 19_000
+    assert.strictEqual(prog.getRank(), 'Vàng')
+  })
+
+  await test('getSnapshot includes rank alongside level', () => {
+    const { prog } = makeProg()
+    const snap = prog.getSnapshot()
+    assert.strictEqual(typeof snap.rank, 'string')
+    assert.strictEqual(snap.rank, 'Đồng')
+  })
+
+  await test('rank:up fires when a level-up crosses a 10-boundary', () => {
+    const { prog } = makeProg()
+    prog._state.xp = 4400  // L9, Đồng
+    const seen = []
+    prog.on('rank:up', d => seen.push(d))
+    // A single attempt that tips past the L10 boundary.
+    prog.recordAttempt({ signKey: 'Chào', finalScore: 100, stars: 3, attemptId: 'rk1' })
+    assert.strictEqual(seen.length, 1, 'rank:up fires exactly once')
+    assert.strictEqual(seen[0].newRank, 'Bạc')
+    assert.strictEqual(seen[0].prevRank, 'Đồng')
+    assert.ok(seen[0].newLevel >= 10)
+    assert.ok(seen[0].prevLevel < 10)
+  })
+
+  await test('rank:up does NOT fire for level-ups inside the same tier', () => {
+    const { prog } = makeProg()
+    const seen = []
+    prog.on('rank:up', d => seen.push(d))
+    // Several L1→L2→... level-ups, all still Đồng.
+    for (let i = 0; i < 8; i++) {
+      prog.recordAttempt({ signKey: 'Chào', finalScore: 100, stars: 3, attemptId: `inside_${i}` })
+    }
+    assert.strictEqual(seen.length, 0, 'no rank:up while staying in Đồng')
+  })
+
+  await test('rank:up reports the NEW tier even when the jump skips over one', () => {
+    // The XP formula caps per-attempt gain, so "skip multiple tiers in
+    // one recordAttempt" isn't organically reachable. To prove the
+    // contract from the spec ("fire one modal for the highest new rank
+    // only") we pre-seed xp near a boundary such that levelBefore and
+    // levelAfter ranks differ by one tier, and verify the event names
+    // the correct endpoints.
+    const { prog } = makeProg()
+    // L19 (Bạc) is 100*18*19/2 = 17100 cumulative xp. 18999 is one xp
+    // short of L20 (Vàng, at 19000). +100 from a 3★ attempt lands L20.
+    prog._state.xp = 18999
+    const seen = []
+    prog.on('rank:up', d => seen.push(d))
+    const r = prog.recordAttempt({ signKey: 'Chào', finalScore: 100, stars: 3, attemptId: 'boundary' })
+    assert.strictEqual(seen.length, 1)
+    assert.strictEqual(seen[0].prevRank, 'Bạc')
+    assert.strictEqual(seen[0].newRank, 'Vàng')
+    assert.strictEqual(r.rankChanged, true)
+  })
+
+  await test('recordAttempt return includes rankBefore/rankAfter/rankChanged', () => {
+    const { prog } = makeProg()
+    prog._state.xp = 4400  // L9 Đồng
+    const r = prog.recordAttempt({ signKey: 'Chào', finalScore: 100, stars: 3, attemptId: 'rA' })
+    assert.strictEqual(r.rankBefore, 'Đồng')
+    assert.strictEqual(r.rankAfter, 'Bạc')
+    assert.strictEqual(r.rankChanged, true)
+  })
+
+  await test('SignPathProgression.getRank static matches the instance method', () => {
+    const { prog } = makeProg()
+    prog._state.xp = 4500
+    assert.strictEqual(SignPathProgression.getRank(4500), prog.getRank())
+  })
+
   // ── ymd helpers
   console.log('Date helpers')
   await test('ymdLocal and previousYmd survive month/year boundaries', () => {

@@ -174,12 +174,33 @@
     })
   }
 
+  // ── Rank colour map (v0.5 ladder) ──────────────────────────────────
+  // One design token per tier — plain Vietnamese names, no badges.
+  SP.RANK_COLORS = {
+    'Đồng':      'var(--sp-secondary)',        // bronze → muted brown
+    'Bạc':       'var(--sp-outline)',          // silver → neutral gray
+    'Vàng':      'var(--sp-tertiary)',         // gold   → olive/gold
+    'Bạch kim':  'var(--sp-outline-variant)',  // platinum → light gray
+    'Kim cương': 'var(--sp-primary)',          // diamond → primary accent
+  }
+
   // ── Topbar (rendered per-screen that wants it) ─────────────────────
-  SP.topbar = function({ streak, xp, masteredCount, rightExtras }) {
+  SP.topbar = function({ streak, xp, level, rank, masteredCount, rightExtras }) {
+    // Level+rank chip appears only when a level is passed — back-compat
+    // with callers that don't yet supply it (lesson / progress / practice
+    // all do as of v0.5).
+    const levelChip = (typeof level === 'number') ? SP.h('div', {
+      class: 'sp-chip-streak', title: 'Cấp độ · Level',
+      style: rank ? { color: SP.RANK_COLORS[rank] || 'var(--sp-on-surface)' } : null,
+    },
+      SP.h('span', { class: 'material-symbols-outlined' }, 'workspace_premium'),
+      SP.h('span', {}, 'Lv ' + level + (rank ? ' · ' + rank : ''))
+    ) : null
     return SP.h('header', { class: 'sp-topbar' },
       SP.h('div', { class: 'sp-topbar-brand' }, 'SignPath'),
       SP.h('div', { class: 'sp-topbar-actions' },
         rightExtras || null,
+        levelChip,
         SP.h('div', { class: 'sp-chip-streak', title: 'Chuỗi ngày' },
           SP.h('span', { class: 'material-symbols-outlined filled' }, 'local_fire_department'),
           SP.h('span', {}, String(streak == null ? 0 : streak))

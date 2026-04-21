@@ -69,12 +69,17 @@
 
 <!-- ── Backend dependencies (strict order) ────────────────────────────── -->
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic/holistic.js" crossorigin="anonymous"></script>
+<!-- Drawing utils for landmark overlay on the practice screen (hand + pose). -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
 <script src="signpath-engine.js"></script>
 <script src="signpath-coach.js"></script>
 <script src="signpath-session.js"></script>
 <script src="signpath-progression.js"></script>
 <script src="signpath-review.js"></script>
 <script src="signpath-audio.js"></script>
+<!-- Shared engine→UI helpers (inflateScore, hard pass gate).
+     Must load before signpath-api.js and before the screens/* bundle. -->
+<script src="shared.js"></script>
 <script src="signpath-api.js"></script>
 
 <!-- ── UI ────────────────────────────────────────────────────────────── -->
