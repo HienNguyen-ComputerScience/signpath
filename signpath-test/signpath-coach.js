@@ -253,8 +253,8 @@ class SignPathCoach {
     const issueBlock = issues.length ? issues.join('\n') : 'Minor inaccuracies across multiple areas'
 
     const langInstruction = lang === 'vi'
-      ? 'Respond in Vietnamese. Use casual, friendly tone (like a patient tutor). Address the student as "bạn".'
-      : 'Respond in English. Use casual, friendly tone (like a patient tutor).'
+      ? 'Respond in Vietnamese. Use casual, friendly tone (like a patient tutor). Address the student as "bạn". KHÔNG đề cập đến việc ký hiệu này dùng một tay hay hai tay — tập trung vào hình dạng và vị trí tay thay vì số lượng tay.'
+      : 'Respond in English. Use casual, friendly tone (like a patient tutor). Do NOT mention whether the sign is one-handed or two-handed — focus on hand shape and position instead of the number of hands involved.'
 
     return `You are a Vietnamese Sign Language (VSL) coach helping a student practice the sign "${signName}" (${signEn}). Their current accuracy score is ${score}/100.
 

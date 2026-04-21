@@ -844,33 +844,7 @@ class SignPathEngine {
     this._consecutiveErrors = 0
     this._lastSentTime = 0
     this._frameTimings = []  // [M-3] rolling FPS measurement
-    const MIN_SEND_INTERVAL_MS = 33  // cap at ~30fps — MediaPipe can't keep up above this anyway at complexity 1
-    const loop = () => {
-      if (!this._running) return
-      const nowMs = performance.now()
-      if (!document.hidden && this._video.readyState >= 2 && !this._inferenceRunning && nowMs - this._lastSentTime > MIN_SEND_INTERVAL_MS) {
-        this._inferenceRunning = true
-        this._lastSentTime = nowMs
-        this._holistic.send({image: this._video})
-          .then(() => {
-            this._inferenceRunning = false
-            this._consecutiveErrors = 0
-            const dt = performance.now() - nowMs
-            this._frameTimings.push(dt)
-            if (this._frameTimings.length > 30) this._frameTimings.shift()
-          })
-          .catch(() => {
-            this._inferenceRunning = false
-            this._consecutiveErrors++
-            if (this._consecutiveErrors >= 15) {
-              this._emit('error', {message: 'Tracking errors — try reloading', type: 'tracking'})
-              this._consecutiveErrors = 0
-            }
-          })
-      }
-      this._loopId = requestAnimationFrame(loop)
-    }
-    loop()
+    this._startInferenceLoop()
 
     this._emit('ready', {
       templates: Object.keys(this._templates).length,
@@ -1514,6 +1488,110 @@ class SignPathEngine {
     const totalStars = Object.values(this._progress).reduce((a,x) => a+x.stars, 0)
     const mastered = Object.values(this._progress).filter(x => x.stars >= 3).length
     return {totalStars, mastered, streak:this._streak, lessonsCompleted:this._lessonsCompleted.size, totalSigns:Object.keys(this._signDB).length}
+  }
+
+  // Inference loop runner. Extracted from init() so pauseCapture / resume-
+  // Capture can halt + restart it without duplicating the body. init() still
+  // owns running-state reset (this._running = true, counters=0, etc.); this
+  // method just starts the rAF loop and stamps `this._loopId`.
+  _startInferenceLoop() {
+    const MIN_SEND_INTERVAL_MS = 33  // ~30fps cap — MediaPipe can't keep up past this at complexity 1
+    const self = this
+    const loop = () => {
+      if (!self._running) return
+      const nowMs = performance.now()
+      if (!document.hidden && self._video && self._video.readyState >= 2
+          && !self._inferenceRunning && nowMs - self._lastSentTime > MIN_SEND_INTERVAL_MS) {
+        self._inferenceRunning = true
+        self._lastSentTime = nowMs
+        self._holistic.send({image: self._video})
+          .then(() => {
+            self._inferenceRunning = false
+            self._consecutiveErrors = 0
+            const dt = performance.now() - nowMs
+            self._frameTimings.push(dt)
+            if (self._frameTimings.length > 30) self._frameTimings.shift()
+          })
+          .catch(() => {
+            self._inferenceRunning = false
+            self._consecutiveErrors++
+            if (self._consecutiveErrors >= 15) {
+              self._emit('error', {message: 'Tracking errors — try reloading', type: 'tracking'})
+              self._consecutiveErrors = 0
+            }
+          })
+      }
+      self._loopId = requestAnimationFrame(loop)
+    }
+    loop()
+  }
+
+  // Pause the capture pipeline without tearing down MediaPipe.
+  //   - halts the rAF inference loop (no more onResults callbacks)
+  //   - stops every MediaStream track so the webcam LED goes dark
+  //   - leaves `this._holistic` loaded so resumeCapture restarts fast
+  // Call from whichever screen owns the live camera (practice.js) on
+  // unmount. Safe to call repeatedly — subsequent calls are no-ops once
+  // the stream is already released.
+  async pauseCapture() {
+    if (!this._running && !(this._video && this._video.srcObject)) return
+    this._running = false
+    if (this._loopId) { cancelAnimationFrame(this._loopId); this._loopId = null }
+
+    // Wait for any in-flight MediaPipe inference to settle so its
+    // onResults doesn't fire against torn-down handlers.
+    const waitStart = Date.now()
+    while (this._inferenceRunning && Date.now() - waitStart < 500) {
+      await new Promise(r => setTimeout(r, 20))
+    }
+
+    if (this._video && this._video.srcObject) {
+      this._video.srcObject.getTracks().forEach(t => {
+        try { t.stop() } catch (e) { console.error('[engine] track.stop failed:', e) }
+      })
+      this._video.srcObject = null
+    }
+    this._frameBuffer = []
+    this._scoreBuffer = []
+    this._lastFrame = null
+    this._originHistory = []
+  }
+
+  // Re-acquire the camera and restart the inference loop. Assumes
+  // init() has already run once (templates loaded, holistic constructed).
+  // If called before init or after destroy, we surface an engine error
+  // rather than pretending to succeed.
+  async resumeCapture() {
+    if (this._running) return  // already live
+    if (!this._video) {
+      this._emit('error', { message: 'resumeCapture: no video element bound', type: 'camera' })
+      return
+    }
+    if (!this._holistic) {
+      this._emit('error', { message: 'resumeCapture: Holistic not initialized', type: 'mediapipe' })
+      return
+    }
+    try {
+      if (!this._video.srcObject) {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { width: 640, height: 480, facingMode: 'user' },
+        })
+        this._video.srcObject = stream
+      }
+      await this._video.play()
+    } catch (e) {
+      if (this._video.srcObject) {
+        this._video.srcObject.getTracks().forEach(t => { try { t.stop() } catch(_){} })
+        this._video.srcObject = null
+      }
+      this._emit('error', { message: `Camera re-acquire failed: ${e.message}`, type: 'camera' })
+      return
+    }
+    this._running = true
+    this._inferenceRunning = false
+    this._consecutiveErrors = 0
+    this._lastSentTime = 0
+    this._startInferenceLoop()
   }
 
   async destroy() {

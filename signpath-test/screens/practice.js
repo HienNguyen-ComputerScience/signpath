@@ -48,6 +48,11 @@
 
     const hasTemplate = signData.hasTemplate
     app.engine.selectSign(signKey)
+    // Start (or restart) the capture pipeline on mount — previous
+    // navigation-away may have paused it. Safe if already running.
+    if (typeof app.engine.resumeCapture === 'function') {
+      app.engine.resumeCapture().catch(e => console.error('[practice] resumeCapture failed:', e))
+    }
 
     const homeData = app.getHomeScreenData()
     const topbar = SP.topbar({
@@ -427,6 +432,12 @@
         if (landmarkCtx) landmarkCtx.clearRect(0, 0, landmarkCanvas.width, landmarkCanvas.height)
         app.engine.clearSign()
         SP.modals.close()
+        // Stop the camera + inference loop. Route guard on the modals
+        // handles the race where a pending attempt:end fires after we
+        // navigate off the practice route.
+        if (typeof app.engine.pauseCapture === 'function') {
+          app.engine.pauseCapture().catch(e => console.error('[practice] pauseCapture failed:', e))
+        }
       }
     }
   }
