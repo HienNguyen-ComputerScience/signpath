@@ -390,12 +390,16 @@
         SP.modals.showResult(result, {
           onTryAgain: () => { runAttempt() },
           onNext: () => {
+            // "Dấu tiếp theo" advances within the current chapter; once
+            // every sign has been attempted we drop the user back on the
+            // chapter-selection screen (#home) rather than the single
+            // chapter detail, per the v0.5 spec.
             const lesson = app.getLessonScreenData(signData.unitId)
             if (!lesson) { location.hash = '#home'; return }
             const i = lesson.signs.findIndex(s => s.key === signKey)
             const next = (i >= 0 && i + 1 < lesson.signs.length) ? lesson.signs[i + 1] : null
             if (next) location.hash = '#practice/' + encodeURIComponent(next.key)
-            else      location.hash = '#lesson/' + encodeURIComponent(signData.unitId)
+            else      location.hash = '#home'
           },
           onBack: () => { location.hash = '#lesson/' + encodeURIComponent(signData.unitId) },
         })
