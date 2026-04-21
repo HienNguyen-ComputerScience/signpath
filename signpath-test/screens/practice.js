@@ -1,8 +1,10 @@
 /**
  * Practice screen (#practice/:sign). THE critical screen.
- *   Left column:  looping reference video + sign name + how-to steps.
- *   Right column: webcam (mirror of engine's video stream) + live score + record button.
- * On record, runs 4s attempt, then shows result modal.
+ *   Camera fills the main surface; reference video thumbnail is pinned
+ *   top-right (~25% width); coach-advice panel sits beneath it, above
+ *   the record controls. A transparent <canvas> overlay draws hand +
+ *   pose landmarks from every MediaPipe frame.
+ * On record, runs a 4s attempt and shows the result modal.
  */
 ;(function() {
   'use strict'
@@ -13,7 +15,6 @@
   // Event handler refs (for teardown)
   let activeHandlers = []
   let activeDurationMs = 0
-  let lastLiveScore = '—'
 
   function on(eventName, handler) {
     const app = SP.getApp()
@@ -52,35 +53,22 @@
     const topbar = SP.topbar({ streak: homeData.streak.current, xp: homeData.user.xp })
     host.appendChild(topbar)
 
-    // Back link row
-    host.appendChild(SP.h('div', { style:{ padding:'1rem 2rem 0' }},
-      SP.h('a', { href: '#lesson/' + encodeURIComponent(signData.unitId),
-                  style:{ color:'var(--sp-on-surface-variant)', textDecoration:'none',
-                          display:'inline-flex', alignItems:'center', gap:'.25rem', fontSize:'.875rem' }},
-        SP.h('span', { class:'material-symbols-outlined', style:{ fontSize:'1.125rem' }}, 'arrow_back'),
-        SP.h('span', {}, 'Về chương: ' + (signData.unitGoal && signData.unitGoal.vi || '')),
-      ),
-    ))
-
-    // [Fix 4] Palm-fallback warning banner — hidden until engine emits
-    // 'tracking:degraded' (palm-fallback rate > 20% = shoulders not reliably
-    // detected, so scoring will be unreliable). Auto-hides after 5 seconds of
-    // no new degraded events. Does NOT block the user from recording —
-    // they can still attempt if they choose.
+    // Palm-fallback warning banner — hidden until engine emits
+    // 'tracking:degraded'. Auto-hides 5s after last degraded event.
     const degradedBanner = SP.h('div', { id: 'sp-degraded-banner', style:{
       display: 'none',
-      margin: '.75rem 2rem 0',
-      padding: '.875rem 1.25rem',
+      margin: '.5rem 1rem 0',
+      padding: '.75rem 1rem',
       background: 'var(--sp-tertiary-container)',
       color: 'var(--sp-on-tertiary-container)',
       borderRadius: '.75rem',
-      fontSize: '.875rem', fontWeight: 500,
-      alignItems: 'flex-start', gap: '.75rem',
+      fontSize: '.8125rem', fontWeight: 500,
+      alignItems: 'flex-start', gap: '.5rem',
     }},
-      SP.h('span', { class:'material-symbols-outlined', style:{ fontSize:'1.25rem', flexShrink:0 }}, 'warning'),
-      SP.h('div', { style:{ flex:1, lineHeight:1.45 }},
+      SP.h('span', { class:'material-symbols-outlined', style:{ fontSize:'1.125rem', flexShrink:0 }}, 'warning'),
+      SP.h('div', { style:{ flex:1, lineHeight:1.4 }},
         SP.h('div', { style:{ fontWeight:700 }}, 'Khung hình chưa đủ'),
-        SP.h('div', {}, 'Lùi ra xa camera hoặc bật thêm ánh sáng · Step back from the camera or improve lighting'),
+        SP.h('div', {}, 'Lùi ra xa camera hoặc bật thêm ánh sáng · Step back or improve lighting'),
       ),
       SP.h('button', { 'aria-label':'Dismiss',
         style:{
@@ -98,170 +86,252 @@
     let degradedQuietTimer = null
     host.appendChild(degradedBanner)
 
-    // Two-column layout
-    const layout = SP.h('div', { style:{
-      display:'grid', gridTemplateColumns:'2fr 3fr',
-      gap:'1.5rem', padding:'1rem 2rem 4rem',
-      maxWidth:'78rem',
+    // ── Practice surface: camera full-bleed with overlays ──────────────
+    const practiceWrap = SP.h('div', { class:'sp-practice-wrap', style:{
+      position:'relative',
+      margin:'.5rem 1rem 1rem',
+      height:'calc(100vh - 7rem)',
+      minHeight:'32rem',
+      borderRadius:'var(--sp-r-md)',
+      overflow:'hidden',
+      background:'#000',
     }})
 
-    // ── Left column: reference ─────────────────────────────
-    const refVideoEl = SP.videoEl(signKey, { preload: 'auto' })
-    refVideoEl.style.aspectRatio = '1/1'
-    refVideoEl.style.maxHeight = '28rem'
-    const speedRow = SP.h('div', { style:{ display:'flex', gap:'.5rem', alignItems:'center', marginTop:'.75rem' }},
-      SP.h('span', { style:{ fontSize:'.75rem', color:'var(--sp-on-surface-variant)', marginRight:'.25rem' }}, 'Tốc độ:'),
-      speedBtn(refVideoEl, 0.5, '0.5×'),
-      speedBtn(refVideoEl, 0.75, '0.75×', true),
-      speedBtn(refVideoEl, 1.0, '1×'),
-    )
+    // Webcam feed (mirror of the engine's hidden stream)
+    const camVideo = SP.h('video', { autoplay:'', muted:'', playsinline:'',
+      style:{
+        position:'absolute', inset:0,
+        width:'100%', height:'100%',
+        objectFit:'cover',
+        transform:'scaleX(-1)',
+      },
+    })
+    practiceWrap.appendChild(camVideo)
 
-    const leftCol = SP.h('div', {},
-      SP.h('div', { class:'sp-card', style:{ padding:'1.25rem' }},
-        SP.h('div', { style:{ fontSize:'.75rem', color:'var(--sp-on-surface-variant)', fontWeight:600, textTransform:'uppercase', letterSpacing:'.5px', marginBottom:'.5rem' }},
-          'Video mẫu · Reference'),
-        refVideoEl,
-        speedRow,
-      ),
-      SP.h('div', { style:{ marginTop:'1rem', padding:'1rem 1.25rem' }},
-        SP.h('h1', { style:{ fontSize:'2.25rem', fontWeight:800, color:'var(--sp-primary)', lineHeight:1.1, marginBottom:'.25rem' }}, signData.vi),
-        SP.h('p', { style:{ fontSize:'1.125rem', color:'var(--sp-on-surface-variant)', marginBottom:'1rem' }}, signData.en),
-        SP.h('div', { style:{ display:'flex', gap:'.75rem', alignItems:'center', marginBottom:'1rem' }},
-          SP.h('div', { html: SP.starsHTML(signData.mastery, 3), style:{ fontSize:'1.25rem' }}),
-          SP.h('div', { style:{ fontSize:'.875rem', color:'var(--sp-on-surface-variant)' }},
-            SP.masteryLabel(signData.mastery) + ' · ' + signData.attempts + ' lần thử'),
-        ),
-        SP.h('div', { style:{ padding:'.875rem 1rem', background:'var(--sp-surface-container-low)', borderRadius:'.75rem', fontSize:'.875rem', color:'var(--sp-on-surface-variant)', lineHeight:1.5 }},
-          SP.h('div', { style:{ fontWeight:700, color:'var(--sp-on-surface)', marginBottom:'.25rem' }}, 'Cách thực hiện'),
-          '1. Xem video mẫu vài lần để nắm chuyển động.', SP.h('br',{}),
-          '2. Nhấn "Ghi âm" và thực hiện dấu trước camera.', SP.h('br',{}),
-          '3. Giữ tay ở trung tâm khung hình, chiếu sáng đầy đủ.',
-        ),
-      ),
-    )
+    // Transparent landmark overlay — draws hand + pose connections every frame.
+    // Mirrored in-step with the video so skeleton lines up with the user.
+    const landmarkCanvas = SP.h('canvas', { id:'sp-landmark-canvas',
+      width: 1280, height: 720,
+      style:{
+        position:'absolute', inset:0,
+        width:'100%', height:'100%',
+        transform:'scaleX(-1)',
+        pointerEvents:'none',
+      },
+    })
+    practiceWrap.appendChild(landmarkCanvas)
+    const landmarkCtx = landmarkCanvas.getContext('2d')
 
-    // ── Right column: webcam + score + record ──────────────
-    // Mirror the engine's hidden <video>.srcObject onto a visible element.
-    const camWrap = SP.h('div', { style:{
-      position:'relative', background:'#000', borderRadius:'var(--sp-r-md)',
-      aspectRatio:'4/3', overflow:'hidden', width:'100%',
-    }})
-    const camVideo = SP.h('video', { autoplay: '', muted:'', playsinline:'',
-      style:{ width:'100%', height:'100%', objectFit:'cover', transform:'scaleX(-1)' }})
-    camWrap.appendChild(camVideo)
-    // Copy stream from the engine's hidden element
+    // Stream: mirror engine's hidden <video>.srcObject onto the visible element
     const engineVideo = document.getElementById('sp-engine-video')
     function syncStream() {
       try { camVideo.srcObject = engineVideo.srcObject } catch(_){}
     }
     syncStream()
-    // If not yet attached, poll briefly
     const streamPoller = setInterval(() => {
       if (!engineVideo.srcObject) return
       if (camVideo.srcObject !== engineVideo.srcObject) syncStream()
     }, 300)
 
-    // Hand detection indicator
+    // Sign title + back link (top-left overlay)
+    const backOverlay = SP.h('div', { style:{
+      position:'absolute', top:'1rem', left:'1rem', zIndex:3,
+      display:'flex', flexDirection:'column', gap:'.125rem',
+      background:'rgba(15, 14, 10, 0.6)',
+      color:'#fff', padding:'.5rem .875rem',
+      borderRadius:'.625rem',
+      maxWidth:'20rem',
+    }},
+      SP.h('a', { href: '#lesson/' + encodeURIComponent(signData.unitId),
+        style:{ color:'rgba(255,255,255,.78)', textDecoration:'none',
+          display:'inline-flex', alignItems:'center', gap:'.25rem', fontSize:'.75rem' }},
+        SP.h('span', { class:'material-symbols-outlined', style:{ fontSize:'1rem' }}, 'arrow_back'),
+        SP.h('span', {}, 'Về chương'),
+      ),
+      SP.h('div', { style:{ fontSize:'1.125rem', fontWeight:800, lineHeight:1.1 }}, signData.vi),
+      SP.h('div', { style:{ fontSize:'.75rem', opacity:.75 }}, signData.en),
+    )
+    practiceWrap.appendChild(backOverlay)
+
+    // Hand detection indicator (bottom-left)
     const handDot = SP.h('div', { id: 'sp-hand-dot', style:{
-      position:'absolute', bottom:'.75rem', left:'.75rem',
+      position:'absolute', bottom:'1rem', left:'1rem', zIndex:3,
       padding:'.375rem .75rem', borderRadius:'9999px',
       background:'rgba(167, 59, 33, 0.78)', color:'#fff', fontSize:'.75rem', fontWeight:600,
-      backdropFilter:'blur(4px)',
     }}, 'Chưa thấy tay')
-    camWrap.appendChild(handDot)
+    practiceWrap.appendChild(handDot)
 
-    // Live score overlay
+    // Live score overlay (bottom-center)
     const scoreOverlay = SP.h('div', { style:{
-      position:'absolute', top:'.75rem', right:'.75rem',
-      background:'rgba(15, 14, 10, 0.68)', color:'#fff',
-      padding:'.625rem 1rem', borderRadius:'.75rem',
-      backdropFilter:'blur(8px)', textAlign:'center', minWidth:'5rem',
+      position:'absolute', bottom:'1rem', left:'50%', transform:'translateX(-50%)', zIndex:3,
+      background:'rgba(15, 14, 10, 0.72)', color:'#fff',
+      padding:'.625rem 1.25rem', borderRadius:'.75rem',
+      textAlign:'center', minWidth:'6rem',
     }},
       SP.h('div', { id:'sp-live-score', style:{ fontSize:'1.75rem', fontWeight:800, lineHeight:1 }}, '—'),
       SP.h('div', { style:{ fontSize:'.625rem', letterSpacing:'.5px', textTransform:'uppercase', opacity:.8 }}, 'Điểm thử'),
     )
-    camWrap.appendChild(scoreOverlay)
+    practiceWrap.appendChild(scoreOverlay)
 
-    // Permanent framing reminder — always visible below the webcam.
-    // Tells users to position themselves so their full body is in frame.
-    const framingHint = SP.h('div', { id:'sp-framing-hint',
-      style:{
-        marginTop:'.5rem',
-        padding:'.5rem .75rem',
-        textAlign:'center',
-        fontSize:'.875rem',
-        color:'var(--sp-on-surface-variant)',
-        lineHeight:1.45,
-        background:'var(--sp-surface-container-low)',
-        borderRadius:'.5rem',
-      }},
-      SP.h('div', {}, '📏 Đứng xa camera để thấy toàn thân'),
-      SP.h('div', { style:{ fontSize:'.75rem', opacity:.85, marginTop:'.125rem' }},
-        'Stand back so your whole body is visible'),
+    // ── Right-column panels: reference thumb / advice / record ──────────
+    const rightCol = SP.h('div', { class:'sp-practice-rightcol', style:{
+      position:'absolute', top:'1rem', right:'1rem', zIndex:3,
+      width:'25%', minWidth:'15rem', maxWidth:'22rem',
+      display:'flex', flexDirection:'column', gap:'.625rem',
+    }})
+
+    // Reference video thumbnail
+    const refVideoEl = SP.videoEl(signKey, { preload:'auto' })
+    refVideoEl.style.aspectRatio = '1/1'
+    refVideoEl.style.borderRadius = '.5rem'
+    refVideoEl.style.overflow = 'hidden'
+    const refWrap = SP.h('div', { style:{
+      background:'rgba(28, 26, 22, 0.82)',
+      color:'#fff',
+      borderRadius:'.75rem',
+      padding:'.5rem .625rem .625rem',
+      boxShadow:'0 6px 18px rgba(0,0,0,.38)',
+    }},
+      SP.h('div', { style:{
+        fontSize:'.625rem',
+        fontWeight:700, textTransform:'uppercase', letterSpacing:'.5px',
+        padding:'.125rem 0 .375rem', opacity:.8,
+      }}, 'Video mẫu · Reference'),
+      refVideoEl,
+      SP.h('div', { style:{ display:'flex', gap:'.25rem', justifyContent:'center', marginTop:'.5rem' }},
+        speedBtn(refVideoEl, 0.5, '0.5×'),
+        speedBtn(refVideoEl, 0.75, '0.75×', true),
+        speedBtn(refVideoEl, 1.0, '1×'),
+      ),
     )
 
-    // Record controls
-    const progressWrap = SP.h('div', { style:{ flex:1, height:'.5rem', background:'var(--sp-surface-container-high)', borderRadius:'9999px', overflow:'hidden' }},
+    // Coach advice panel — shows the latest AI feedback text.
+    const adviceCard = SP.h('div', { id:'sp-coach-box', style:{
+      background:'rgba(28, 26, 22, 0.82)',
+      color:'#fff',
+      borderLeft:'4px solid var(--sp-primary)',
+      borderRadius:'.625rem',
+      padding:'.75rem .875rem',
+      fontSize:'.8125rem',
+      lineHeight:1.45,
+      minHeight:'3.5rem',
+      boxShadow:'0 6px 18px rgba(0,0,0,.38)',
+    }},
+      SP.h('div', { style:{
+        fontSize:'.625rem', fontWeight:700,
+        textTransform:'uppercase', letterSpacing:'.5px',
+        marginBottom:'.25rem', opacity:.8,
+      }}, 'Lời khuyên AI'),
+      SP.h('div', { id:'sp-coach-text' },
+        hasTemplate ? 'Xem video mẫu rồi nhấn Ghi âm để bắt đầu.'
+                    : 'Dấu này chưa có dữ liệu chấm điểm. Bạn chỉ có thể xem video mẫu.'),
+    )
+
+    // Record controls panel
+    const progressWrap = SP.h('div', { style:{ flex:1, height:'.375rem', background:'rgba(255,255,255,.16)', borderRadius:'9999px', overflow:'hidden' }},
       SP.h('div', { id:'sp-rec-progress', style:{ height:'100%', width:'0%', background:'linear-gradient(90deg, #954b00 0%, #f68a2f 100%)', transition:'width 100ms linear' }})
     )
-    const recordBtn = SP.h('button', { id:'sp-record-btn', class:'sp-btn sp-btn-primary sp-btn-lg',
+    const recordBtn = SP.h('button', { id:'sp-record-btn', class:'sp-btn sp-btn-primary',
       disabled: !hasTemplate,
       onclick: runAttempt,
+      style:{ width:'100%' },
     },
       SP.h('span', { class:'material-symbols-outlined filled' }, 'fiber_manual_record'),
       SP.h('span', {}, 'Ghi âm · Record'),
     )
-    const recordRow = SP.h('div', { style:{ marginTop:'1rem', display:'flex', gap:'1rem', alignItems:'center' }},
+    const recordPanel = SP.h('div', { style:{
+      background:'rgba(28, 26, 22, 0.82)',
+      borderRadius:'.625rem',
+      padding:'.75rem .875rem',
+      display:'flex', flexDirection:'column', gap:'.5rem',
+      boxShadow:'0 6px 18px rgba(0,0,0,.38)',
+    }},
       recordBtn, progressWrap,
     )
 
-    // Coach / feedback box
-    const coachBox = SP.h('div', { id:'sp-coach-box', style:{
-      marginTop:'1rem', padding:'.875rem 1rem',
-      background:'var(--sp-surface-container-low)',
-      borderLeft:'4px solid var(--sp-primary)', borderRadius:'.5rem',
-      color:'var(--sp-on-surface)', fontSize:'.9375rem', minHeight:'3rem',
-    }}, hasTemplate ? 'Xem video mẫu, sau đó nhấn Ghi âm.'
-                    : 'Dấu này chưa có dữ liệu chấm điểm. Bạn chỉ có thể xem video mẫu.')
+    rightCol.appendChild(refWrap)
+    rightCol.appendChild(adviceCard)
+    rightCol.appendChild(recordPanel)
+    practiceWrap.appendChild(rightCol)
+    host.appendChild(practiceWrap)
 
-    // Warning banner for phantom signs
-    const phantomBanner = !hasTemplate ? SP.h('div', { style:{
-      padding:'.75rem 1rem', marginTop:'1rem',
-      background:'var(--sp-error-container)', color:'var(--sp-on-error)',
-      borderRadius:'.75rem', fontSize:'.875rem', fontWeight:500,
-    }}, '⚠ Dấu này chưa có dữ liệu chấm điểm. Chỉ xem video mẫu để học.') : null
+    // Responsive: on narrow viewports stack the right column BELOW the
+    // camera instead of overlaying it. Spec: < 768px → stacked.
+    function applyResponsive() {
+      const narrow = window.innerWidth < 768
+      if (narrow) {
+        practiceWrap.style.height = 'auto'
+        practiceWrap.style.display = 'flex'
+        practiceWrap.style.flexDirection = 'column'
+        practiceWrap.style.background = 'transparent'
+        rightCol.style.position = 'static'
+        rightCol.style.top = ''
+        rightCol.style.right = ''
+        rightCol.style.width = 'auto'
+        rightCol.style.maxWidth = 'none'
+        rightCol.style.padding = '.75rem 0 0'
+        // Give the camera a fixed aspect so it doesn't collapse to 0 in flex.
+        camVideo.style.position = 'relative'
+        camVideo.style.height = 'auto'
+        camVideo.style.aspectRatio = '4/3'
+        landmarkCanvas.style.position = 'absolute'
+      } else {
+        practiceWrap.style.height = 'calc(100vh - 7rem)'
+        practiceWrap.style.display = 'block'
+        practiceWrap.style.background = '#000'
+        rightCol.style.position = 'absolute'
+        rightCol.style.top = '1rem'
+        rightCol.style.right = '1rem'
+        rightCol.style.width = '25%'
+        rightCol.style.maxWidth = '22rem'
+        rightCol.style.padding = '0'
+        camVideo.style.position = 'absolute'
+        camVideo.style.height = '100%'
+        camVideo.style.aspectRatio = ''
+      }
+    }
+    applyResponsive()
+    window.addEventListener('resize', applyResponsive)
 
-    const rightCol = SP.h('div', {},
-      SP.h('div', { class:'sp-card', style:{ padding:'1.25rem' }},
-        SP.h('div', { style:{ fontSize:'.75rem', color:'var(--sp-on-surface-variant)', fontWeight:600, textTransform:'uppercase', letterSpacing:'.5px', marginBottom:'.5rem' }},
-          'Camera của bạn · Your camera'),
-        camWrap,
-        framingHint,
-        recordRow,
-        coachBox,
-        phantomBanner,
-      ),
-    )
-
-    layout.appendChild(leftCol)
-    layout.appendChild(rightCol)
-    host.appendChild(layout)
-
-    // ── Event wiring ─────────────────────────────────────
+    // ── Event wiring ─────────────────────────────────────────────────
     detachAll()
     const scoreEl = document.getElementById('sp-live-score')
-    const coachEl = document.getElementById('sp-coach-box')
+    const coachTextEl = document.getElementById('sp-coach-text')
     const progEl  = document.getElementById('sp-rec-progress')
 
+    // Landmark rendering: fired every MediaPipe frame via 'tracking'.
     on('tracking', d => {
       handDot.textContent = d.detected ? '✓ Thấy tay' : 'Chưa thấy tay'
       handDot.style.background = d.detected ? 'rgba(27, 67, 50, 0.78)' : 'rgba(167, 59, 33, 0.78)'
+
+      // Keep canvas sized to the video's native resolution so 0..1
+      // normalized landmark coords map pixel-correctly.
+      const vw = camVideo.videoWidth, vh = camVideo.videoHeight
+      if (vw && vh && (landmarkCanvas.width !== vw || landmarkCanvas.height !== vh)) {
+        landmarkCanvas.width = vw
+        landmarkCanvas.height = vh
+      }
+      landmarkCtx.clearRect(0, 0, landmarkCanvas.width, landmarkCanvas.height)
+      // Drawing utils aren't loaded → skip; no overlay rather than a crash.
+      if (typeof window.drawConnectors !== 'function' || typeof window.drawLandmarks !== 'function') return
+
+      const HAND = window.HAND_CONNECTIONS || []
+      const POSE = window.POSE_CONNECTIONS || []
+      if (d.pose) {
+        window.drawConnectors(landmarkCtx, d.pose, POSE, { color:'rgba(184,196,232,.55)', lineWidth:2 })
+        window.drawLandmarks(landmarkCtx, d.pose, { color:'#f68a2f', lineWidth:1, radius:3 })
+      }
+      if (d.rightHand) {
+        window.drawConnectors(landmarkCtx, d.rightHand, HAND, { color:'#5a9a3c', lineWidth:3 })
+        window.drawLandmarks(landmarkCtx, d.rightHand, { color:'#d4922a', lineWidth:1, radius:2 })
+      }
+      if (d.leftHand) {
+        window.drawConnectors(landmarkCtx, d.leftHand, HAND, { color:'#5a9a3c', lineWidth:3 })
+        window.drawLandmarks(landmarkCtx, d.leftHand, { color:'#d4922a', lineWidth:1, radius:2 })
+      }
     })
 
-    // [Fix 4] Palm-fallback warning (shoulders not reliably detected).
-    // Show on first event; reset a 5-second quiet timer on every re-emit;
-    // auto-hide once 5 consecutive seconds pass without a new event.
-    // Manually-dismissed → stays dismissed for this screen instance.
+    // Palm-fallback warning: shoulders not reliably detected.
     on('tracking:degraded', d => {
       if (degradedManuallyDismissed) return
       degradedBanner.style.display = 'flex'
@@ -286,7 +356,7 @@
       progEl.style.width = '0%'
       recordBtn.disabled = true
       recordBtn.innerHTML = '<span class="material-symbols-outlined">hourglass_top</span><span>Đang ghi…</span>'
-      coachEl.textContent = '🎥 Thực hiện dấu ngay — Signing now…'
+      coachTextEl.textContent = '🎥 Thực hiện dấu ngay — Signing now…'
     })
     on('attempt:tick', d => {
       const pct = Math.max(0, Math.min(100, 100 * d.elapsedMs / (activeDurationMs || 1)))
@@ -296,12 +366,16 @@
       progEl.style.width = '0%'
       recordBtn.disabled = !hasTemplate
       recordBtn.innerHTML = '<span class="material-symbols-outlined filled">fiber_manual_record</span><span>Ghi âm · Record</span>'
-      coachEl.textContent = d.reason === 'no_signing_detected'
+      coachTextEl.textContent = d.reason === 'no_signing_detected'
         ? 'Không thấy cử chỉ — hãy đảm bảo tay bạn trong khung hình, rồi thử lại.'
         : 'Đã hủy. Nhấn Ghi âm để thử lại.'
     })
     on('attempt:end', d => {
       progEl.style.width = '100%'
+      if (d.advice) coachTextEl.textContent = d.advice
+    })
+    on('attempt:coach-update', d => {
+      if (d.advice) coachTextEl.textContent = d.advice
     })
 
     async function runAttempt() {
@@ -309,9 +383,7 @@
       try {
         const result = await app.practiceSign(signKey, 4000)
         if (result.aborted) { /* abort handler already updated UI */ return }
-        // Push to recent practice list
         SP.pushRecent(signKey)
-        // Show result modal
         SP.modals.showResult(result, {
           onTryAgain: () => { runAttempt() },
           onNext: () => {
@@ -337,7 +409,10 @@
       teardown() {
         clearInterval(streamPoller)
         if (degradedQuietTimer) clearTimeout(degradedQuietTimer)
+        window.removeEventListener('resize', applyResponsive)
         detachAll()
+        // Overlay disappears when camera is off — clear the canvas.
+        if (landmarkCtx) landmarkCtx.clearRect(0, 0, landmarkCanvas.width, landmarkCanvas.height)
         app.engine.clearSign()
         SP.modals.close()
       }
@@ -348,7 +423,6 @@
     const btn = SP.h('button', {
       class: 'sp-chip' + (selected ? ' active' : ''),
       onclick: () => {
-        // Reset all siblings
         if (btn.parentElement) {
           SP.$$('.sp-chip', btn.parentElement).forEach(b => b.classList.remove('active'))
         }
@@ -358,7 +432,6 @@
       }
     }, label)
     if (selected) {
-      // Apply default speed immediately once video is in DOM
       setTimeout(() => {
         const v = video.querySelector('video')
         if (v) v.playbackRate = rate
