@@ -50,7 +50,12 @@
     app.engine.selectSign(signKey)
 
     const homeData = app.getHomeScreenData()
-    const topbar = SP.topbar({ streak: homeData.streak.current, xp: homeData.user.xp })
+    const topbar = SP.topbar({
+      streak: homeData.streak.current,
+      xp: homeData.user.xp,
+      level: homeData.user.level,
+      rank: homeData.user.rank,
+    })
     host.appendChild(topbar)
 
     // Palm-fallback warning banner — hidden until engine emits

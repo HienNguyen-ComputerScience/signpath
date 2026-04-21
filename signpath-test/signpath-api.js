@@ -73,6 +73,7 @@ const EVENT_OWNERS = {
   'xp:gained': 'progression',
   'streak:updated': 'progression',
   'level:up': 'progression',
+  'rank:up': 'progression',
   'mastery:gained': 'progression',
   'lesson:unlocked': 'progression',
   'lesson:completed': 'progression',
@@ -251,6 +252,7 @@ class SignPathApp {
       user: {
         xp: snap.xp,
         level: snap.level,
+        rank: snap.rank,
         nextLevelThreshold: snap.nextLevelThreshold,
         xpIntoLevel: snap.xp - _prevLevelThreshold(snap.level),
         xpForLevel: snap.nextLevelThreshold - _prevLevelThreshold(snap.level),

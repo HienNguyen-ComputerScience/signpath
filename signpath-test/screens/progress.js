@@ -20,7 +20,10 @@
 
     const homeData = app.getHomeScreenData()
     const lessons = app.engine.getLessons()
-    const topbar = SP.topbar({ streak: homeData.streak.current, xp: homeData.user.xp })
+    const topbar = SP.topbar({
+      streak: homeData.streak.current, xp: homeData.user.xp,
+      level: homeData.user.level, rank: homeData.user.rank,
+    })
     host.appendChild(topbar)
 
     // Header

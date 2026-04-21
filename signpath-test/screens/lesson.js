@@ -29,7 +29,12 @@
 
     SP.setLastLesson(lessonId)
     const homeData = app.getHomeScreenData()
-    const topbar = SP.topbar({ streak: homeData.streak.current, xp: homeData.user.xp })
+    const topbar = SP.topbar({
+      streak: homeData.streak.current,
+      xp: homeData.user.xp,
+      level: homeData.user.level,
+      rank: homeData.user.rank,
+    })
 
     // Header
     const header = SP.h('section', { style:{ padding:'2rem 3rem 0' }},

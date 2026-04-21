@@ -182,19 +182,39 @@
       )
     }
 
+    // If this attempt's progression crossed a rank boundary, chain the
+    // rank-up modal onto whichever action button the user clicks. We
+    // can't just subscribe to 'rank:up' and show the modal eagerly —
+    // the event fires BEFORE this modal renders, and two stacked
+    // modals on the single #sp-modal-mount clobber each other.
+    const prog = result.progression
+    const rankChanged = !!(prog && prog.rankChanged && prog.rankBefore !== prog.rankAfter)
+    function sequence(then) {
+      close()
+      if (rankChanged) {
+        SP.modals.showRankUp({
+          newRank: prog.rankAfter, prevRank: prog.rankBefore,
+          newLevel: prog.levelAfter, prevLevel: prog.levelBefore,
+        }, { onContinue: then })
+      } else if (then) {
+        then()
+      }
+    }
+
     // Action buttons
     const actionsRow = SP.h('div', { style:{ display:'flex', gap:'.75rem', justifyContent:'center', flexWrap:'wrap' }},
       SP.h('button', { class:'sp-btn sp-btn-secondary sp-btn-lg',
-        onclick: () => { close(); (actions && actions.onTryAgain) && actions.onTryAgain() }
+        onclick: () => { sequence(() => { (actions && actions.onTryAgain) && actions.onTryAgain() }) }
       },
         SP.h('span', { class:'material-symbols-outlined' }, 'replay'),
         SP.h('span', {}, 'Thử lại · Try again'),
       ),
       SP.h('button', { class:'sp-btn sp-btn-primary sp-btn-lg',
         onclick: () => {
-          close()
-          if (passed) { (actions && actions.onNext) && actions.onNext() }
-          else        { (actions && actions.onBack) && actions.onBack() }
+          sequence(() => {
+            if (passed) { (actions && actions.onNext) && actions.onNext() }
+            else        { (actions && actions.onBack) && actions.onBack() }
+          })
         }
       },
         SP.h('span', {}, passed ? 'Dấu tiếp theo · Next sign' : 'Về chương · Back to lesson'),
@@ -221,6 +241,55 @@
       vEl,
       SP.h('div', { style:{ fontSize:'.6875rem', color:'var(--sp-on-surface-variant)' }}, subLabel),
     )
+  }
+
+  /**
+   * Rank-up modal. Fires when the user's level-up crosses a 10-level
+   * boundary (progression emits 'rank:up'). Single "Tiếp tục" button;
+   * reuses the same scrim + sp-modal shell as showResult.
+   *
+   * @param {object} data    — { newRank, prevRank, newLevel, prevLevel }
+   * @param {object} actions — { onContinue? }
+   */
+  SP.modals.showRankUp = function(data, actions) {
+    const mount = document.getElementById('sp-modal-mount')
+    if (!mount) return
+    mount.innerHTML = ''
+    const scrim = SP.h('div', { class:'sp-modal-scrim', onclick: (e) => {
+      if (e.target === scrim) { close(); (actions && actions.onContinue) && actions.onContinue() }
+    }})
+    const modal = SP.h('div', { class:'sp-modal', onclick: (e) => e.stopPropagation(),
+      style:{ maxWidth:'28rem' },
+    })
+    scrim.appendChild(modal)
+
+    const accent = (SP.RANK_COLORS && SP.RANK_COLORS[data.newRank]) || 'var(--sp-primary)'
+    const header = SP.h('div', { style:{ textAlign:'center', marginBottom:'1.25rem' }},
+      SP.h('div', { style:{ fontSize:'3.5rem', lineHeight:1, marginBottom:'.5rem' }}, '🏅'),
+      SP.h('div', { style:{
+        fontSize:'.75rem', fontWeight:700, letterSpacing:'.5px',
+        textTransform:'uppercase', color:'var(--sp-on-surface-variant)',
+      }}, 'Thăng hạng · Rank up'),
+      SP.h('h2', { style:{
+        fontSize:'2.25rem', fontWeight:800, lineHeight:1.1,
+        color: accent, margin:'.25rem 0',
+      }}, data.newRank),
+      SP.h('p', { style:{ color:'var(--sp-on-surface-variant)', fontSize:'.9375rem' }},
+        'Cấp ' + data.prevLevel + ' · ' + data.prevRank + '  →  Cấp ' + data.newLevel + ' · ' + data.newRank),
+    )
+
+    const actionsRow = SP.h('div', { style:{ display:'flex', justifyContent:'center' }},
+      SP.h('button', { class:'sp-btn sp-btn-primary sp-btn-lg',
+        onclick: () => { close(); (actions && actions.onContinue) && actions.onContinue() }
+      },
+        SP.h('span', {}, 'Tiếp tục'),
+        SP.h('span', { class:'material-symbols-outlined filled' }, 'arrow_forward'),
+      )
+    )
+
+    modal.appendChild(header)
+    modal.appendChild(actionsRow)
+    mount.appendChild(scrim)
   }
 
   // Helper: map finger score to a three-state visual (✓ pass / ⚠ partial /
