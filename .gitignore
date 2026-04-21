@@ -76,3 +76,4 @@ temp/
 
 # We deploy the gzipped copy (~11 MB) - ensure it's never ignored.
 !signpath-test/models/sign-templates.json.gz
+.claude/
