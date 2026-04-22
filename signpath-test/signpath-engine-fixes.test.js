@@ -668,6 +668,126 @@ async function run() {
     assert.ok(o && o.refType === 'shoulder', `expected shoulder (primary), got ${o && o.refType}`)
   })
 
+  // ══════════════════════════════════════════════════════════════════════
+  // P — Fix peak: peak-frame cosine blended 50/50 with averaged cosine
+  //     to restore a climax signal on face-contact / raised-hand signs.
+  // ══════════════════════════════════════════════════════════════════════
+
+  // Synthetic face-contact template. Wrist starts at rest (y=0.5, below
+  // shoulder), transits to a peak held at y=-0.1 (at face level) for the
+  // middle 30 frames, then retreats. Handshape is constant (fingers fan
+  // downward from wrist); only the whole-hand Y position moves. This is
+  // enough for rest-vs-peak frames to have distinct but not antipodal
+  // cosines, which matches the real signal we're modelling. Non-dom band
+  // left zero so the engine's one-handed skip path exercises the masked
+  // code path in _peakCosine.
+  function buildFaceContactTemplate() {
+    function handFrame(wristY) {
+      const f = new Float32Array(N)
+      for (let li = 0; li < 21; li++) {
+        const base = li * 3
+        f[base]     = 0
+        f[base + 1] = wristY + li * 0.02   // fingers fan below the wrist
+        f[base + 2] = 0
+      }
+      // Constant pose+face signature so weighted norms are non-zero.
+      for (let i = 126; i < 162; i++) f[i] = 0.1
+      return f
+    }
+    const rest = handFrame(0.5)
+    const peak = handFrame(-0.1)
+    const frames = []
+    for (let f = 0; f < FRAME_COUNT; f++) {
+      if (f < 10) {
+        frames.push(Float32Array.from(rest))
+      } else if (f < 20) {
+        const t = (f - 10) / 9
+        const v = new Float32Array(N)
+        for (let i = 0; i < N; i++) v[i] = rest[i] * (1 - t) + peak[i] * t
+        frames.push(v)
+      } else if (f < 50) {
+        frames.push(Float32Array.from(peak))
+      } else {
+        const t = (f - 50) / 9
+        const v = new Float32Array(N)
+        for (let i = 0; i < N; i++) v[i] = peak[i] * (1 - t) + rest[i] * t
+        frames.push(v)
+      }
+    }
+    return { rest, peak, frames }
+  }
+
+  // P1: Required sanity — on a face-contact template (clear peak),
+  //     user who holds their hand at the peak pose the whole attempt
+  //     must outscore a user who holds their hand at rest. Both users
+  //     are flat, so the peak-blend short-circuits for both (symmetric
+  //     treatment); what we're really asserting is that the peak-blend
+  //     change did not invert the averaged-cosine ordering for this
+  //     archetype. Matches the Cảm ơn / Bố scenario from the diagnostic.
+  await test('P1: peak-held user scores HIGHER than rest-held user on face-contact template', () => {
+    const { rest, peak, frames } = buildFaceContactTemplate()
+    const tmpl = makeTemplate('FACE_CONTACT', frames, 'high')
+
+    const capPeak = capture(stubEngine([tmpl], 'FACE_CONTACT', repeatFrame(peak)))
+    capPeak._engine._compareAndScore()
+    const peakScore = capPeak.score[0].score
+
+    const capRest = capture(stubEngine([tmpl], 'FACE_CONTACT', repeatFrame(rest)))
+    capRest._engine._compareAndScore()
+    const restScore = capRest.score[0].score
+
+    assert.ok(peakScore > restScore,
+      `peak-held should outscore rest-held on face-contact template; peak=${peakScore} rest=${restScore}`)
+  })
+
+  // P2: Flat-user short-circuit. A user whose wrist Y never moves more
+  //     than 0.15 shoulder-widths has no well-defined peak — _peakCosine
+  //     must return null so the averaged cosine is used alone. Otherwise
+  //     a noisy argmin would inject scoring noise.
+  await test('P2: _peakCosine returns null when user Y trajectory is flat (<0.15)', () => {
+    const { rest, frames } = buildFaceContactTemplate()
+    const flatUser = repeatFrame(rest)
+    const wSq = I.WEIGHTS_SQ_HIGH
+    const userNorms = new Float32Array(FRAME_COUNT)
+    const tmplNorms = new Float32Array(FRAME_COUNT)
+    for (let f = 0; f < FRAME_COUNT; f++) {
+      userNorms[f] = I._frameWeightedNorm(flatUser[f], wSq, 0, N)
+      tmplNorms[f] = I._frameWeightedNorm(frames[f], wSq, 0, N)
+    }
+    const sim = I._peakCosine(flatUser, frames, wSq, userNorms, tmplNorms, false)
+    assert.strictEqual(sim, null, 'flat user should short-circuit to null')
+  })
+
+  // P3: Symmetric short-circuit on template side — a template whose
+  //     wrist barely moves across its 60 frames is a non-peak sign
+  //     (Xa archetype). Peak-vs-peak comparison is meaningless there.
+  await test('P3: _peakCosine returns null when template Y trajectory is flat (<0.15)', () => {
+    const { peak, frames } = buildFaceContactTemplate()
+    const flatTmpl = repeatFrame(peak)
+    const wSq = I.WEIGHTS_SQ_HIGH
+    const userNorms = new Float32Array(FRAME_COUNT)
+    const tmplNorms = new Float32Array(FRAME_COUNT)
+    for (let f = 0; f < FRAME_COUNT; f++) {
+      userNorms[f] = I._frameWeightedNorm(frames[f], wSq, 0, N)
+      tmplNorms[f] = I._frameWeightedNorm(flatTmpl[f], wSq, 0, N)
+    }
+    const sim = I._peakCosine(frames, flatTmpl, wSq, userNorms, tmplNorms, false)
+    assert.strictEqual(sim, null, 'flat template should short-circuit to null')
+  })
+
+  // P4: When both sides have a well-defined peak, _peakCosine picks
+  //     argmin of feature 1 on each side and returns a real cosine.
+  //     Identical trajectories → peaks align → cosine ≈ 1.
+  await test('P4: _peakCosine picks argmin of feature 1 and returns a cosine on peaked trajectories', () => {
+    const { frames } = buildFaceContactTemplate()
+    const wSq = I.WEIGHTS_SQ_HIGH
+    const norms = new Float32Array(FRAME_COUNT)
+    for (let f = 0; f < FRAME_COUNT; f++) norms[f] = I._frameWeightedNorm(frames[f], wSq, 0, N)
+    const sim = I._peakCosine(frames, frames, wSq, norms, norms, false)
+    assert.ok(sim !== null, 'expected non-null when both sides move through a peak')
+    assert.ok(sim > 0.99, `identical trajectories → peak cosine ≈ 1, got ${sim}`)
+  })
+
   console.log(`\n${_passed} passed, ${_failures} failed`)
   if (_failures) process.exit(1)
 }

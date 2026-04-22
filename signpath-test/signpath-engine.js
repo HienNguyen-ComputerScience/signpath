@@ -571,6 +571,54 @@ function _computeNonDomMotionRatio(meanFrames) {
   return nonDomMotion / domMotion
 }
 
+// [Fix peak] Peak-frame cosine. Picks the user's peak frame and the
+// template's peak frame by argmin of dom-hand-wrist Y (feature index 1 =
+// landmark 0 Y) and returns the weighted cosine between those two frames,
+// ignoring timing. Used to add a climax-vs-climax signal for face-contact /
+// raised-hand signs whose meaning lives in a single frame that the per-frame
+// average dilutes across all 60 frames.
+//
+// Returns null when either side's wrist-Y range is <0.15 shoulder-widths —
+// "peak" is ambiguous for non-peak signs (e.g. Xa held near the belly), and
+// a noisy argmin there would add scoring noise rather than signal.
+//
+// When `oneHanded` is true the masked cosine (dom hand + pose + face) is
+// used, matching the averaged path's non-dom skip exactly.
+function _peakCosine(userFrames, templateMean, wSq, userNorms, tmplFullNorms, oneHanded) {
+  const FLAT_Y_RANGE = 0.15
+  const nU = userFrames.length
+  const nT = templateMean.length
+  if (nU < 2 || nT < 2) return null
+
+  let userPeak = 0, userMinY = userFrames[0][1], userMaxY = userFrames[0][1]
+  for (let f = 1; f < nU; f++) {
+    const y = userFrames[f][1]
+    if (y < userMinY) { userMinY = y; userPeak = f }
+    if (y > userMaxY) userMaxY = y
+  }
+  if (userMaxY - userMinY < FLAT_Y_RANGE) return null
+
+  let tmplPeak = 0, tmplMinY = templateMean[0][1], tmplMaxY = templateMean[0][1]
+  for (let f = 1; f < nT; f++) {
+    const y = templateMean[f][1]
+    if (y < tmplMinY) { tmplMinY = y; tmplPeak = f }
+    if (y > tmplMaxY) tmplMaxY = y
+  }
+  if (tmplMaxY - tmplMinY < FLAT_Y_RANGE) return null
+
+  if (oneHanded) {
+    return _cosineSimilarityWeightedMasked(
+      userFrames[userPeak], templateMean[tmplPeak], wSq,
+      0, 63,      // dominant hand
+      126, 162,   // pose + face
+    )
+  }
+  return _cosineSimilarityWeightedPrenormed(
+    userFrames[userPeak], templateMean[tmplPeak], wSq, 0, NUM_FEATURES,
+    userNorms[userPeak], tmplFullNorms[tmplPeak],
+  )
+}
+
 // Weighted band similarity: average per-frame weighted cosine over a single
 // feature range. Used by Fix 3's debug:score event so UI/diagnostics can see
 // which band is dragging down the whole-frame score.
@@ -1038,6 +1086,33 @@ class SignPathEngine {
       selectedSim = maskedSim
       rawScore = _simToScore(maskedSim, selectedQuality)
       skippedNonDom = true
+    }
+
+    // [Fix peak] Blend peak-frame cosine 50/50 with the averaged per-frame
+    // cosine for the selected sign. The 60-frame average dilutes signs whose
+    // meaning lives in a single climax frame (hand at face, hand raised).
+    // Peak-vs-peak restores that signal. 0.5/0.5 weights keep the temporal
+    // signal from the averaged cosine (so a user who only matches the peak
+    // but fumbles the transit still loses half the score) while rewarding
+    // attempts that land the climax pose. The helper short-circuits to null
+    // when either side's wrist-Y range is <0.15 shoulder-widths — a flat
+    // trajectory has no well-defined peak (non-peak signs like Xa), and
+    // blending a noisy argmin there would add scoring noise, not signal.
+    // Ranking (top-5) still uses the pure averaged cosine — only the
+    // selected sign's scored similarity is blended, matching the one-handed
+    // skip pattern above.
+    if (selectedEntry && tmplRec) {
+      const isLow = tmplRec.quality === 'low'
+      const wSq = isLow ? WEIGHTS_SQ_LOW : WEIGHTS_SQ_HIGH
+      const userNorms = isLow ? userNormsLow : userNormsHigh
+      const peakSim = _peakCosine(
+        userFrames, tmplRec.mean, wSq, userNorms, tmplRec.fullNorms,
+        isOneHandedMatch,
+      )
+      if (peakSim !== null) {
+        selectedSim = 0.5 * selectedSim + 0.5 * peakSim
+        rawScore = _simToScore(selectedSim, selectedQuality)
+      }
     }
 
     const rawPassed = rawScore >= passAt
@@ -1660,6 +1735,7 @@ global.SignPathEngine._internals = {
   _frameWeightedNorm,
   _cosineSimilarityWeightedPrenormed,
   _cosineSimilarityWeightedMasked,      // [Fix 1] exposed for skip-non-dom tests
+  _peakCosine,                          // [Fix peak] exposed for peak-frame blend tests
   _compareSequencesWeightedBand,        // [Fix 3] exposed for per-band debug tests
   _pickOrigin,                           // [Fix 3] exposed for refType tests
   _computeNonDomMotionRatio,            // [Fix 1 v2] exposed for M-series tests
