@@ -64,7 +64,7 @@
         SP.h('div', { style:{ fontSize:'3rem', fontWeight:800, color:'var(--sp-primary)', lineHeight:1, marginTop:'.25rem' }},
           String(displayScore)),
         SP.h('div', { style:{ fontSize:'.8125rem', color:'var(--sp-on-surface-variant)', marginTop:'.375rem' }},
-          'Cần ≥ 50 để vượt qua · Need ≥ 50 to pass'),
+          'Cần ≥ ' + SP.PASS_GATE + ' để vượt qua · Need ≥ ' + SP.PASS_GATE + ' to pass'),
       )
       let failAdvice = null
       if (result.advice) {

@@ -162,7 +162,7 @@
     const handDot = SP.h('div', { id: 'sp-hand-dot', style:{
       position:'absolute', bottom:'1rem', left:'1rem', zIndex:3,
       padding:'.375rem .75rem', borderRadius:'9999px',
-      background:'rgba(167, 59, 33, 0.78)', color:'#fff', fontSize:'.75rem', fontWeight:600,
+      background:'rgba(99, 95, 86, 0.78)', color:'#fff', fontSize:'.75rem', fontWeight:600,
     }}, 'Chưa thấy tay')
     practiceWrap.appendChild(handDot)
 
@@ -228,7 +228,7 @@
         marginBottom:'.25rem', opacity:.8,
       }}, 'Lời khuyên AI'),
       SP.h('div', { id:'sp-coach-text' },
-        hasTemplate ? 'Xem video mẫu rồi nhấn Ghi âm để bắt đầu.'
+        hasTemplate ? 'Xem video mẫu rồi nhấn Quay để bắt đầu.'
                     : 'Dấu này chưa có dữ liệu chấm điểm. Bạn chỉ có thể xem video mẫu.'),
     )
 
@@ -242,7 +242,7 @@
       style:{ width:'100%' },
     },
       SP.h('span', { class:'material-symbols-outlined filled' }, 'fiber_manual_record'),
-      SP.h('span', {}, 'Ghi âm · Record'),
+      SP.h('span', {}, 'Quay · Record'),
     )
     const recordPanel = SP.h('div', { style:{
       background:'rgba(28, 26, 22, 0.82)',
@@ -307,7 +307,7 @@
     // Landmark rendering: fired every MediaPipe frame via 'tracking'.
     on('tracking', d => {
       handDot.textContent = d.detected ? '✓ Thấy tay' : 'Chưa thấy tay'
-      handDot.style.background = d.detected ? 'rgba(27, 67, 50, 0.78)' : 'rgba(167, 59, 33, 0.78)'
+      handDot.style.background = d.detected ? 'rgba(27, 67, 50, 0.78)' : 'rgba(99, 95, 86, 0.78)'
 
       // Keep canvas sized to the video's native resolution so 0..1
       // normalized landmark coords map pixel-correctly.
@@ -373,10 +373,10 @@
     on('attempt:abort', d => {
       progEl.style.width = '0%'
       recordBtn.disabled = !hasTemplate
-      recordBtn.innerHTML = '<span class="material-symbols-outlined filled">fiber_manual_record</span><span>Ghi âm · Record</span>'
+      recordBtn.innerHTML = '<span class="material-symbols-outlined filled">fiber_manual_record</span><span>Quay · Record</span>'
       coachTextEl.textContent = d.reason === 'no_signing_detected'
         ? 'Không thấy cử chỉ — hãy đảm bảo tay bạn trong khung hình, rồi thử lại.'
-        : 'Đã hủy. Nhấn Ghi âm để thử lại.'
+        : 'Đã hủy. Nhấn Quay để thử lại.'
     })
     on('attempt:end', d => {
       progEl.style.width = '100%'
@@ -413,7 +413,7 @@
         console.error(e)
       } finally {
         recordBtn.disabled = !hasTemplate
-        recordBtn.innerHTML = '<span class="material-symbols-outlined filled">fiber_manual_record</span><span>Ghi âm · Record</span>'
+        recordBtn.innerHTML = '<span class="material-symbols-outlined filled">fiber_manual_record</span><span>Quay · Record</span>'
       }
     }
 

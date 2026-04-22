@@ -49,7 +49,7 @@
         divider(),
         stat('Hoàn thành', completedCount + '/' + totalChapters + ' chương'),
         divider(),
-        stat('Chuỗi ngày', String(data.streak.current)),
+        stat('Chuỗi ngày', String(data.streak.current) + ' ngày'),
         divider(),
         stat('XP', String(data.user.xp)),
         divider(),
@@ -117,7 +117,7 @@
     // Lesson path
     const pathSection = SP.h('section', { style:{ padding:'3rem 3rem 4rem' }},
       SP.h('h2', { style:{ fontSize:'1.5rem', fontWeight:700, color:'var(--sp-on-surface)', marginBottom:'1.5rem' }},
-        '25 chương học · 25 chapters'),
+        lessons.length + ' chương học · ' + lessons.length + ' chapters'),
     )
 
     if (ready && lessons.length) {

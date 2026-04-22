@@ -180,7 +180,7 @@
     'Đồng':      'var(--sp-secondary)',        // bronze → muted brown
     'Bạc':       'var(--sp-outline)',          // silver → neutral gray
     'Vàng':      'var(--sp-tertiary)',         // gold   → olive/gold
-    'Bạch kim':  'var(--sp-outline-variant)',  // platinum → light gray
+    'Bạch kim':  '#7a7066',                    // platinum → darker gray (a11y)
     'Kim cương': 'var(--sp-primary)',          // diamond → primary accent
   }
 
