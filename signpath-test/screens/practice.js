@@ -301,118 +301,37 @@
     )
     practiceWrap.appendChild(scoreOverlay)
 
-    // ── Right-column panels: reference thumb / advice / record ──────────
-    // When the caller opts out of the reference video (e.g. the skip
-    // test — no cheat-sheet during evaluation), the column shrinks so
-    // the camera feed reclaims the freed horizontal space.
+    // ── Full-bleed layout (gesture-nav WIP) ─────────────────────────────
+    // Right-column reference panel is gone. Coach advice becomes a
+    // bottom-left pill. Record controls sit at the bottom-center. The
+    // reference video (when the caller doesn't opt out) floats over the
+    // camera via SP.refFloater, draggable between corners.
     const hideRef = !!opts.hideReferenceVideo
-    const rightColDesktopWidth = hideRef ? '20%' : '25%'
-    const rightColDesktopMinWidth = hideRef ? '13rem' : '15rem'
-    const rightColDesktopMaxWidth = hideRef ? '18rem' : '22rem'
-    const rightCol = SP.h('div', { class:'sp-practice-rightcol' + (hideRef ? ' sp-attempt-solo' : ''),
-      style:{
-        position:'absolute', top:'1rem', right:'1rem', zIndex:3,
-        width: rightColDesktopWidth,
-        minWidth: rightColDesktopMinWidth,
-        maxWidth: rightColDesktopMaxWidth,
-        display:'flex', flexDirection:'column', gap:'.625rem',
-      }})
 
-    // Reference video thumbnail — only built when the caller wants it.
-    let refWrap = null
-    if (!hideRef) {
-      const refVideoEl = SP.videoEl(signKey, { preload:'auto' })
-      refVideoEl.style.aspectRatio = '1/1'
-      refVideoEl.style.borderRadius = '.5rem'
-      refVideoEl.style.overflow = 'hidden'
-
-      let refHidden = false
-      const eyeIcon = SP.h('span', { class:'material-symbols-outlined', style:{ fontSize:'1.125rem' }}, 'visibility')
-      const eyeBtn = SP.h('button', {
-        'aria-label': 'Ẩn video mẫu · Hide reference',
-        style:{
-          background:'transparent', border:'none', cursor:'pointer',
-          color:'#fff', padding:'.125rem', marginLeft:'auto',
-          display:'inline-flex', alignItems:'center', fontFamily:'inherit',
-          opacity:.85,
-        },
-        onclick: (e) => { e.stopPropagation(); toggleRef() },
-      }, eyeIcon)
-      const headerText = SP.h('span', {}, 'Video mẫu · Reference')
-      const stripText = SP.h('span', { style:{ display:'none', alignItems:'center', gap:'.25rem' }},
-        SP.h('span', {}, 'Hiện video mẫu · Show reference'),
-        SP.h('span', { class:'material-symbols-outlined', style:{ fontSize:'1rem' }}, 'arrow_forward'),
-      )
-      const refHeader = SP.h('div', { style:{
-        display:'flex', alignItems:'center', gap:'.5rem',
-        fontSize:'.625rem',
-        fontWeight:700, textTransform:'uppercase', letterSpacing:'.5px',
-        padding:'.125rem 0 .375rem', opacity:.8,
-        cursor:'default',
-      }}, headerText, stripText, eyeBtn)
-      const speedRow = SP.h('div', { style:{ display:'flex', gap:'.25rem', justifyContent:'center', marginTop:'.5rem' }},
-        speedBtn(refVideoEl, 0.5, '0.5×'),
-        speedBtn(refVideoEl, 0.75, '0.75×', true),
-        speedBtn(refVideoEl, 1.0, '1×'),
-      )
-      function toggleRef() {
-        refHidden = !refHidden
-        if (refHidden) {
-          refVideoEl.style.display = 'none'
-          speedRow.style.display = 'none'
-          headerText.style.display = 'none'
-          stripText.style.display = 'inline-flex'
-          eyeIcon.textContent = 'visibility_off'
-          eyeBtn.setAttribute('aria-label', 'Hiện video mẫu · Show reference')
-          refHeader.style.cursor = 'pointer'
-        } else {
-          refVideoEl.style.display = ''
-          speedRow.style.display = 'flex'
-          headerText.style.display = ''
-          stripText.style.display = 'none'
-          eyeIcon.textContent = 'visibility'
-          eyeBtn.setAttribute('aria-label', 'Ẩn video mẫu · Hide reference')
-          refHeader.style.cursor = 'default'
-        }
-      }
-      refHeader.addEventListener('click', () => { if (refHidden) toggleRef() })
-      refWrap = SP.h('div', { style:{
-        background:'rgba(28, 26, 22, 0.82)',
-        color:'#fff',
-        borderRadius:'.75rem',
-        padding:'.5rem .625rem .625rem',
-        boxShadow:'0 6px 18px rgba(0,0,0,.38)',
-      }},
-        refHeader,
-        refVideoEl,
-        speedRow,
-      )
-    }
-
-    // Coach advice panel
     const adviceCard = SP.h('div', { id:'sp-coach-box', style:{
-      background:'rgba(28, 26, 22, 0.82)',
+      position:'absolute', bottom:'1rem', left:'1rem', zIndex:3,
+      maxWidth:'28rem',
+      background:'rgba(28, 26, 22, 0.78)',
       color:'#fff',
       borderLeft:'4px solid var(--sp-primary)',
       borderRadius:'.625rem',
-      padding:'.75rem .875rem',
+      padding:'.625rem .875rem',
       fontSize:'.8125rem',
-      lineHeight:1.45,
-      minHeight:'3.5rem',
+      lineHeight:1.4,
       boxShadow:'0 6px 18px rgba(0,0,0,.38)',
     }},
       SP.h('div', { style:{
         fontSize:'.625rem', fontWeight:700,
         textTransform:'uppercase', letterSpacing:'.5px',
-        marginBottom:'.25rem', opacity:.8,
+        marginBottom:'.125rem', opacity:.85,
       }}, 'Lời khuyên AI'),
       SP.h('div', { id:'sp-coach-text' },
         hasTemplate ? 'Xem video mẫu rồi nhấn Quay để bắt đầu.'
                     : 'Dấu này chưa có dữ liệu chấm điểm. Bạn chỉ có thể xem video mẫu.'),
     )
+    practiceWrap.appendChild(adviceCard)
 
-    // Record controls panel
-    const progressWrap = SP.h('div', { style:{ flex:1, height:'.375rem', background:'rgba(255,255,255,.16)', borderRadius:'9999px', overflow:'hidden' }},
+    const progressWrap = SP.h('div', { style:{ width:'100%', height:'.375rem', background:'rgba(255,255,255,.16)', borderRadius:'9999px', overflow:'hidden' }},
       SP.h('div', { id:'sp-rec-progress', style:{ height:'100%', width:'0%', background:'linear-gradient(90deg, #954b00 0%, #f68a2f 100%)', transition:'width 100ms linear' }})
     )
     const recordBtn = SP.h('button', { id:'sp-record-btn', class:'sp-btn sp-btn-primary',
@@ -424,53 +343,52 @@
       SP.h('span', {}, 'Quay · Record'),
     )
     const recordPanel = SP.h('div', { style:{
+      position:'absolute', bottom:'1rem', left:'50%', transform:'translateX(-50%)', zIndex:3,
+      width:'min(22rem, 45%)',
       background:'rgba(28, 26, 22, 0.82)',
       borderRadius:'.625rem',
-      padding:'.75rem .875rem',
+      padding:'.625rem .75rem',
       display:'flex', flexDirection:'column', gap:'.5rem',
       boxShadow:'0 6px 18px rgba(0,0,0,.38)',
     }},
       recordBtn, progressWrap,
     )
-
-    if (refWrap) rightCol.appendChild(refWrap)
-    rightCol.appendChild(adviceCard)
-    rightCol.appendChild(recordPanel)
-    practiceWrap.appendChild(rightCol)
+    practiceWrap.appendChild(recordPanel)
     root.appendChild(practiceWrap)
 
-    // Responsive: on narrow viewports stack the right column BELOW the
-    // camera instead of overlaying it. Spec: < 768px → stacked.
+    // Reference floater (draggable, snaps to 4 corners). Skiptest and
+    // placement pass hideReferenceVideo:true so no floater mounts for
+    // those flows. Persistence goes through progression.uiPreferences.
+    let refFloaterHandle = null
+    if (!hideRef && SP.refFloater && typeof SP.refFloater.mount === 'function') {
+      const prefsGet = () => (app.progression && app.progression.getUIPreferences
+        ? app.progression.getUIPreferences() : {})
+      refFloaterHandle = SP.refFloater.mount(practiceWrap, {
+        signKey,
+        getCorner: () => prefsGet().refFloaterCorner || 'br',
+        setCorner: (c) => { if (app.progression && app.progression.setUIPreference) app.progression.setUIPreference('refFloaterCorner', c) },
+        getMinimized: () => !!prefsGet().refFloaterMinimized,
+        setMinimized: (v) => { if (app.progression && app.progression.setUIPreference) app.progression.setUIPreference('refFloaterMinimized', !!v) },
+      })
+    }
+
+    // Responsive: narrow viewports stack advice above the record panel
+    // at the bottom (still over the camera). Minimum-change from the
+    // prior responsive branch — camera remains full-bleed.
     function applyResponsive() {
       const narrow = window.innerWidth < 768
       if (narrow) {
         practiceWrap.style.height = 'auto'
-        practiceWrap.style.display = 'flex'
-        practiceWrap.style.flexDirection = 'column'
-        practiceWrap.style.background = 'transparent'
-        rightCol.style.position = 'static'
-        rightCol.style.top = ''
-        rightCol.style.right = ''
-        rightCol.style.width = 'auto'
-        rightCol.style.maxWidth = 'none'
-        rightCol.style.padding = '.75rem 0 0'
-        camVideo.style.position = 'relative'
-        camVideo.style.height = 'auto'
-        camVideo.style.aspectRatio = '4/3'
-        landmarkCanvas.style.position = 'absolute'
+        practiceWrap.style.minHeight = '28rem'
+        adviceCard.style.maxWidth = 'calc(100% - 2rem)'
+        adviceCard.style.right = '1rem'
+        recordPanel.style.width = 'min(20rem, 80%)'
       } else {
         practiceWrap.style.height = 'calc(100vh - 7rem)'
-        practiceWrap.style.display = 'block'
-        practiceWrap.style.background = '#000'
-        rightCol.style.position = 'absolute'
-        rightCol.style.top = '1rem'
-        rightCol.style.right = '1rem'
-        rightCol.style.width = rightColDesktopWidth
-        rightCol.style.maxWidth = rightColDesktopMaxWidth
-        rightCol.style.padding = '0'
-        camVideo.style.position = 'absolute'
-        camVideo.style.height = '100%'
-        camVideo.style.aspectRatio = ''
+        practiceWrap.style.minHeight = '32rem'
+        adviceCard.style.maxWidth = '28rem'
+        adviceCard.style.right = ''
+        recordPanel.style.width = 'min(22rem, 45%)'
       }
     }
     applyResponsive()
@@ -646,11 +564,45 @@
       }
     }
 
+    // ── Air-tap overlay (gesture-nav WIP) ──────────────────────────────
+    // Back / Start-Stop / Next buttons mounted over the camera. Actions
+    // come from opts.airtapActions (each caller supplies its own context:
+    // practice advances within a chapter; skiptest/placement within the
+    // attempt sequence). Start/Stop and getIsRecording are owned here so
+    // the click Record button and the air-tap stay in sync — recording
+    // remains idempotent (session.isActive() guards both entry points).
+    let airtapHandle = null
+    if (SP.airtap && typeof SP.airtap.mount === 'function') {
+      const airtapActions = opts.airtapActions || {}
+      airtapHandle = SP.airtap.mount(practiceWrap, {
+        subscribeTracking: (handler) => {
+          app.on('tracking', handler)
+          return () => app.off('tracking', handler)
+        },
+        onBack:  airtapActions.onBack  || function() {},
+        onNext:  airtapActions.onNext  || function() {},
+        onStartStop: () => {
+          if (app.session && app.session.isActive()) {
+            if (app.session.cancelAttempt) app.session.cancelAttempt()
+          } else {
+            runAttempt()
+          }
+        },
+        getIsRecording: () => !!(app.session && app.session.isActive()),
+      })
+    }
+
     function teardown() {
       clearInterval(streamPoller)
       if (degradedQuietTimer) clearTimeout(degradedQuietTimer)
       window.removeEventListener('resize', applyResponsive)
       detachAll()
+      if (refFloaterHandle && refFloaterHandle.teardown) {
+        try { refFloaterHandle.teardown() } catch(_) {}
+      }
+      if (airtapHandle && airtapHandle.teardown) {
+        try { airtapHandle.teardown() } catch(_) {}
+      }
       if (landmarkCtx) landmarkCtx.clearRect(0, 0, landmarkCanvas.width, landmarkCanvas.height)
       SP.modals.close()
     }
@@ -688,22 +640,37 @@
     })
     host.appendChild(topbar)
 
+    // Helpers reused by the result modal AND the air-tap Back/Next buttons.
+    function navPrevSignInChapter() {
+      const lesson = app.getLessonScreenData(signData.unitId)
+      if (!lesson) { location.hash = '#lesson/' + encodeURIComponent(signData.unitId); return }
+      const i = lesson.signs.findIndex(s => s.key === signKey)
+      const prev = (i > 0) ? lesson.signs[i - 1] : null
+      if (prev) location.hash = '#practice/' + encodeURIComponent(prev.key)
+      else      location.hash = '#lesson/' + encodeURIComponent(signData.unitId)
+    }
+    function navNextSignInChapter() {
+      const lesson = app.getLessonScreenData(signData.unitId)
+      if (!lesson) { location.hash = '#home'; return }
+      const i = lesson.signs.findIndex(s => s.key === signKey)
+      const next = (i >= 0 && i + 1 < lesson.signs.length) ? lesson.signs[i + 1] : null
+      if (next) location.hash = '#practice/' + encodeURIComponent(next.key)
+      else      location.hash = '#home'
+    }
+
     const ui = buildAttemptUI(app, {
       signData,
       modalActions: {
-        onNext: () => {
-          // "Dấu tiếp theo" advances within the current chapter; once
-          // every sign has been attempted we drop the user back on the
-          // chapter-selection screen (#home) rather than the single
-          // chapter detail, per the v0.5 spec.
-          const lesson = app.getLessonScreenData(signData.unitId)
-          if (!lesson) { location.hash = '#home'; return }
-          const i = lesson.signs.findIndex(s => s.key === signKey)
-          const next = (i >= 0 && i + 1 < lesson.signs.length) ? lesson.signs[i + 1] : null
-          if (next) location.hash = '#practice/' + encodeURIComponent(next.key)
-          else      location.hash = '#home'
-        },
+        // "Dấu tiếp theo" advances within the current chapter; once
+        // every sign has been attempted we drop the user back on the
+        // chapter-selection screen (#home) rather than the single
+        // chapter detail, per the v0.5 spec.
+        onNext: navNextSignInChapter,
         onBack: () => { location.hash = '#lesson/' + encodeURIComponent(signData.unitId) },
+      },
+      airtapActions: {
+        onBack: navPrevSignInChapter,
+        onNext: navNextSignInChapter,
       },
     })
     host.appendChild(ui.root)
