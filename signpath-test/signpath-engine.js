@@ -848,57 +848,11 @@ class SignPathEngine {
     this._initProgress()
     this._restoreState()
 
-    // 4. Camera
-    let acquiredStream = null
-    try {
-      if (!videoElement.srcObject) {
-        acquiredStream = await navigator.mediaDevices.getUserMedia({
-          video: {width: 640, height: 480, facingMode: 'user'}
-        })
-        videoElement.srcObject = acquiredStream
-      }
-      await videoElement.play()
-    } catch(e) {
-      // Release camera if we acquired it before failing (e.g. play() rejected)
-      if (acquiredStream) acquiredStream.getTracks().forEach(t => t.stop())
-      videoElement.srcObject = null
-      this._emit('error', {message: `Camera failed: ${e.message}`, type: 'camera'})
-      return
-    }
-
-    // 5. MediaPipe Holistic
-    try {
-      await this._waitForGlobal('Holistic', 15000)
-      this._holistic = new Holistic({
-        locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${f}`
-      })
-      this._holistic.setOptions({
-        modelComplexity: 1,
-        smoothLandmarks: true,
-        enableSegmentation: false,
-        refineFaceLandmarks: false,
-        minDetectionConfidence: 0.5,
-        minTrackingConfidence: 0.5,
-      })
-      this._holistic.onResults(r => this._onResults(r))
-    } catch(e) {
-      // Release camera since we're not going to use it
-      if (videoElement.srcObject) {
-        videoElement.srcObject.getTracks().forEach(t => t.stop())
-        videoElement.srcObject = null
-      }
-      this._emit('error', {message: `MediaPipe failed: ${e.message}`, type: 'mediapipe'})
-      return
-    }
-
-    // 6. Inference loop
-    this._running = true
-    this._inferenceRunning = false
-    this._consecutiveErrors = 0
-    this._lastSentTime = 0
-    this._frameTimings = []  // [M-3] rolling FPS measurement
-    this._startInferenceLoop()
-
+    // Templates + curriculum + progress are all that non-practice screens
+    // need (home, lessons, progress, dictionary, about). Camera + MediaPipe
+    // are deferred until the practice screen calls resumeCapture(), so
+    // visiting the app with camera permission denied or blocked doesn't
+    // trigger a permission prompt on boot and still lets the user browse.
     this._emit('ready', {
       templates: Object.keys(this._templates).length,
       lessons: this._lessons.length,
@@ -1637,40 +1591,64 @@ class SignPathEngine {
     this._originHistory = []
   }
 
-  // Re-acquire the camera and restart the inference loop. Assumes
-  // init() has already run once (templates loaded, holistic constructed).
-  // If called before init or after destroy, we surface an engine error
-  // rather than pretending to succeed.
+  // Acquire the camera + lazy-build Holistic on first call, then start the
+  // inference loop. Camera/MediaPipe construction was moved out of init() so
+  // non-practice screens don't trigger a permission prompt; practice mounts
+  // call this on entry. Idempotent: subsequent calls while running are no-ops.
   async resumeCapture() {
     if (this._running) return  // already live
     if (!this._video) {
       this._emit('error', { message: 'resumeCapture: no video element bound', type: 'camera' })
       return
     }
+
+    // Lazy-build Holistic the first time we actually need it. Previously
+    // done in init() step 5; now deferred so the MediaPipe WASM bundle
+    // only downloads when the user enters the practice screen.
     if (!this._holistic) {
-      this._emit('error', { message: 'resumeCapture: Holistic not initialized', type: 'mediapipe' })
-      return
+      try {
+        await this._waitForGlobal('Holistic', 15000)
+        this._holistic = new Holistic({
+          locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${f}`
+        })
+        this._holistic.setOptions({
+          modelComplexity: 1,
+          smoothLandmarks: true,
+          enableSegmentation: false,
+          refineFaceLandmarks: false,
+          minDetectionConfidence: 0.5,
+          minTrackingConfidence: 0.5,
+        })
+        this._holistic.onResults(r => this._onResults(r))
+      } catch (e) {
+        this._emit('error', { message: `MediaPipe failed: ${e.message}`, type: 'mediapipe' })
+        return
+      }
     }
+
+    let acquiredStream = null
     try {
       if (!this._video.srcObject) {
-        const stream = await navigator.mediaDevices.getUserMedia({
+        acquiredStream = await navigator.mediaDevices.getUserMedia({
           video: { width: 640, height: 480, facingMode: 'user' },
         })
-        this._video.srcObject = stream
+        this._video.srcObject = acquiredStream
       }
       await this._video.play()
     } catch (e) {
+      if (acquiredStream) acquiredStream.getTracks().forEach(t => { try { t.stop() } catch(_){} })
       if (this._video.srcObject) {
         this._video.srcObject.getTracks().forEach(t => { try { t.stop() } catch(_){} })
         this._video.srcObject = null
       }
-      this._emit('error', { message: `Camera re-acquire failed: ${e.message}`, type: 'camera' })
+      this._emit('error', { message: `Camera failed: ${e.message}`, type: 'camera' })
       return
     }
     this._running = true
     this._inferenceRunning = false
     this._consecutiveErrors = 0
     this._lastSentTime = 0
+    this._frameTimings = this._frameTimings || []
     this._startInferenceLoop()
   }
 
