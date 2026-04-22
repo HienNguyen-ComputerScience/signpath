@@ -140,6 +140,25 @@
   }
 
   // ── Boot ──────────────────────────────────────────────────────────
+  //
+  // The template gzip (~12MB from jsDelivr) is preloaded via
+  // <link rel="preload" as="fetch"> in app.html, so the browser starts
+  // downloading it while we load the manifest and construct SignPathApp.
+  // When app.init() eventually calls fetch() on the same URL, the browser
+  // reuses the preloaded response — so manifest and templates effectively
+  // race instead of running serially.
+  function formatTemplateProgress(info) {
+    if (info.phase === 'retry') {
+      return `Đang thử lại... (lần ${info.attempt}/${info.maxAttempts})`
+    }
+    const mb = (info.bytesReceived / 1048576).toFixed(1)
+    if (info.bytesTotal && info.bytesTotal > 0) {
+      const totalMb = Math.round(info.bytesTotal / 1048576)
+      return `Đang tải mẫu: ${mb} MB / ~${totalMb} MB`
+    }
+    return `Đang tải mẫu: ${mb} MB`
+  }
+
   async function boot() {
     setStatus('Đang tải video mẫu…')
     await SP.loadManifest()
@@ -167,7 +186,9 @@
     // Kick off the heavy init (camera + MediaPipe). This is async and takes
     // a few seconds. The 'ready' event re-triggers route() when complete.
     try {
-      await app.init(document.getElementById('sp-engine-video'))
+      await app.init(document.getElementById('sp-engine-video'), {
+        onTemplateProgress: (info) => setStatus(formatTemplateProgress(info)),
+      })
     } catch (e) {
       setStatus('✗ ' + e.message, 'err')
       console.error('[engine init failed]', e)

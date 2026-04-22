@@ -681,33 +681,101 @@ function _normalizeQuality(raw) {
   return raw === 'low' ? 'low' : 'high'
 }
 
-// Try the gzipped template file first (Netlify serves it with
-// Content-Encoding:gzip so the browser decodes transparently — fetch.json()
-// just works). Fall back to the uncompressed JSON for local `python -m
-// http.server` dev, which doesn't send Content-Encoding. When the .gz is
-// served without that header we decode manually via DecompressionStream so
-// a misconfigured host still works.
-async function _loadTemplates(gzPath, rawPath) {
-  try {
-    const res = await fetch(gzPath)
-    if (res.ok) {
-      // Browsers strip Content-Encoding before JS can see it, so the header
-      // is unreliable for detecting whether the body was auto-decompressed.
-      // Try JSON first (works when the browser already decompressed); if
-      // that fails the bytes are still gzip and we decompress manually.
-      // clone() keeps res.body re-readable for the fallback path.
+// Try the gzipped template file first (Netlify/jsDelivr serves it with
+// Content-Encoding:gzip so the browser decodes transparently — JSON.parse of
+// the streamed body just works). Fall back to the uncompressed JSON for
+// local `python -m http.server` dev, which doesn't send Content-Encoding.
+// When the .gz is served without that header we decode manually via
+// DecompressionStream so a misconfigured host still works.
+//
+// The gz fetch uses an AbortController with a 30s STALL timeout — the
+// timer aborts only when no bytes have arrived from the stream for 30s,
+// regardless of total elapsed time. Every chunk resets the stall timer,
+// so a steady slow trickle of bytes is allowed to finish even if the
+// total download takes minutes. The same 30s threshold also covers the
+// initial connection: if headers/first chunk don't arrive within 30s of
+// fetch start, the attempt aborts. Retries on abort/network/non-2xx up
+// to 3 attempts total (1s then 2s backoff). `onProgress` — optional —
+// is called during the download with { phase: 'downloading',
+// bytesReceived, bytesTotal } and between attempts with { phase:
+// 'retry', attempt, maxAttempts }. bytesTotal is 0 when Content-Length
+// is absent (jsDelivr may or may not send it).
+async function _loadTemplates(gzPath, rawPath, onProgress) {
+  const STALL_MS = 30_000
+  const MAX_ATTEMPTS = 3
+  const BACKOFF_MS = [1_000, 2_000]  // delay before attempts 2 and 3
+
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    if (attempt > 1) {
+      if (typeof onProgress === 'function') onProgress({ phase: 'retry', attempt, maxAttempts: MAX_ATTEMPTS })
+      await new Promise(r => setTimeout(r, BACKOFF_MS[attempt - 2]))
+    }
+    const ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null
+    // Stall timer — armed before the initial fetch and re-armed every time
+    // a chunk arrives. If STALL_MS elapses without a chunk, abort().
+    let stallTimer = null
+    const armStall = () => {
+      if (stallTimer) clearTimeout(stallTimer)
+      stallTimer = ctrl ? setTimeout(() => ctrl.abort(), STALL_MS) : null
+    }
+    const clearStall = () => {
+      if (stallTimer) { clearTimeout(stallTimer); stallTimer = null }
+    }
+    armStall()
+    try {
+      const res = await fetch(gzPath, { signal: ctrl ? ctrl.signal : undefined })
+      if (!res.ok) throw new Error(`${gzPath} returned ${res.status}`)
+
+      // Stream-read the body so we can emit byte progress. Content-Length
+      // is unreliable (jsDelivr may not send it and transparent decompression
+      // makes it ambiguous), so we only show a total when present.
+      const totalHeader = parseInt(res.headers.get('Content-Length') || '0', 10)
+      const bytesTotal = Number.isFinite(totalHeader) && totalHeader > 0 ? totalHeader : 0
+      const reader = res.body.getReader()
+      const chunks = []
+      let bytesReceived = 0
+      let lastEmit = 0
+      for (;;) {
+        const { done, value } = await reader.read()
+        if (done) break
+        armStall()  // chunk arrived — reset the 30s stall window
+        chunks.push(value)
+        bytesReceived += value.byteLength
+        const now = Date.now()
+        if (typeof onProgress === 'function' && now - lastEmit >= 500) {
+          lastEmit = now
+          onProgress({ phase: 'downloading', bytesReceived, bytesTotal })
+        }
+      }
+      clearStall()
+      if (typeof onProgress === 'function') {
+        onProgress({ phase: 'downloading', bytesReceived, bytesTotal })
+      }
+
+      // Concatenate chunks. Browsers strip Content-Encoding before JS can see
+      // it, so try UTF-8 JSON first (works when the browser auto-decompressed
+      // a gzip response); if that fails the bytes are still gzip and we
+      // gunzip manually via DecompressionStream.
+      const merged = new Uint8Array(bytesReceived)
+      let offset = 0
+      for (const c of chunks) { merged.set(c, offset); offset += c.byteLength }
       try {
-        return await res.clone().json()
+        return JSON.parse(new TextDecoder().decode(merged))
       } catch (_) {
         if (typeof DecompressionStream === 'function') {
-          const stream = res.body.pipeThrough(new DecompressionStream('gzip'))
+          const stream = new Response(merged).body.pipeThrough(new DecompressionStream('gzip'))
           const text = await new Response(stream).text()
           return JSON.parse(text)
         }
+        throw new Error('unable to decode gzipped template stream')
       }
+    } catch (_) {
+      clearStall()
+      if (attempt === MAX_ATTEMPTS) break   // fall through to raw path
     }
-  } catch (_) { /* fall through to raw */ }
+  }
 
+  // After 3 failed gz attempts, preserve existing raw-path behaviour.
   const res = await fetch(rawPath)
   if (!res.ok) throw new Error(`${rawPath} returned ${res.status}`)
   return await res.json()
@@ -787,7 +855,7 @@ class SignPathEngine {
     // 1. Load templates — prefer the .gz (15% of raw size) when the server
     // serves it; fall back to raw JSON for local dev and old deploys.
     try {
-      const data = await _loadTemplates(templatesPathGz, templatesPath)
+      const data = await _loadTemplates(templatesPathGz, templatesPath, opts.onTemplateProgress)
       this._templateFrameCount = data.frameCount || 60
       // Convert template arrays to Float32Arrays for fast math + precompute
       // per-frame *weighted* norms that match the template's quality tier.

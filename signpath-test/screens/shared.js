@@ -12,7 +12,7 @@
 
   async function loadManifest() {
     try {
-      const r = await fetch('https://cdn.jsdelivr.net/gh/HienNguyen-ComputerScience/signpath@main/signpath-test/reference_videos/manifest.json', { cache: 'no-store' })
+      const r = await fetch('https://cdn.jsdelivr.net/gh/HienNguyen-ComputerScience/signpath@main/signpath-test/reference_videos/manifest.json')
       if (!r.ok) throw new Error('status ' + r.status)
       SP.manifest = await r.json()
     } catch (_) {
