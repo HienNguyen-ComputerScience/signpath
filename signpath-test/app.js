@@ -49,6 +49,7 @@
     'home':         () => SP.screens.home.render(),
     'dictionary':   () => SP.screens.dictionary.render(),
     'progress':     () => SP.screens.progress.render(),
+    'about':        () => SP.screens.about.render(),
   }
 
   function parseHash() {
@@ -104,7 +105,7 @@
     // Sidebar highlight
     const topLevel = p.name
     const simple = { onboarding: null, lesson: 'home', practice: 'home', home: 'home',
-                     dictionary: 'dictionary', progress: 'progress' }[topLevel]
+                     dictionary: 'dictionary', progress: 'progress', about: 'about' }[topLevel]
     SP.setActiveRoute(simple)
 
     window.scrollTo(0, 0)
