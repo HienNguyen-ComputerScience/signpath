@@ -141,8 +141,21 @@
             SP.pushRecent(sign.key)
           }
           results.push({ signKey: sign.key, inflatedScore, passed, aborted })
-          step++
-          renderStep()
+
+          // Surface the toast. recordOnce prevents a real retry here, so
+          // both buttons (and auto-dismiss) simply advance the test.
+          const advance = () => { step++; renderStep() }
+          if (SP.attemptToast && SP.attemptToast.show) {
+            SP.attemptToast.show({
+              passed: aborted ? null : passed,
+              score:  aborted ? null : inflatedScore,
+              coachText: result.advice || '',
+              onNext:  advance,
+              onRetry: advance,
+            })
+          } else {
+            advance()
+          }
         },
       })
       stage.appendChild(currentUI.root)
@@ -302,5 +315,5 @@
     return picks
   }
 
-  SP.screens.skiptest = { render }
+  SP.screens.skiptest = { render, NUM_EVAL_SIGNS }
 })();

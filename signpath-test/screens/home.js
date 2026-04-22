@@ -245,10 +245,12 @@
         SP.h('div', { class:'en' }, lesson.goal.en),
         SP.h('div', { class:'stat' }, masteredCount + ' / ' + totalSigns + ' dấu'),
       ),
-      // Skip-test entry point — only for locked units. Stops click
+      // Skip-test entry point — only for locked units that actually have
+      // enough signs to run the evaluation (skiptest draws NUM_EVAL_SIGNS
+      // signs; any chapter below that can't be skipped). Stops click
       // propagation so tapping the button never triggers the parent
       // node's "locked" toast.
-      kind === 'locked' ? SP.h('button', {
+      (kind === 'locked' && totalSigns >= ((SP.screens.skiptest && SP.screens.skiptest.NUM_EVAL_SIGNS) || 3)) ? SP.h('button', {
         class:'sp-btn',
         'aria-label':'Kiểm tra đầu vào · Skip test',
         style:{
