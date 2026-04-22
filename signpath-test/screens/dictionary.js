@@ -71,13 +71,9 @@
     for (const l of lessons) chipsRow.appendChild(chipButton(l.id, l.goal.vi, l.icon, false))
     host.appendChild(chipsRow)
 
-    // Layout: grid on left, recently-practiced panel on right
-    const layout = SP.h('div', { style:{
-      display:'grid', gridTemplateColumns:'1fr 16rem', gap:'2rem',
-      padding:'2rem 3rem 4rem', alignItems:'start',
-    }})
-
-    const gridSection = SP.h('div', {})
+    // Grid fills the full-width surface now that the recently-practiced
+    // sidebar has moved to the dedicated History page.
+    const gridSection = SP.h('section', { style:{ padding:'2rem 3rem 4rem' }})
     const gridHeader = SP.h('div', { id:'sp-dict-header', style:{ marginBottom:'1rem', color:'var(--sp-on-surface-variant)', fontSize:'.875rem', fontWeight:600 }},
       'Hiển thị tất cả ' + allSigns.length + ' dấu')
     const grid = SP.h('div', { id:'sp-dict-grid', style:{
@@ -94,11 +90,7 @@
     gridSection.appendChild(grid)
     gridSection.appendChild(loadMoreBtn)
 
-    const sidePanel = renderRecentSidebar()
-    layout.appendChild(gridSection)
-    layout.appendChild(sidePanel)
-
-    host.appendChild(layout)
+    host.appendChild(gridSection)
 
     applyFilter()
 
@@ -192,33 +184,6 @@
       borderRadius:'9999px', background:bg, color:color,
       fontSize:'.625rem', fontWeight:700, letterSpacing:'.25px',
     }}, text)
-  }
-
-  function renderRecentSidebar() {
-    const recent = SP.getRecent().slice(0, 5)
-    const panel = SP.h('aside', { class:'sp-card', style:{ padding:'1rem 1.25rem', position:'sticky', top:'5rem' }},
-      SP.h('h3', { style:{ fontSize:'.75rem', fontWeight:700, color:'var(--sp-on-surface-variant)', textTransform:'uppercase', letterSpacing:'.5px', marginBottom:'.75rem' }},
-        'Vừa luyện tập'),
-    )
-    if (recent.length === 0) {
-      panel.appendChild(SP.h('div', { style:{ fontSize:'.875rem', color:'var(--sp-on-surface-variant)' }},
-        'Chưa có lịch sử. Bắt đầu luyện tập để xem ở đây.'))
-    } else {
-      for (const r of recent) {
-        panel.appendChild(SP.h('a', {
-          href: '#practice/' + encodeURIComponent(r.key),
-          style:{
-            display:'flex', alignItems:'center', justifyContent:'space-between', gap:'.5rem',
-            padding:'.5rem .375rem', borderRadius:'.5rem', textDecoration:'none',
-            color:'var(--sp-on-surface)', fontSize:'.875rem',
-          }
-        },
-          SP.h('span', { style:{ fontWeight:600 }}, r.key),
-          SP.h('span', { style:{ fontSize:'.6875rem', color:'var(--sp-on-surface-variant)' }}, SP.timeAgo(r.ts)),
-        ))
-      }
-    }
-    return panel
   }
 
   SP.screens.dictionary = { render }

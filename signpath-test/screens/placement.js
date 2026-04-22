@@ -317,8 +317,19 @@
             SP.pushRecent(sign.key)
           }
           results.push({ signKey: sign.key, inflatedScore, passed, aborted })
-          step++
-          renderPhase()
+
+          const advance = () => { step++; renderPhase() }
+          if (SP.attemptToast && SP.attemptToast.show) {
+            SP.attemptToast.show({
+              passed: aborted ? null : passed,
+              score:  aborted ? null : inflatedScore,
+              coachText: result.advice || '',
+              onNext:  advance,
+              onRetry: advance,
+            })
+          } else {
+            advance()
+          }
         },
       })
       stage.appendChild(currentUI.root)

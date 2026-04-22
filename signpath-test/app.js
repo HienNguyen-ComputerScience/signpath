@@ -49,6 +49,7 @@
     'home':         () => SP.screens.home.render(),
     'dictionary':   () => SP.screens.dictionary.render(),
     'progress':     () => SP.screens.progress.render(),
+    'history':      () => SP.screens.history.render(),
     'about':        () => SP.screens.about.render(),
     'placement':    () => SP.screens.placement.render(),
   }
@@ -119,7 +120,7 @@
     // Sidebar highlight
     const topLevel = p.name
     const simple = { onboarding: null, lesson: 'home', practice: 'home', skiptest: 'home', placement: 'home', home: 'home',
-                     dictionary: 'dictionary', progress: 'progress', about: 'about' }[topLevel]
+                     dictionary: 'dictionary', progress: 'progress', history: 'history', about: 'about' }[topLevel]
     SP.setActiveRoute(simple)
 
     window.scrollTo(0, 0)

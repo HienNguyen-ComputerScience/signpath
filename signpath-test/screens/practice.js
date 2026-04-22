@@ -198,24 +198,29 @@
     // The hand-detection indicator rides alongside the other three
     // framing pills instead of living as a separate bottom-left chip
     // so the user has a single "am I in frame?" strip to scan.
-    const framePill = (id, label) => SP.h('div', { id,
+    // Leading emoji identifies each pill at a glance — stays visible in
+    // both ok and bad states. Padding is bumped ~30% over the pre-v0.5
+    // values so the pills read as chips instead of chiclets.
+    const framePill = (id, label, leadEmoji) => SP.h('div', { id,
       'data-state': 'pending',
       style:{
         display:'inline-flex', alignItems:'center', gap:'.375rem',
-        padding:'.25rem .625rem', borderRadius:'9999px',
+        padding:'.325rem .8125rem', borderRadius:'9999px',
         fontSize:'.6875rem', fontWeight:600, lineHeight:1.2,
         background:'rgba(15,14,10,.72)', color:'rgba(255,255,255,.78)',
         border:'1px solid rgba(255,255,255,.14)',
-        maxWidth:'18rem',
+        maxWidth:'20rem',
       }},
+      SP.h('span', { 'data-lead':'',
+        style:{ fontSize:'.95rem', lineHeight:1, marginRight:'.4rem' }}, leadEmoji),
       SP.h('span', { class:'material-symbols-outlined', 'data-icon':'',
         style:{ fontSize:'.9rem', opacity:.9 }}, 'radio_button_unchecked'),
       SP.h('span', { 'data-label':'' }, label),
     )
-    const framePillFace      = framePill('sp-frame-face', 'Khuôn mặt')
-    const framePillShoulders = framePill('sp-frame-shoulders', 'Hai vai')
-    const framePillLight     = framePill('sp-frame-light', 'Ánh sáng')
-    const framePillHand      = framePill('sp-frame-hand', 'Chưa thấy tay')
+    const framePillFace      = framePill('sp-frame-face', 'Khuôn mặt', '🙂')
+    const framePillShoulders = framePill('sp-frame-shoulders', 'Hai vai', '🧍')
+    const framePillLight     = framePill('sp-frame-light', 'Ánh sáng', '💡')
+    const framePillHand      = framePill('sp-frame-hand', 'Chưa thấy tay', '👋')
     // handDot is the legacy name the rest of the file writes to — alias
     // it so we don't have to touch the tracking handler right now.
     const handDot = framePillHand
@@ -540,16 +545,54 @@
       app.engine.resumeCapture().catch(e => console.error('[practiceUI] resumeCapture failed:', e))
     }
 
-    // Default modal completion flow (used when caller didn't provide
-    // onAttemptComplete). Encapsulated so that runAttempt's happy path
-    // has a single branching point.
+    // Default completion flow (used when caller didn't provide
+    // onAttemptComplete). Shows the attempt-result toast in the top-right;
+    // rank-up, when it fires, still appears as a center modal chained
+    // onto whichever action the user clicks (matches the pre-toast
+    // sequence() behaviour in modals.js).
     function defaultModalFlow(result) {
-      SP.pushRecent(signKey)
       const modalActions = opts.modalActions || {}
-      SP.modals.showResult(result, {
-        onTryAgain: modalActions.onTryAgain || (() => { runAttempt() }),
-        onNext:     modalActions.onNext     || (() => { location.hash = '#home' }),
-        onBack:     modalActions.onBack     || (() => { location.hash = backHref }),
+      const onTryAgain = modalActions.onTryAgain || (() => { runAttempt() })
+      const onNext     = modalActions.onNext     || (() => { location.hash = '#home' })
+      const onBack     = modalActions.onBack     || (() => { location.hash = backHref })
+
+      if (result.aborted) {
+        SP.attemptToast.show({
+          passed: null,
+          score: null,
+          coachText: 'Không ghi nhận được dấu. Hãy thử lại.',
+          onRetry: onTryAgain,
+        })
+        return
+      }
+
+      SP.pushRecent(signKey)
+
+      const inflate = SP.inflateScore || function(s) { return Math.max(0, Math.min(100, (s|0) + 20)) }
+      const displayScore = (typeof result.inflatedFinalScore === 'number')
+        ? result.inflatedFinalScore
+        : inflate(result.finalScore)
+      const passed = typeof result.passed === 'boolean'
+        ? result.passed
+        : (displayScore >= (SP.PASS_GATE || 50))
+
+      const prog = result.progression
+      const rankChanged = !!(prog && prog.rankChanged && prog.rankBefore !== prog.rankAfter)
+      function chainRankUp(then) {
+        if (rankChanged && SP.modals && SP.modals.showRankUp) {
+          SP.modals.showRankUp({
+            newRank: prog.rankAfter, prevRank: prog.rankBefore,
+            newLevel: prog.levelAfter, prevLevel: prog.levelBefore,
+          }, { onContinue: then })
+        } else if (then) { then() }
+      }
+
+      SP.attemptToast.show({
+        passed,
+        score: displayScore,
+        coachText: result.advice || '',
+        onRetry: () => chainRankUp(onTryAgain),
+        onNext:  () => chainRankUp(passed ? onNext : onBack),
       })
     }
 
@@ -562,7 +605,6 @@
           try { await opts.onAttemptComplete(result) }
           catch(e) { console.error('[practiceUI] onAttemptComplete threw:', e) }
         } else {
-          if (result.aborted) return
           defaultModalFlow(result)
         }
       } catch (e) {
@@ -656,6 +698,7 @@
       }
       if (landmarkCtx) landmarkCtx.clearRect(0, 0, landmarkCanvas.width, landmarkCanvas.height)
       SP.modals.close()
+      if (SP.attemptToast && SP.attemptToast.close) SP.attemptToast.close()
     }
 
     return { root, recordBtn, runAttempt, teardown }

@@ -591,12 +591,40 @@
 
     renderContent()
 
+    // ── Disqus comments (below content, one thread per chapter) ──────
+    // Lives as a sibling of contentHost so mode toggles (which re-render
+    // contentHost) don't tear down the thread. Follows the chapter.
+    const commentsSection = SP.h('section', { style:{
+      padding:'1rem 3rem 4rem',
+    }},
+      SP.h('h2', { style:{
+        fontSize:'1.125rem', fontWeight:700,
+        color:'var(--sp-on-surface)', marginBottom:'.75rem',
+        maxWidth:'42rem',
+      }}, 'Thảo luận chương này'),
+    )
+    const commentsHost = SP.h('div', { style:{
+      maxWidth:'42rem',
+    }})
+    commentsSection.appendChild(commentsHost)
+
+    let disqusTeardown = null
+    if (SP.disqus && typeof SP.disqus.mount === 'function') {
+      disqusTeardown = SP.disqus.mount(commentsHost, {
+        threadId:    lessonId,
+        threadTitle: data.goal && data.goal.vi ? data.goal.vi : lessonId,
+        threadUrl:   'https://signpath.netlify.app/app.html#lesson/' + encodeURIComponent(lessonId),
+      })
+    }
+
     host.appendChild(topbar)
     host.appendChild(header)
     host.appendChild(modeBar)
     host.appendChild(contentHost)
+    host.appendChild(commentsSection)
     return { teardown() {
       if (quizFeedbackTimer) { clearTimeout(quizFeedbackTimer); quizFeedbackTimer = null }
+      if (disqusTeardown) { try { disqusTeardown() } catch(_) {} disqusTeardown = null }
     } }
   }
 
