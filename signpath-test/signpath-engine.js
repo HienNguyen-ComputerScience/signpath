@@ -643,14 +643,19 @@ async function _loadTemplates(gzPath, rawPath) {
   try {
     const res = await fetch(gzPath)
     if (res.ok) {
-      const encoded = (res.headers.get('content-encoding') || '').toLowerCase()
-      if (encoded.includes('gzip')) {
-        return await res.json()
-      }
-      if (typeof DecompressionStream === 'function') {
-        const stream = res.body.pipeThrough(new DecompressionStream('gzip'))
-        const text = await new Response(stream).text()
-        return JSON.parse(text)
+      // Browsers strip Content-Encoding before JS can see it, so the header
+      // is unreliable for detecting whether the body was auto-decompressed.
+      // Try JSON first (works when the browser already decompressed); if
+      // that fails the bytes are still gzip and we decompress manually.
+      // clone() keeps res.body re-readable for the fallback path.
+      try {
+        return await res.clone().json()
+      } catch (_) {
+        if (typeof DecompressionStream === 'function') {
+          const stream = res.body.pipeThrough(new DecompressionStream('gzip'))
+          const text = await new Response(stream).text()
+          return JSON.parse(text)
+        }
       }
     }
   } catch (_) { /* fall through to raw */ }
