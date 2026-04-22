@@ -28,7 +28,7 @@
 
 const VERSION = '3.0.0'
 const TEMPLATES_PATH = 'models/sign-templates.json'
-const TEMPLATES_PATH_GZ = 'models/sign-templates.json.gz'
+const TEMPLATES_PATH_GZ = 'https://cdn.jsdelivr.net/gh/HienNguyen-ComputerScience/signpath@main/signpath-test/models/sign-templates.json.gz'
 const CONFIG_PATH = 'models/model-config.json'
 
 // Preprocessing (must match build_templates.py exactly)
