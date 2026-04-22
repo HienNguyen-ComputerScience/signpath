@@ -282,6 +282,7 @@ class SignPathProgression {
       dailyGoalXp: DEFAULT_DAILY_GOAL_XP,
       dailyProgress: { date: null, xp: 0 },
       seenAttemptIds: [],             // ring buffer
+      placementTestCompleted: false,  // placement assessment finished or skipped
     }
   }
 
@@ -293,7 +294,14 @@ class SignPathProgression {
     } catch(e) { /* corrupted → fresh */ }
     const def = this._defaultState()
     // Merge so new fields (added in future versions) get defaults
-    return Object.assign(def, loaded || {})
+    const merged = Object.assign(def, loaded || {})
+    // Back-fill for users whose state was written before the placement
+    // flag existed: treat them as already past the placement so re-entry
+    // doesn't yank them into a test they never opted into.
+    if (loaded && !Object.prototype.hasOwnProperty.call(loaded, 'placementTestCompleted')) {
+      merged.placementTestCompleted = true
+    }
+    return merged
   }
 
   _save() {
@@ -662,6 +670,49 @@ class SignPathProgression {
       achievementsUnlocked: achievements,
       duplicateAttempt: false,
     }
+  }
+
+  // ─── PLACEMENT TEST ──────────────────────────────────────────────────
+
+  isPlacementTestCompleted() {
+    return !!this._state.placementTestCompleted
+  }
+
+  /**
+   * Mark the placement test as completed. Idempotent; no events emitted.
+   * Called after the placement results screen renders (pass, fail, or
+   * "Bỏ qua" — the button is meant to get the user out of the gate).
+   */
+  setPlacementTestCompleted() {
+    if (this._state.placementTestCompleted) return
+    this._state.placementTestCompleted = true
+    this._save()
+  }
+
+  /**
+   * Unlock the first N lessons in engine.getLessons() order. Used by the
+   * placement test to map an average score to a chapter count.
+   *
+   * MONOTONIC: this only ADDS lesson IDs to unlockedLessons. Re-taking the
+   * placement test with a lower score does NOT shrink the unlock set —
+   * users never lose progress they've already earned.
+   *
+   * Returns the list of newly-unlocked lesson IDs (may be empty).
+   */
+  unlockFirstNLessons(n) {
+    const lessons = (this._engine.getLessons && this._engine.getLessons()) || []
+    const target = Math.max(0, Math.min(n | 0, lessons.length))
+    const newlyUnlocked = []
+    for (let i = 0; i < target; i++) {
+      const id = lessons[i].id
+      if (!this.isLessonUnlocked(id)) {
+        this._state.unlockedLessons.push(id)
+        newlyUnlocked.push(id)
+      }
+    }
+    if (newlyUnlocked.length) this._save()
+    newlyUnlocked.forEach(id => this._emit('lesson:unlocked', { lessonId: id }))
+    return newlyUnlocked
   }
 
   /**

@@ -27,12 +27,67 @@
       rank: data ? data.user.rank : null,
     })
 
+    const placementDone = !!(app && app.progression && app.progression.isPlacementTestCompleted && app.progression.isPlacementTestCompleted())
+    const placementBtn = SP.h('button', {
+      'aria-label':'Kiểm tra trình độ · Placement test',
+      style:{
+        marginTop:'1rem',
+        display:'inline-flex', alignItems:'center', gap:'.5rem',
+        padding:'.625rem 1.125rem',
+        borderRadius:'9999px',
+        border:'1px solid var(--sp-outline-variant)',
+        background:'var(--sp-tertiary-fixed)',
+        color:'var(--sp-on-tertiary-container)',
+        fontSize:'.875rem', fontWeight:600, cursor:'pointer',
+        fontFamily:'inherit',
+      },
+      onclick: () => {
+        if (placementDone) {
+          // Re-test confirmation — only unlocks can grow, never shrink
+          // (see progression.unlockFirstNLessons), so this is safe, but
+          // users should opt in.
+          showPlacementConfirm()
+        } else {
+          location.hash = '#placement'
+        }
+      },
+    },
+      SP.h('span', { class:'material-symbols-outlined', style:{ fontSize:'1.125rem' }}, 'quiz'),
+      SP.h('span', {}, placementDone ? 'Làm lại kiểm tra trình độ' : 'Kiểm tra trình độ'),
+    )
+
     const hero = SP.h('section', { style:{ padding:'2rem 3rem 0' }},
       SP.h('h1', { style:{ fontSize:'3rem', fontWeight:800, color:'var(--sp-primary)', marginBottom:'.5rem', lineHeight:1.1, fontFamily:'inherit' }},
         'Hành trình của bạn'),
       SP.h('p', { style:{ fontSize:'1.125rem', color:'var(--sp-on-surface-variant)', maxWidth:'42rem' }},
         'Học ngôn ngữ ký hiệu Việt Nam với phản hồi AI thời gian thực'),
+      placementBtn,
     )
+
+    function showPlacementConfirm() {
+      const mount = document.getElementById('sp-modal-mount')
+      if (!mount) { location.hash = '#placement'; return }
+      mount.innerHTML = ''
+      const scrim = SP.h('div', { class:'sp-modal-scrim', onclick: (e) => {
+        if (e.target === scrim) { mount.innerHTML = '' }
+      }})
+      const modal = SP.h('div', { class:'sp-modal', style:{ maxWidth:'28rem' },
+        onclick: (e) => e.stopPropagation() })
+      scrim.appendChild(modal)
+      modal.appendChild(SP.h('h2', { style:{ fontSize:'1.5rem', fontWeight:800, color:'var(--sp-primary)', marginBottom:'.75rem' }},
+        'Làm lại bài kiểm tra trình độ?'))
+      modal.appendChild(SP.h('p', { style:{ color:'var(--sp-on-surface)', lineHeight:1.5, marginBottom:'1.25rem' }},
+        'Bạn đã làm bài kiểm tra trình độ. Làm lại sẽ cập nhật danh sách chương đã mở. Tiếp tục?'))
+      modal.appendChild(SP.h('div', { style:{ display:'flex', justifyContent:'flex-end', gap:'.5rem' }},
+        SP.h('button', { class:'sp-btn',
+          onclick: () => { mount.innerHTML = '' }
+        }, 'Huỷ'),
+        SP.h('button', { class:'sp-btn sp-btn-primary',
+          onclick: () => { mount.innerHTML = ''; location.hash = '#placement' }
+        }, 'Tiếp tục'),
+      ))
+      mount.appendChild(scrim)
+    }
 
     // Progress summary strip
     if (data) {

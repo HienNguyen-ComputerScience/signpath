@@ -50,6 +50,7 @@
     'dictionary':   () => SP.screens.dictionary.render(),
     'progress':     () => SP.screens.progress.render(),
     'about':        () => SP.screens.about.render(),
+    'placement':    () => SP.screens.placement.render(),
   }
 
   function parseHash() {
@@ -68,6 +69,18 @@
         location.hash = '#onboarding/1'
         return
       }
+    }
+
+    // Placement gate: after onboarding, first-visit users go through the
+    // placement test before reaching the rest of the app. Existing users
+    // (migration sets placementTestCompleted=true in _loadOrInit) skip
+    // this. Onboarding and placement routes are exempt so we don't loop.
+    else if (app && app.progression
+             && !app.progression.isPlacementTestCompleted()
+             && p.name !== 'placement'
+             && !(p.name && p.name.startsWith('onboarding'))) {
+      location.hash = '#placement'
+      return
     }
 
     // Empty hash → default home.
@@ -105,7 +118,7 @@
 
     // Sidebar highlight
     const topLevel = p.name
-    const simple = { onboarding: null, lesson: 'home', practice: 'home', skiptest: 'home', home: 'home',
+    const simple = { onboarding: null, lesson: 'home', practice: 'home', skiptest: 'home', placement: 'home', home: 'home',
                      dictionary: 'dictionary', progress: 'progress', about: 'about' }[topLevel]
     SP.setActiveRoute(simple)
 
