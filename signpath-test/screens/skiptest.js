@@ -152,6 +152,10 @@
               coachText: result.advice || '',
               onNext:  advance,
               onRetry: advance,
+              // Single-attempt policy: timeout advances on pass OR fail.
+              // Passed explicitly so we're not relying on the module's
+              // onNext-aliasing fallback.
+              onTimeout: advance,
             })
           } else {
             advance()

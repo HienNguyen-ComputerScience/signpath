@@ -8,7 +8,13 @@
  *   opts.score       — integer 0..100 (ignored when aborted)
  *   opts.coachText   — short advice line; truncated to ~120 chars
  *   opts.onRetry     — called when user clicks "Thử lại"
- *   opts.onNext      — called when user clicks "Học tiếp" or on auto-dismiss
+ *   opts.onNext      — called when user clicks "Học tiếp"
+ *   opts.onTimeout   — called when the toast auto-dismisses. Optional:
+ *                      falls back to opts.onNext for backward compat, or
+ *                      to a no-op for aborted toasts. Callers that want
+ *                      different click-vs-timeout behavior (e.g. stay on
+ *                      a failed sign instead of advancing) pass this
+ *                      explicitly.
  *   opts.durationMs  — override default (4000 ms pass / 5500 ms fail / 4000 aborted)
  *
  * Aborted state shows no score and only a "Thử lại" button; auto-dismiss
@@ -144,7 +150,15 @@
     })
 
     const timer = setTimeout(() => {
-      const dismissTarget = aborted ? null : opts.onNext
+      // Prefer an explicit onTimeout when the caller supplied one. This is
+      // how practice distinguishes "fail timeout stays" from "pass timeout
+      // advances"; skiptest/placement pass their advance closure explicitly
+      // so the timeout behavior doesn't rely on onNext aliasing. Fallback
+      // keeps backward compat: pass/fail default to onNext (advance),
+      // aborted defaults to a no-op (stay).
+      const dismissTarget = (typeof opts.onTimeout === 'function')
+        ? opts.onTimeout
+        : (aborted ? null : opts.onNext)
       if (toast.parentElement) {
         toast.style.transform = 'translateX(110%)'
         toast.style.opacity = '0'

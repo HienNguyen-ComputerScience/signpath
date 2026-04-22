@@ -593,6 +593,11 @@
         coachText: result.advice || '',
         onRetry: () => chainRankUp(onTryAgain),
         onNext:  () => chainRankUp(passed ? onNext : onBack),
+        // Fail-stay: only pass auto-advances. On fail, the user stays on
+        // the current sign until they click Thử lại or Học tiếp (or use
+        // air-tap / ArrowRight). Aborted has no onTimeout — the module
+        // defaults aborted dismiss to a no-op.
+        onTimeout: passed ? () => chainRankUp(onNext) : () => {},
       })
     }
 
