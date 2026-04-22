@@ -8,6 +8,7 @@
 <!-- Fonts + icons -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 
@@ -65,35 +66,35 @@
 </script>
 
 <!-- ── Keep-warm pinger (Render free tier spins down after 15min idle) ── -->
-<script src="scripts/keep_warm.js"></script>
+<script defer src="scripts/keep_warm.js"></script>
 
 <!-- ── Backend dependencies (strict order) ────────────────────────────── -->
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic/holistic.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic/holistic.js" crossorigin="anonymous"></script>
 <!-- Drawing utils for landmark overlay on the practice screen (hand + pose). -->
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
-<script src="signpath-engine.js"></script>
-<script src="signpath-coach.js"></script>
-<script src="signpath-session.js"></script>
-<script src="signpath-progression.js"></script>
-<script src="signpath-review.js"></script>
-<script src="signpath-audio.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+<script defer src="signpath-engine.js"></script>
+<script defer src="signpath-coach.js"></script>
+<script defer src="signpath-session.js"></script>
+<script defer src="signpath-progression.js"></script>
+<script defer src="signpath-review.js"></script>
+<script defer src="signpath-audio.js"></script>
 <!-- Shared engine→UI helpers (inflateScore, hard pass gate).
      Must load before signpath-api.js and before the screens/* bundle. -->
-<script src="shared.js"></script>
-<script src="signpath-api.js"></script>
+<script defer src="shared.js"></script>
+<script defer src="signpath-api.js"></script>
 
 <!-- ── UI ────────────────────────────────────────────────────────────── -->
 <!-- Route-predicate helper (shared by the modal route guard). -->
-<script src="route.js"></script>
-<script src="screens/shared.js"></script>
-<script src="screens/modals.js"></script>
-<script src="screens/onboarding.js"></script>
-<script src="screens/home.js"></script>
-<script src="screens/lesson.js"></script>
-<script src="screens/practice.js"></script>
-<script src="screens/dictionary.js"></script>
-<script src="screens/progress.js"></script>
-<script src="app.js"></script>
+<script defer src="route.js"></script>
+<script defer src="screens/shared.js"></script>
+<script defer src="screens/modals.js"></script>
+<script defer src="screens/onboarding.js"></script>
+<script defer src="screens/home.js"></script>
+<script defer src="screens/lesson.js"></script>
+<script defer src="screens/practice.js"></script>
+<script defer src="screens/dictionary.js"></script>
+<script defer src="screens/progress.js"></script>
+<script defer src="app.js"></script>
 
 </body>
 </html>
