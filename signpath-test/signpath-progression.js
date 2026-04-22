@@ -283,6 +283,11 @@ class SignPathProgression {
       dailyProgress: { date: null, xp: 0 },
       seenAttemptIds: [],             // ring buffer
       placementTestCompleted: false,  // placement assessment finished or skipped
+      uiPreferences: {                // WIP gesture-nav UI prefs (not yet in prod)
+        sidebarCollapsed: false,
+        refFloaterCorner: 'br',       // 'tl' | 'tr' | 'bl' | 'br'
+        refFloaterMinimized: false,
+      },
     }
   }
 
@@ -301,6 +306,11 @@ class SignPathProgression {
     if (loaded && !Object.prototype.hasOwnProperty.call(loaded, 'placementTestCompleted')) {
       merged.placementTestCompleted = true
     }
+    // uiPreferences: shallow-merge so later additions (new keys) fall back
+    // to defaults without clobbering user choices that are already stored.
+    merged.uiPreferences = Object.assign(
+      { sidebarCollapsed:false, refFloaterCorner:'br', refFloaterMinimized:false },
+      (loaded && loaded.uiPreferences) || {})
     return merged
   }
 
@@ -670,6 +680,19 @@ class SignPathProgression {
       achievementsUnlocked: achievements,
       duplicateAttempt: false,
     }
+  }
+
+  // ─── UI PREFERENCES (gesture-nav WIP) ────────────────────────────────
+
+  getUIPreferences() {
+    return Object.assign({}, this._state.uiPreferences || {})
+  }
+
+  setUIPreference(key, value) {
+    if (!this._state.uiPreferences) this._state.uiPreferences = {}
+    if (this._state.uiPreferences[key] === value) return
+    this._state.uiPreferences[key] = value
+    this._save()
   }
 
   // ─── PLACEMENT TEST ──────────────────────────────────────────────────

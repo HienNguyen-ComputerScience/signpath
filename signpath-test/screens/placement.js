@@ -292,6 +292,16 @@
         stepBadge,
         recordOnce: true,
         hideReferenceVideo: true,
+        airtapActions: {
+          onBack: () => { SP.toast('Xem lại đang phát triển · Review coming soon', 2000) },
+          // Next = skip this sign as score-0, advance. Score counts
+          // toward the average like any failed attempt.
+          onNext: () => {
+            results.push({ signKey: sign.key, inflatedScore: 0, passed: false, aborted: true })
+            step++
+            renderPhase()
+          },
+        },
         onAttemptComplete: async (result) => {
           let inflatedScore, passed, aborted
           if (result.aborted) {

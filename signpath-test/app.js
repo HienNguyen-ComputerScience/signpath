@@ -210,4 +210,53 @@
   }
 
   document.addEventListener('DOMContentLoaded', boot)
+
+  // ── Sidebar collapse toggle (gesture-nav WIP) ─────────────────────
+  // Wired at DOMContentLoaded so the button works even before the
+  // engine is ready. Collapsed state persists to localStorage directly
+  // (progression may not be instantiated yet when user first clicks).
+  // Once app.progression exists, we mirror writes there too.
+  const SIDEBAR_LS_KEY = 'signpath:sidebarCollapsed'
+  document.addEventListener('DOMContentLoaded', () => {
+    const sidebar = document.getElementById('sp-sidebar')
+    const toggle  = document.getElementById('sp-sidebar-toggle')
+    const main    = document.getElementById('sp-main')
+    const icon    = document.getElementById('sp-sidebar-toggle-icon')
+    if (!sidebar || !toggle || !main) return
+
+    const initial = localStorage.getItem(SIDEBAR_LS_KEY) === 'true'
+    applyCollapsed(initial)
+
+    toggle.addEventListener('click', () => {
+      const now = !sidebar.classList.contains('sp-sidebar-collapsed')
+      applyCollapsed(now)
+      try { localStorage.setItem(SIDEBAR_LS_KEY, String(now)) } catch(_) {}
+      if (app && app.progression && app.progression.setUIPreference) {
+        app.progression.setUIPreference('sidebarCollapsed', now)
+      }
+    })
+
+    function applyCollapsed(on) {
+      // Width + layout transitions are handled by CSS classes so the
+      // camera container expands smoothly into the freed horizontal
+      // space (see .sp-sidebar-collapsed rules in signpath-styles.css).
+      sidebar.classList.toggle('sp-sidebar-collapsed', on)
+      main.classList.toggle('sp-main-collapsed', on)
+      if (icon) icon.textContent = on ? 'menu' : 'menu_open'
+      // Hide non-icon label spans on nav links.
+      const links = sidebar.querySelectorAll('.sp-sidebar-link')
+      links.forEach(a => {
+        const spans = a.querySelectorAll('span')
+        spans.forEach(s => {
+          if (s.classList.contains('material-symbols-outlined')) return
+          s.style.display = on ? 'none' : ''
+        })
+      })
+      // Engine status strip in the sidebar footer — hide text when narrow.
+      const status = document.getElementById('sp-engine-status')
+      if (status && status.parentElement) {
+        status.parentElement.style.display = on ? 'none' : ''
+      }
+    }
+  })
 })();

@@ -70,6 +70,18 @@
       for (const [e, h] of handlers) { try { app.off(e, h) } catch(_) {} }
       handlers.length = 0
     }
+    // Parallel registry for DOM listeners (document-level keydown for the
+    // camera-screen shortcuts). Kept separate from `handlers` because the
+    // app event bus and DOM use different add/remove APIs.
+    const domHandlers = []
+    function domOn(target, eventName, handler, options) {
+      target.addEventListener(eventName, handler, options)
+      domHandlers.push([target, eventName, handler, options])
+    }
+    function detachAllDom() {
+      for (const [t, e, h, o] of domHandlers) { try { t.removeEventListener(e, h, o) } catch(_) {} }
+      domHandlers.length = 0
+    }
 
     // Eager select — ensures score events for this sign flow from the
     // moment capture resumes.
@@ -182,15 +194,10 @@
       { style:{ fontSize:'.75rem', opacity:.75 }}, signData.en))
     practiceWrap.appendChild(backOverlay)
 
-    // Hand detection indicator (bottom-left)
-    const handDot = SP.h('div', { id: 'sp-hand-dot', style:{
-      position:'absolute', bottom:'1rem', left:'1rem', zIndex:3,
-      padding:'.375rem .75rem', borderRadius:'9999px',
-      background:'rgba(99, 95, 86, 0.78)', color:'#fff', fontSize:'.75rem', fontWeight:600,
-    }}, 'Chưa thấy tay')
-    practiceWrap.appendChild(handDot)
-
     // ── Framing guide (advisory, does NOT block recording) ────────────
+    // The hand-detection indicator rides alongside the other three
+    // framing pills instead of living as a separate bottom-left chip
+    // so the user has a single "am I in frame?" strip to scan.
     const framePill = (id, label) => SP.h('div', { id,
       'data-state': 'pending',
       style:{
@@ -208,13 +215,17 @@
     const framePillFace      = framePill('sp-frame-face', 'Khuôn mặt')
     const framePillShoulders = framePill('sp-frame-shoulders', 'Hai vai')
     const framePillLight     = framePill('sp-frame-light', 'Ánh sáng')
+    const framePillHand      = framePill('sp-frame-hand', 'Chưa thấy tay')
+    // handDot is the legacy name the rest of the file writes to — alias
+    // it so we don't have to touch the tracking handler right now.
+    const handDot = framePillHand
     const framingGuide = SP.h('div', { 'aria-label':'Hướng dẫn khung hình',
       style:{
         position:'absolute', top:'1rem', left:'50%', transform:'translateX(-50%)', zIndex:3,
         display:'flex', flexWrap:'wrap', gap:'.375rem', justifyContent:'center',
         pointerEvents:'none',
       }},
-      framePillFace, framePillShoulders, framePillLight,
+      framePillFace, framePillShoulders, framePillLight, framePillHand,
     )
     practiceWrap.appendChild(framingGuide)
 
@@ -301,120 +312,45 @@
     )
     practiceWrap.appendChild(scoreOverlay)
 
-    // ── Right-column panels: reference thumb / advice / record ──────────
-    // When the caller opts out of the reference video (e.g. the skip
-    // test — no cheat-sheet during evaluation), the column shrinks so
-    // the camera feed reclaims the freed horizontal space.
+    // ── Full-bleed layout (gesture-nav WIP) ─────────────────────────────
+    // Right-column reference panel is gone. Coach advice becomes a
+    // bottom-left pill. Record controls sit at the bottom-center. The
+    // reference video (when the caller doesn't opt out) floats over the
+    // camera via SP.refFloater, draggable between corners.
     const hideRef = !!opts.hideReferenceVideo
-    const rightColDesktopWidth = hideRef ? '20%' : '25%'
-    const rightColDesktopMinWidth = hideRef ? '13rem' : '15rem'
-    const rightColDesktopMaxWidth = hideRef ? '18rem' : '22rem'
-    const rightCol = SP.h('div', { class:'sp-practice-rightcol' + (hideRef ? ' sp-attempt-solo' : ''),
-      style:{
-        position:'absolute', top:'1rem', right:'1rem', zIndex:3,
-        width: rightColDesktopWidth,
-        minWidth: rightColDesktopMinWidth,
-        maxWidth: rightColDesktopMaxWidth,
-        display:'flex', flexDirection:'column', gap:'.625rem',
-      }})
 
-    // Reference video thumbnail — only built when the caller wants it.
-    let refWrap = null
-    if (!hideRef) {
-      const refVideoEl = SP.videoEl(signKey, { preload:'auto' })
-      refVideoEl.style.aspectRatio = '1/1'
-      refVideoEl.style.borderRadius = '.5rem'
-      refVideoEl.style.overflow = 'hidden'
-
-      let refHidden = false
-      const eyeIcon = SP.h('span', { class:'material-symbols-outlined', style:{ fontSize:'1.125rem' }}, 'visibility')
-      const eyeBtn = SP.h('button', {
-        'aria-label': 'Ẩn video mẫu · Hide reference',
-        style:{
-          background:'transparent', border:'none', cursor:'pointer',
-          color:'#fff', padding:'.125rem', marginLeft:'auto',
-          display:'inline-flex', alignItems:'center', fontFamily:'inherit',
-          opacity:.85,
-        },
-        onclick: (e) => { e.stopPropagation(); toggleRef() },
-      }, eyeIcon)
-      const headerText = SP.h('span', {}, 'Video mẫu · Reference')
-      const stripText = SP.h('span', { style:{ display:'none', alignItems:'center', gap:'.25rem' }},
-        SP.h('span', {}, 'Hiện video mẫu · Show reference'),
-        SP.h('span', { class:'material-symbols-outlined', style:{ fontSize:'1rem' }}, 'arrow_forward'),
-      )
-      const refHeader = SP.h('div', { style:{
-        display:'flex', alignItems:'center', gap:'.5rem',
-        fontSize:'.625rem',
-        fontWeight:700, textTransform:'uppercase', letterSpacing:'.5px',
-        padding:'.125rem 0 .375rem', opacity:.8,
-        cursor:'default',
-      }}, headerText, stripText, eyeBtn)
-      const speedRow = SP.h('div', { style:{ display:'flex', gap:'.25rem', justifyContent:'center', marginTop:'.5rem' }},
-        speedBtn(refVideoEl, 0.5, '0.5×'),
-        speedBtn(refVideoEl, 0.75, '0.75×', true),
-        speedBtn(refVideoEl, 1.0, '1×'),
-      )
-      function toggleRef() {
-        refHidden = !refHidden
-        if (refHidden) {
-          refVideoEl.style.display = 'none'
-          speedRow.style.display = 'none'
-          headerText.style.display = 'none'
-          stripText.style.display = 'inline-flex'
-          eyeIcon.textContent = 'visibility_off'
-          eyeBtn.setAttribute('aria-label', 'Hiện video mẫu · Show reference')
-          refHeader.style.cursor = 'pointer'
-        } else {
-          refVideoEl.style.display = ''
-          speedRow.style.display = 'flex'
-          headerText.style.display = ''
-          stripText.style.display = 'none'
-          eyeIcon.textContent = 'visibility'
-          eyeBtn.setAttribute('aria-label', 'Ẩn video mẫu · Hide reference')
-          refHeader.style.cursor = 'default'
-        }
-      }
-      refHeader.addEventListener('click', () => { if (refHidden) toggleRef() })
-      refWrap = SP.h('div', { style:{
-        background:'rgba(28, 26, 22, 0.82)',
-        color:'#fff',
-        borderRadius:'.75rem',
-        padding:'.5rem .625rem .625rem',
-        boxShadow:'0 6px 18px rgba(0,0,0,.38)',
-      }},
-        refHeader,
-        refVideoEl,
-        speedRow,
-      )
-    }
-
-    // Coach advice panel
     const adviceCard = SP.h('div', { id:'sp-coach-box', style:{
-      background:'rgba(28, 26, 22, 0.82)',
+      position:'absolute', bottom:'1rem', left:'1rem', zIndex:3,
+      maxWidth:'28rem',
+      background:'rgba(28, 26, 22, 0.78)',
       color:'#fff',
       borderLeft:'4px solid var(--sp-primary)',
       borderRadius:'.625rem',
-      padding:'.75rem .875rem',
+      padding:'.625rem .875rem',
       fontSize:'.8125rem',
-      lineHeight:1.45,
-      minHeight:'3.5rem',
+      lineHeight:1.4,
       boxShadow:'0 6px 18px rgba(0,0,0,.38)',
     }},
       SP.h('div', { style:{
         fontSize:'.625rem', fontWeight:700,
         textTransform:'uppercase', letterSpacing:'.5px',
-        marginBottom:'.25rem', opacity:.8,
+        marginBottom:'.125rem', opacity:.85,
       }}, 'Lời khuyên AI'),
       SP.h('div', { id:'sp-coach-text' },
         hasTemplate ? 'Xem video mẫu rồi nhấn Quay để bắt đầu.'
                     : 'Dấu này chưa có dữ liệu chấm điểm. Bạn chỉ có thể xem video mẫu.'),
     )
+    practiceWrap.appendChild(adviceCard)
 
-    // Record controls panel
-    const progressWrap = SP.h('div', { style:{ flex:1, height:'.375rem', background:'rgba(255,255,255,.16)', borderRadius:'9999px', overflow:'hidden' }},
+    const progressWrap = SP.h('div', { style:{ width:'100%', height:'.375rem', background:'rgba(255,255,255,.16)', borderRadius:'9999px', overflow:'hidden' }},
       SP.h('div', { id:'sp-rec-progress', style:{ height:'100%', width:'0%', background:'linear-gradient(90deg, #954b00 0%, #f68a2f 100%)', transition:'width 100ms linear' }})
     )
+    // Record button is no longer rendered on the camera surface —
+    // gesture-nav uses air-tap + keyboard shortcuts instead. The element
+    // is still built (detached) so existing attempt-lifecycle code can
+    // continue to mutate .disabled / .innerHTML without special-casing,
+    // and `recordBtn.click()` remains callable from any external code
+    // path that may reference it.
     const recordBtn = SP.h('button', { id:'sp-record-btn', class:'sp-btn sp-btn-primary',
       disabled: !hasTemplate,
       onclick: runAttempt,
@@ -423,54 +359,50 @@
       SP.h('span', { class:'material-symbols-outlined filled' }, 'fiber_manual_record'),
       SP.h('span', {}, 'Quay · Record'),
     )
-    const recordPanel = SP.h('div', { style:{
-      background:'rgba(28, 26, 22, 0.82)',
-      borderRadius:'.625rem',
-      padding:'.75rem .875rem',
-      display:'flex', flexDirection:'column', gap:'.5rem',
-      boxShadow:'0 6px 18px rgba(0,0,0,.38)',
-    }},
-      recordBtn, progressWrap,
-    )
-
-    if (refWrap) rightCol.appendChild(refWrap)
-    rightCol.appendChild(adviceCard)
-    rightCol.appendChild(recordPanel)
-    practiceWrap.appendChild(rightCol)
     root.appendChild(practiceWrap)
 
-    // Responsive: on narrow viewports stack the right column BELOW the
-    // camera instead of overlaying it. Spec: < 768px → stacked.
+    // Reference floater (freely draggable, clamped to container).
+    // Skiptest and placement pass hideReferenceVideo:true so no floater
+    // mounts for those flows. Persistence goes through progression.
+    let refFloaterHandle = null
+    if (!hideRef && SP.refFloater && typeof SP.refFloater.mount === 'function') {
+      const prefsGet = () => (app.progression && app.progression.getUIPreferences
+        ? app.progression.getUIPreferences() : {})
+      const setPref = (k, v) => {
+        if (app.progression && app.progression.setUIPreference) app.progression.setUIPreference(k, v)
+      }
+      refFloaterHandle = SP.refFloater.mount(practiceWrap, {
+        signKey,
+        getPosition: () => {
+          const p = prefsGet()
+          if (typeof p.refFloaterX === 'number' && typeof p.refFloaterY === 'number') {
+            return { x: p.refFloaterX, y: p.refFloaterY }
+          }
+          return null
+        },
+        setPosition: (x, y) => { setPref('refFloaterX', x); setPref('refFloaterY', y) },
+        // Legacy corner honoured on first mount for users who upgraded.
+        getCorner: () => prefsGet().refFloaterCorner || 'br',
+        getMinimized: () => !!prefsGet().refFloaterMinimized,
+        setMinimized: (v) => setPref('refFloaterMinimized', !!v),
+      })
+    }
+
+    // Responsive: narrow viewports stack advice above the record panel
+    // at the bottom (still over the camera). Minimum-change from the
+    // prior responsive branch — camera remains full-bleed.
     function applyResponsive() {
       const narrow = window.innerWidth < 768
       if (narrow) {
         practiceWrap.style.height = 'auto'
-        practiceWrap.style.display = 'flex'
-        practiceWrap.style.flexDirection = 'column'
-        practiceWrap.style.background = 'transparent'
-        rightCol.style.position = 'static'
-        rightCol.style.top = ''
-        rightCol.style.right = ''
-        rightCol.style.width = 'auto'
-        rightCol.style.maxWidth = 'none'
-        rightCol.style.padding = '.75rem 0 0'
-        camVideo.style.position = 'relative'
-        camVideo.style.height = 'auto'
-        camVideo.style.aspectRatio = '4/3'
-        landmarkCanvas.style.position = 'absolute'
+        practiceWrap.style.minHeight = '28rem'
+        adviceCard.style.maxWidth = 'calc(100% - 2rem)'
+        adviceCard.style.right = '1rem'
       } else {
         practiceWrap.style.height = 'calc(100vh - 7rem)'
-        practiceWrap.style.display = 'block'
-        practiceWrap.style.background = '#000'
-        rightCol.style.position = 'absolute'
-        rightCol.style.top = '1rem'
-        rightCol.style.right = '1rem'
-        rightCol.style.width = rightColDesktopWidth
-        rightCol.style.maxWidth = rightColDesktopMaxWidth
-        rightCol.style.padding = '0'
-        camVideo.style.position = 'absolute'
-        camVideo.style.height = '100%'
-        camVideo.style.aspectRatio = ''
+        practiceWrap.style.minHeight = '32rem'
+        adviceCard.style.maxWidth = '28rem'
+        adviceCard.style.right = ''
       }
     }
     applyResponsive()
@@ -486,8 +418,10 @@
     let _deniedPainted = false
 
     on('tracking', d => {
-      handDot.textContent = d.detected ? '✓ Thấy tay' : 'Chưa thấy tay'
-      handDot.style.background = d.detected ? 'rgba(27, 67, 50, 0.78)' : 'rgba(99, 95, 86, 0.78)'
+      // Hand pill — shares styling with the other framing pills so
+      // "pass" state collapses to the same green, "fail" to the same red.
+      setPillState(framePillHand, d.detected ? 'ok' : 'bad',
+        d.detected ? 'Thấy tay' : 'Chưa thấy tay')
 
       const face = checkFaceCentered(d.face)
       setPillState(framePillFace, face.ok ? 'ok' : 'bad', face.tip)
@@ -646,11 +580,80 @@
       }
     }
 
+    // ── Air-tap overlay (gesture-nav WIP) ──────────────────────────────
+    // Back / Start-Stop / Next buttons mounted over the camera. Actions
+    // come from opts.airtapActions (each caller supplies its own context:
+    // practice advances within a chapter; skiptest/placement within the
+    // attempt sequence). Start/Stop and getIsRecording are owned here so
+    // air-tap and the keyboard shortcuts stay in sync — recording
+    // remains idempotent (session.isActive() guards both entry points).
+    const airtapActions = opts.airtapActions || {}
+    const airtapOnBack = airtapActions.onBack || function() {}
+    const airtapOnNext = airtapActions.onNext || function() {}
+    function toggleRecording() {
+      if (app.session && app.session.isActive()) {
+        if (app.session.cancelAttempt) app.session.cancelAttempt()
+      } else {
+        runAttempt()
+      }
+    }
+
+    let airtapHandle = null
+    if (SP.airtap && typeof SP.airtap.mount === 'function') {
+      airtapHandle = SP.airtap.mount(practiceWrap, {
+        subscribeTracking: (handler) => {
+          app.on('tracking', handler)
+          return () => app.off('tracking', handler)
+        },
+        onBack:  airtapOnBack,
+        onNext:  airtapOnNext,
+        onStartStop: toggleRecording,
+        getIsRecording: () => !!(app.session && app.session.isActive()),
+      })
+    }
+
+    // Keyboard shortcuts — same three actions as air-tap plus a Ctrl+R
+    // fallback. Scoped to document so it works regardless of focus
+    // (the user is watching the camera, not focused on anything); detached
+    // on teardown so it only fires while a camera screen is mounted.
+    //   ArrowLeft  → Back
+    //   ArrowRight → Next
+    //   Space      → Start/Stop toggle
+    //   Ctrl+R     → Start/Stop toggle (hidden fallback; overrides browser reload)
+    domOn(document, 'keydown', function(e) {
+      const t = e.target
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return
+      // Ctrl+R first — it's a legitimate modifier combo we want to intercept.
+      if ((e.key === 'r' || e.key === 'R') && e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
+        e.preventDefault(); e.stopPropagation()
+        toggleRecording()
+        return
+      }
+      // Any other modifier → leave to the browser (Alt+Left = history back, etc.).
+      if (e.ctrlKey || e.altKey || e.shiftKey || e.metaKey) return
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); airtapOnBack(); return }
+      if (e.key === 'ArrowRight') { e.preventDefault(); airtapOnNext(); return }
+      if (e.key === ' ' || e.key === 'Spacebar') {
+        // preventDefault BEFORE calling the toggle so the browser can't
+        // fire its default page-scroll between the handler and our call.
+        e.preventDefault()
+        toggleRecording()
+        return
+      }
+    })
+
     function teardown() {
       clearInterval(streamPoller)
       if (degradedQuietTimer) clearTimeout(degradedQuietTimer)
       window.removeEventListener('resize', applyResponsive)
       detachAll()
+      detachAllDom()
+      if (refFloaterHandle && refFloaterHandle.teardown) {
+        try { refFloaterHandle.teardown() } catch(_) {}
+      }
+      if (airtapHandle && airtapHandle.teardown) {
+        try { airtapHandle.teardown() } catch(_) {}
+      }
       if (landmarkCtx) landmarkCtx.clearRect(0, 0, landmarkCanvas.width, landmarkCanvas.height)
       SP.modals.close()
     }
@@ -688,22 +691,37 @@
     })
     host.appendChild(topbar)
 
+    // Helpers reused by the result modal AND the air-tap Back/Next buttons.
+    function navPrevSignInChapter() {
+      const lesson = app.getLessonScreenData(signData.unitId)
+      if (!lesson) { location.hash = '#lesson/' + encodeURIComponent(signData.unitId); return }
+      const i = lesson.signs.findIndex(s => s.key === signKey)
+      const prev = (i > 0) ? lesson.signs[i - 1] : null
+      if (prev) location.hash = '#practice/' + encodeURIComponent(prev.key)
+      else      location.hash = '#lesson/' + encodeURIComponent(signData.unitId)
+    }
+    function navNextSignInChapter() {
+      const lesson = app.getLessonScreenData(signData.unitId)
+      if (!lesson) { location.hash = '#home'; return }
+      const i = lesson.signs.findIndex(s => s.key === signKey)
+      const next = (i >= 0 && i + 1 < lesson.signs.length) ? lesson.signs[i + 1] : null
+      if (next) location.hash = '#practice/' + encodeURIComponent(next.key)
+      else      location.hash = '#home'
+    }
+
     const ui = buildAttemptUI(app, {
       signData,
       modalActions: {
-        onNext: () => {
-          // "Dấu tiếp theo" advances within the current chapter; once
-          // every sign has been attempted we drop the user back on the
-          // chapter-selection screen (#home) rather than the single
-          // chapter detail, per the v0.5 spec.
-          const lesson = app.getLessonScreenData(signData.unitId)
-          if (!lesson) { location.hash = '#home'; return }
-          const i = lesson.signs.findIndex(s => s.key === signKey)
-          const next = (i >= 0 && i + 1 < lesson.signs.length) ? lesson.signs[i + 1] : null
-          if (next) location.hash = '#practice/' + encodeURIComponent(next.key)
-          else      location.hash = '#home'
-        },
+        // "Dấu tiếp theo" advances within the current chapter; once
+        // every sign has been attempted we drop the user back on the
+        // chapter-selection screen (#home) rather than the single
+        // chapter detail, per the v0.5 spec.
+        onNext: navNextSignInChapter,
         onBack: () => { location.hash = '#lesson/' + encodeURIComponent(signData.unitId) },
+      },
+      airtapActions: {
+        onBack: navPrevSignInChapter,
+        onNext: navNextSignInChapter,
       },
     })
     host.appendChild(ui.root)

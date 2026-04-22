@@ -23,7 +23,13 @@
 <!-- App shell: sidebar + main content -->
 <div id="sp-root">
   <aside class="sp-sidebar" id="sp-sidebar">
-    <div class="sp-sidebar-brand">SignPath</div>
+    <div class="sp-sidebar-brand" style="display:flex;align-items:center;justify-content:space-between;gap:.5rem">
+      <span class="sp-sidebar-brand-text">SignPath</span>
+      <button id="sp-sidebar-toggle" aria-label="Thu gọn thanh bên · Collapse sidebar"
+        style="background:transparent;border:none;cursor:pointer;color:inherit;padding:.25rem;display:inline-flex;align-items:center;font-family:inherit">
+        <span class="material-symbols-outlined" id="sp-sidebar-toggle-icon" style="font-size:1.25rem">menu_open</span>
+      </button>
+    </div>
     <nav class="sp-sidebar-nav">
       <a class="sp-sidebar-link" data-route="home" href="#home">
         <span class="material-symbols-outlined">school</span>
@@ -96,6 +102,8 @@
 <script defer src="route.js"></script>
 <script defer src="screens/shared.js"></script>
 <script defer src="screens/modals.js"></script>
+<script defer src="screens/refFloater.js"></script>
+<script defer src="screens/airtap.js"></script>
 <script defer src="screens/onboarding.js"></script>
 <script defer src="screens/home.js"></script>
 <script defer src="screens/lesson.js"></script>

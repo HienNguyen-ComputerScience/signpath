@@ -111,6 +111,18 @@
         // No cheat sheet during evaluation — camera feed reclaims the
         // right-column space previously used by the reference video.
         hideReferenceVideo: true,
+        airtapActions: {
+          // Back is review-only per spec. No re-attempt path exists in
+          // this WIP flow, so we surface a toast to make the intent
+          // explicit instead of silently no-op'ing.
+          onBack: () => { SP.toast('Xem lại đang phát triển · Review coming soon', 2000) },
+          // Next = skip this sign as a score-0 aborted attempt, advance.
+          onNext: () => {
+            results.push({ signKey: sign.key, inflatedScore: 0, passed: false, aborted: true })
+            step++
+            renderStep()
+          },
+        },
         onAttemptComplete: async (result) => {
           // Single attempt per sign, pass or fail. practiceSign already
           // routed XP / mastery / review for non-aborted attempts — we
