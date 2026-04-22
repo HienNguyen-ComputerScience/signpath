@@ -15,33 +15,45 @@
 
   const SP = window.SP = window.SP || {}
 
-  const CORNERS = ['tl', 'tr', 'bl', 'br']
-  const INSET = 16               // pixels from the nearest camera edge
-  const SNAP_MS = 300            // release → snap transition
+  const INSET = 8                // minimum pixel gap from the camera edge
   const MINI_SIZE = 52
   const EXPANDED_WIDTH = 260
   const EXPANDED_MAX_HEIGHT = 280
+  // Legacy corner → {x,y} resolver used only to migrate users whose
+  // persisted state is still shaped { refFloaterCorner } (no x/y).
+  const LEGACY_CORNER_OFFSETS = {
+    tl: { fromLeft: true,  fromTop: true  },
+    tr: { fromLeft: false, fromTop: true  },
+    bl: { fromLeft: true,  fromTop: false },
+    br: { fromLeft: false, fromTop: false },
+  }
 
   /**
    * Mount a floater on `container`. `container` must be position:relative
-   * (the practice wrap already is). Returns { teardown, setVisible }.
+   * (the practice wrap already is). Returns { teardown }.
    *
    * opts:
-   *   signKey     — reference video key
-   *   getCorner   — () => 'tl'|'tr'|'bl'|'br'
-   *   setCorner   — (corner) => void
-   *   getMinimized— () => boolean
-   *   setMinimized— (bool) => void
+   *   signKey      — reference video key
+   *   getPosition  — () => { x:number, y:number } | null  (pixels from container)
+   *   setPosition  — (x, y) => void                       (persist exact coords)
+   *   getCorner    — () => 'tl'|'tr'|'bl'|'br' | null     (legacy migration only)
+   *   getMinimized — () => boolean
+   *   setMinimized — (bool) => void
    */
   function mount(container, opts) {
     opts = opts || {}
     const signKey = opts.signKey
-    let corner = (opts.getCorner && opts.getCorner()) || 'br'
     let minimized = !!(opts.getMinimized && opts.getMinimized())
     let dragging = false
-    let dragStartX = 0, dragStartY = 0
     let dragOffsetX = 0, dragOffsetY = 0
-    let snapHints = null
+    // Persisted position — may be null on first mount for new users or
+    // users with only the legacy corner value; we resolve against the
+    // container size after layout stabilises.
+    let posX = null, posY = null
+    const stored = (opts.getPosition && opts.getPosition()) || null
+    if (stored && typeof stored.x === 'number' && typeof stored.y === 'number') {
+      posX = stored.x; posY = stored.y
+    }
 
     const root = document.createElement('div')
     root.className = 'sp-ref-floater'
@@ -63,7 +75,7 @@
       gap: '.375rem',
       cursor: 'move',
       userSelect: 'none',
-      transition: 'left ' + SNAP_MS + 'ms ease, top ' + SNAP_MS + 'ms ease, right ' + SNAP_MS + 'ms ease, bottom ' + SNAP_MS + 'ms ease, width .2s ease, height .2s ease',
+      transition: 'width .2s ease, height .2s ease',
     })
 
     const minBtn = document.createElement('button')
@@ -98,7 +110,9 @@
     root.appendChild(header)
 
     // Video body. Built on expand so the <video> isn't cluttering the
-    // DOM while minimized.
+    // DOM while minimized. Speed chips overlay inside the video's own
+    // wrapper, just under the "VIDEO MẪU" header, so the expanded card
+    // is video-only with no speed row hanging off the bottom.
     const bodyWrap = document.createElement('div')
     bodyWrap.dataset.role = 'body'
     Object.assign(bodyWrap.style, { display: 'flex', flexDirection: 'column', gap: '.375rem' })
@@ -106,18 +120,25 @@
     refVideoEl.style.aspectRatio = '1/1'
     refVideoEl.style.borderRadius = '.5rem'
     refVideoEl.style.overflow = 'hidden'
-    bodyWrap.appendChild(refVideoEl)
+    refVideoEl.style.position = 'relative'
 
     const speedRow = document.createElement('div')
     speedRow.dataset.role = 'speed'
     Object.assign(speedRow.style, {
-      display: 'flex', gap: '.25rem', justifyContent: 'center', marginTop: '.125rem',
+      position: 'absolute', top: '.375rem', left: '50%',
+      transform: 'translateX(-50%)',
+      display: 'flex', gap: '.25rem', zIndex: '2',
+      padding: '.1875rem .375rem',
+      background: 'rgba(26, 8, 4, 0.65)',
+      borderRadius: '9999px',
+      backdropFilter: 'blur(4px)',
     })
     speedRow.appendChild(buildSpeedBtn(refVideoEl, 0.5, '0.5×'))
     speedRow.appendChild(buildSpeedBtn(refVideoEl, 0.75, '0.75×', true))
     speedRow.appendChild(buildSpeedBtn(refVideoEl, 1.0, '1×'))
-    bodyWrap.appendChild(speedRow)
+    refVideoEl.appendChild(speedRow)
 
+    bodyWrap.appendChild(refVideoEl)
     root.appendChild(bodyWrap)
 
     // Minimized chip icon lives in the header via the minBtn when expanded
@@ -129,8 +150,55 @@
     root.appendChild(miniIcon)
 
     container.appendChild(root)
-    applyCornerPosition()
+    // Position after container is measurable. If no persisted x/y,
+    // resolve from legacy corner (if any) or default to bottom-right.
+    initialisePosition()
     applyMinimizedStyle()
+
+    function initialisePosition() {
+      if (posX == null || posY == null) {
+        const parentRect = container.getBoundingClientRect()
+        const w = currentWidth(), h = currentHeight()
+        const legacyCorner = (opts.getCorner && opts.getCorner()) || 'br'
+        const layout = LEGACY_CORNER_OFFSETS[legacyCorner] || LEGACY_CORNER_OFFSETS.br
+        posX = layout.fromLeft ? INSET : Math.max(INSET, parentRect.width  - w - INSET)
+        posY = layout.fromTop  ? INSET : Math.max(INSET, parentRect.height - h - INSET)
+        savePosition()
+      }
+      applyPosition()
+    }
+
+    function currentWidth()  { return minimized ? MINI_SIZE : EXPANDED_WIDTH }
+    function currentHeight() {
+      if (minimized) return MINI_SIZE
+      // getBoundingClientRect is the most accurate, but during initial
+      // mount the element may not have been painted yet.
+      return root.offsetHeight || EXPANDED_MAX_HEIGHT
+    }
+
+    function clampToContainer(x, y) {
+      const parentRect = container.getBoundingClientRect()
+      const w = currentWidth(), h = currentHeight()
+      const maxX = Math.max(INSET, parentRect.width  - w - INSET)
+      const maxY = Math.max(INSET, parentRect.height - h - INSET)
+      return {
+        x: Math.min(maxX, Math.max(INSET, x)),
+        y: Math.min(maxY, Math.max(INSET, y)),
+      }
+    }
+
+    function applyPosition() {
+      const c = clampToContainer(posX, posY)
+      posX = c.x; posY = c.y
+      root.style.left = posX + 'px'
+      root.style.top  = posY + 'px'
+      root.style.right = ''
+      root.style.bottom = ''
+    }
+
+    function savePosition() {
+      if (opts.setPosition) opts.setPosition(posX, posY)
+    }
 
     // ── Dragging ──────────────────────────────────────────────────────
     root.addEventListener('mousedown', onDragStart)
@@ -147,23 +215,13 @@
       const p = pointFromEvent(e)
       if (!p) return
       dragging = true
-      root.style.transition = 'none'
       const rect = root.getBoundingClientRect()
-      const parentRect = container.getBoundingClientRect()
       dragOffsetX = p.x - rect.left
       dragOffsetY = p.y - rect.top
-      dragStartX = rect.left - parentRect.left
-      dragStartY = rect.top - parentRect.top
-      // Switch to left/top placement so the float point is explicit.
-      root.style.left = dragStartX + 'px'
-      root.style.top = dragStartY + 'px'
-      root.style.right = ''
-      root.style.bottom = ''
       document.addEventListener('mousemove', onDragMove)
       document.addEventListener('mouseup', onDragEnd)
       document.addEventListener('touchmove', onDragMove, { passive: false })
       document.addEventListener('touchend', onDragEnd)
-      showSnapHints(true)
     }
 
     function onDragMove(e) {
@@ -172,15 +230,12 @@
       const p = pointFromEvent(e)
       if (!p) return
       const parentRect = container.getBoundingClientRect()
-      let x = p.x - parentRect.left - dragOffsetX
-      let y = p.y - parentRect.top - dragOffsetY
-      // Keep the floater inside the container.
-      const w = root.offsetWidth, h = root.offsetHeight
-      x = Math.max(0, Math.min(x, parentRect.width - w))
-      y = Math.max(0, Math.min(y, parentRect.height - h))
-      root.style.left = x + 'px'
-      root.style.top = y + 'px'
-      updateSnapHighlight(x, y, w, h, parentRect.width, parentRect.height)
+      const x = p.x - parentRect.left - dragOffsetX
+      const y = p.y - parentRect.top  - dragOffsetY
+      const c = clampToContainer(x, y)
+      posX = c.x; posY = c.y
+      root.style.left = posX + 'px'
+      root.style.top  = posY + 'px'
     }
 
     function onDragEnd() {
@@ -190,15 +245,10 @@
       document.removeEventListener('mouseup', onDragEnd)
       document.removeEventListener('touchmove', onDragMove)
       document.removeEventListener('touchend', onDragEnd)
-      const rect = root.getBoundingClientRect()
-      const parentRect = container.getBoundingClientRect()
-      const x = rect.left - parentRect.left
-      const y = rect.top - parentRect.top
-      corner = nearestCorner(x, y, rect.width, rect.height, parentRect.width, parentRect.height)
-      if (opts.setCorner) opts.setCorner(corner)
-      showSnapHints(false)
-      root.style.transition = 'left ' + SNAP_MS + 'ms ease, top ' + SNAP_MS + 'ms ease, right ' + SNAP_MS + 'ms ease, bottom ' + SNAP_MS + 'ms ease, width .2s ease, height .2s ease'
-      applyCornerPosition()
+      // Free positioning — stay wherever the cursor left us. Just clamp
+      // and persist. No corner snap, no transition.
+      applyPosition()
+      savePosition()
     }
 
     function pointFromEvent(e) {
@@ -208,70 +258,14 @@
       return null
     }
 
-    function nearestCorner(x, y, w, h, pw, ph) {
-      const cx = x + w / 2, cy = y + h / 2
-      const top = cy < ph / 2
-      const left = cx < pw / 2
-      return (top ? 't' : 'b') + (left ? 'l' : 'r')
-    }
-
-    function applyCornerPosition() {
-      root.style.left = ''; root.style.top = ''; root.style.right = ''; root.style.bottom = ''
-      if (corner === 'tl') { root.style.left = INSET + 'px'; root.style.top = INSET + 'px' }
-      else if (corner === 'tr') { root.style.right = INSET + 'px'; root.style.top = INSET + 'px' }
-      else if (corner === 'bl') { root.style.left = INSET + 'px'; root.style.bottom = INSET + 'px' }
-      else                       { root.style.right = INSET + 'px'; root.style.bottom = INSET + 'px' }
-    }
-
-    // ── Snap hints (corner outlines) ──────────────────────────────────
-    function showSnapHints(on) {
-      if (on) {
-        if (snapHints) return
-        snapHints = CORNERS.map(c => {
-          const hint = document.createElement('div')
-          hint.dataset.corner = c
-          const s = hint.style
-          s.position = 'absolute'
-          s.width = EXPANDED_WIDTH + 'px'
-          s.height = '100px'
-          s.pointerEvents = 'none'
-          s.border = '2px dashed rgba(255,255,255,.35)'
-          s.borderRadius = '.75rem'
-          s.transition = 'border-color .15s'
-          s.zIndex = '5'
-          if (c === 'tl') { s.left = INSET + 'px'; s.top = INSET + 'px' }
-          else if (c === 'tr') { s.right = INSET + 'px'; s.top = INSET + 'px' }
-          else if (c === 'bl') { s.left = INSET + 'px'; s.bottom = INSET + 'px' }
-          else                 { s.right = INSET + 'px'; s.bottom = INSET + 'px' }
-          container.appendChild(hint)
-          return hint
-        })
-      } else {
-        if (snapHints) {
-          snapHints.forEach(h => h.remove())
-          snapHints = null
-        }
-      }
-    }
-    function updateSnapHighlight(x, y, w, h, pw, ph) {
-      if (!snapHints) return
-      const nearest = nearestCorner(x, y, w, h, pw, ph)
-      snapHints.forEach(hint => {
-        if (hint.dataset.corner === nearest) {
-          hint.style.borderColor = 'rgba(246, 138, 47, 0.85)'
-          hint.style.background = 'rgba(246, 138, 47, 0.08)'
-        } else {
-          hint.style.borderColor = 'rgba(255,255,255,.35)'
-          hint.style.background = 'transparent'
-        }
-      })
-    }
-
     // ── Minimize ──────────────────────────────────────────────────────
     function setMinimized(val) {
       minimized = !!val
       if (opts.setMinimized) opts.setMinimized(minimized)
       applyMinimizedStyle()
+      // Size just changed — reclamp so the shrunken chip doesn't sit
+      // outside the container bounds.
+      applyPosition()
     }
     function applyMinimizedStyle() {
       if (minimized) {
@@ -304,8 +298,8 @@
       if (!dragging) setMinimized(false)
     }
 
-    // ── Resize → keep corner, recompute coordinates ───────────────────
-    const onResize = () => { applyCornerPosition() }
+    // Resize: clamp current position into the new bounds; never snap.
+    const onResize = () => { applyPosition() }
     window.addEventListener('resize', onResize)
 
     return {
@@ -315,7 +309,6 @@
         document.removeEventListener('mouseup', onDragEnd)
         document.removeEventListener('touchmove', onDragMove)
         document.removeEventListener('touchend', onDragEnd)
-        showSnapHints(false)
         if (root.parentNode) root.parentNode.removeChild(root)
       }
     }

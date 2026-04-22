@@ -182,15 +182,10 @@
       { style:{ fontSize:'.75rem', opacity:.75 }}, signData.en))
     practiceWrap.appendChild(backOverlay)
 
-    // Hand detection indicator (bottom-left)
-    const handDot = SP.h('div', { id: 'sp-hand-dot', style:{
-      position:'absolute', bottom:'1rem', left:'1rem', zIndex:3,
-      padding:'.375rem .75rem', borderRadius:'9999px',
-      background:'rgba(99, 95, 86, 0.78)', color:'#fff', fontSize:'.75rem', fontWeight:600,
-    }}, 'Chưa thấy tay')
-    practiceWrap.appendChild(handDot)
-
     // ── Framing guide (advisory, does NOT block recording) ────────────
+    // The hand-detection indicator rides alongside the other three
+    // framing pills instead of living as a separate bottom-left chip
+    // so the user has a single "am I in frame?" strip to scan.
     const framePill = (id, label) => SP.h('div', { id,
       'data-state': 'pending',
       style:{
@@ -208,13 +203,17 @@
     const framePillFace      = framePill('sp-frame-face', 'Khuôn mặt')
     const framePillShoulders = framePill('sp-frame-shoulders', 'Hai vai')
     const framePillLight     = framePill('sp-frame-light', 'Ánh sáng')
+    const framePillHand      = framePill('sp-frame-hand', 'Chưa thấy tay')
+    // handDot is the legacy name the rest of the file writes to — alias
+    // it so we don't have to touch the tracking handler right now.
+    const handDot = framePillHand
     const framingGuide = SP.h('div', { 'aria-label':'Hướng dẫn khung hình',
       style:{
         position:'absolute', top:'1rem', left:'50%', transform:'translateX(-50%)', zIndex:3,
         display:'flex', flexWrap:'wrap', gap:'.375rem', justifyContent:'center',
         pointerEvents:'none',
       }},
-      framePillFace, framePillShoulders, framePillLight,
+      framePillFace, framePillShoulders, framePillLight, framePillHand,
     )
     practiceWrap.appendChild(framingGuide)
 
@@ -356,19 +355,30 @@
     practiceWrap.appendChild(recordPanel)
     root.appendChild(practiceWrap)
 
-    // Reference floater (draggable, snaps to 4 corners). Skiptest and
-    // placement pass hideReferenceVideo:true so no floater mounts for
-    // those flows. Persistence goes through progression.uiPreferences.
+    // Reference floater (freely draggable, clamped to container).
+    // Skiptest and placement pass hideReferenceVideo:true so no floater
+    // mounts for those flows. Persistence goes through progression.
     let refFloaterHandle = null
     if (!hideRef && SP.refFloater && typeof SP.refFloater.mount === 'function') {
       const prefsGet = () => (app.progression && app.progression.getUIPreferences
         ? app.progression.getUIPreferences() : {})
+      const setPref = (k, v) => {
+        if (app.progression && app.progression.setUIPreference) app.progression.setUIPreference(k, v)
+      }
       refFloaterHandle = SP.refFloater.mount(practiceWrap, {
         signKey,
+        getPosition: () => {
+          const p = prefsGet()
+          if (typeof p.refFloaterX === 'number' && typeof p.refFloaterY === 'number') {
+            return { x: p.refFloaterX, y: p.refFloaterY }
+          }
+          return null
+        },
+        setPosition: (x, y) => { setPref('refFloaterX', x); setPref('refFloaterY', y) },
+        // Legacy corner honoured on first mount for users who upgraded.
         getCorner: () => prefsGet().refFloaterCorner || 'br',
-        setCorner: (c) => { if (app.progression && app.progression.setUIPreference) app.progression.setUIPreference('refFloaterCorner', c) },
         getMinimized: () => !!prefsGet().refFloaterMinimized,
-        setMinimized: (v) => { if (app.progression && app.progression.setUIPreference) app.progression.setUIPreference('refFloaterMinimized', !!v) },
+        setMinimized: (v) => setPref('refFloaterMinimized', !!v),
       })
     }
 
@@ -404,8 +414,10 @@
     let _deniedPainted = false
 
     on('tracking', d => {
-      handDot.textContent = d.detected ? '✓ Thấy tay' : 'Chưa thấy tay'
-      handDot.style.background = d.detected ? 'rgba(27, 67, 50, 0.78)' : 'rgba(99, 95, 86, 0.78)'
+      // Hand pill — shares styling with the other framing pills so
+      // "pass" state collapses to the same green, "fail" to the same red.
+      setPillState(framePillHand, d.detected ? 'ok' : 'bad',
+        d.detected ? 'Thấy tay' : 'Chưa thấy tay')
 
       const face = checkFaceCentered(d.face)
       setPillState(framePillFace, face.ok ? 'ok' : 'bad', face.tip)

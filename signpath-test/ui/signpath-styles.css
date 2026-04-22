@@ -140,7 +140,30 @@ body {
   font-weight: 700;
   border-right-color: var(--sp-primary);
 }
-.sp-main { margin-left: 16rem; min-height: 100vh; width: calc(100% - 16rem); }
+.sp-main {
+  margin-left: 16rem;
+  min-height: 100vh;
+  width: calc(100% - 16rem);
+  transition: margin-left .2s ease, width .2s ease;
+}
+.sp-sidebar { transition: width .2s ease; }
+.sp-sidebar.sp-sidebar-collapsed { width: 72px; }
+.sp-sidebar.sp-sidebar-collapsed + .sp-main,
+.sp-main.sp-main-collapsed {
+  margin-left: 72px;
+  width: calc(100% - 72px);
+}
+/* Collapsed rail: brand row becomes a centered column so the toggle
+   button lines up vertically with the nav icons below it. */
+.sp-sidebar.sp-sidebar-collapsed .sp-sidebar-brand {
+  justify-content: center;
+  padding: 0;
+}
+.sp-sidebar.sp-sidebar-collapsed .sp-sidebar-brand-text { display: none; }
+.sp-sidebar.sp-sidebar-collapsed .sp-sidebar-link {
+  justify-content: center;
+  padding: 1rem 0;
+}
 
 .sp-topbar {
   display: flex; align-items: center; justify-content: space-between;

@@ -237,17 +237,13 @@
     })
 
     function applyCollapsed(on) {
+      // Width + layout transitions are handled by CSS classes so the
+      // camera container expands smoothly into the freed horizontal
+      // space (see .sp-sidebar-collapsed rules in signpath-styles.css).
       sidebar.classList.toggle('sp-sidebar-collapsed', on)
-      if (on) {
-        sidebar.style.width = '72px'
-        main.style.marginLeft = '72px'
-        if (icon) icon.textContent = 'menu'
-      } else {
-        sidebar.style.width = ''
-        main.style.marginLeft = ''
-        if (icon) icon.textContent = 'menu_open'
-      }
-      // Hide text on nav links + brand text while preserving icons.
+      main.classList.toggle('sp-main-collapsed', on)
+      if (icon) icon.textContent = on ? 'menu' : 'menu_open'
+      // Hide non-icon label spans on nav links.
       const links = sidebar.querySelectorAll('.sp-sidebar-link')
       links.forEach(a => {
         const spans = a.querySelectorAll('span')
@@ -255,10 +251,7 @@
           if (s.classList.contains('material-symbols-outlined')) return
           s.style.display = on ? 'none' : ''
         })
-        a.style.justifyContent = on ? 'center' : ''
       })
-      const brandText = sidebar.querySelector('.sp-sidebar-brand-text')
-      if (brandText) brandText.style.display = on ? 'none' : ''
       // Engine status strip in the sidebar footer — hide text when narrow.
       const status = document.getElementById('sp-engine-status')
       if (status && status.parentElement) {

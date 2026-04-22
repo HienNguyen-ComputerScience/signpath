@@ -40,10 +40,13 @@
   // Button rects as fractions of the container (x, y, w, h). These place
   // the three buttons along the top edge, well clear of the back overlay
   // and framing-guide pills rendered by buildAttemptUI.
+  // Positioned BELOW the top strip (sign-info card + framing pills) so
+  // the pills and the air-tap dwell rings never overlap. y is expressed
+  // as a fraction of the camera container height to scale with viewport.
   const RECTS = {
-    back:  { x: 0.02, y: 0.04, w: 0.11, h: 0.19 },
-    start: { x: 0.445, y: 0.04, w: 0.11, h: 0.19 },
-    next:  { x: 0.87, y: 0.04, w: 0.11, h: 0.19 },
+    back:  { x: 0.02,  y: 0.20, w: 0.11, h: 0.18 },
+    start: { x: 0.445, y: 0.20, w: 0.11, h: 0.18 },
+    next:  { x: 0.87,  y: 0.20, w: 0.11, h: 0.18 },
   }
   // Hand landmark indices that count as fingertips.
   const FINGERTIP_IDS = [4, 8, 12, 16, 20]
