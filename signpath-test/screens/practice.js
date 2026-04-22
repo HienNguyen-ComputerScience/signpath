@@ -70,6 +70,18 @@
       for (const [e, h] of handlers) { try { app.off(e, h) } catch(_) {} }
       handlers.length = 0
     }
+    // Parallel registry for DOM listeners (document-level keydown for the
+    // camera-screen shortcuts). Kept separate from `handlers` because the
+    // app event bus and DOM use different add/remove APIs.
+    const domHandlers = []
+    function domOn(target, eventName, handler, options) {
+      target.addEventListener(eventName, handler, options)
+      domHandlers.push([target, eventName, handler, options])
+    }
+    function detachAllDom() {
+      for (const [t, e, h, o] of domHandlers) { try { t.removeEventListener(e, h, o) } catch(_) {} }
+      domHandlers.length = 0
+    }
 
     // Eager select — ensures score events for this sign flow from the
     // moment capture resumes.
@@ -333,6 +345,12 @@
     const progressWrap = SP.h('div', { style:{ width:'100%', height:'.375rem', background:'rgba(255,255,255,.16)', borderRadius:'9999px', overflow:'hidden' }},
       SP.h('div', { id:'sp-rec-progress', style:{ height:'100%', width:'0%', background:'linear-gradient(90deg, #954b00 0%, #f68a2f 100%)', transition:'width 100ms linear' }})
     )
+    // Record button is no longer rendered on the camera surface —
+    // gesture-nav uses air-tap + keyboard shortcuts instead. The element
+    // is still built (detached) so existing attempt-lifecycle code can
+    // continue to mutate .disabled / .innerHTML without special-casing,
+    // and `recordBtn.click()` remains callable from any external code
+    // path that may reference it.
     const recordBtn = SP.h('button', { id:'sp-record-btn', class:'sp-btn sp-btn-primary',
       disabled: !hasTemplate,
       onclick: runAttempt,
@@ -341,18 +359,6 @@
       SP.h('span', { class:'material-symbols-outlined filled' }, 'fiber_manual_record'),
       SP.h('span', {}, 'Quay · Record'),
     )
-    const recordPanel = SP.h('div', { style:{
-      position:'absolute', bottom:'1rem', left:'50%', transform:'translateX(-50%)', zIndex:3,
-      width:'min(22rem, 45%)',
-      background:'rgba(28, 26, 22, 0.82)',
-      borderRadius:'.625rem',
-      padding:'.625rem .75rem',
-      display:'flex', flexDirection:'column', gap:'.5rem',
-      boxShadow:'0 6px 18px rgba(0,0,0,.38)',
-    }},
-      recordBtn, progressWrap,
-    )
-    practiceWrap.appendChild(recordPanel)
     root.appendChild(practiceWrap)
 
     // Reference floater (freely draggable, clamped to container).
@@ -392,13 +398,11 @@
         practiceWrap.style.minHeight = '28rem'
         adviceCard.style.maxWidth = 'calc(100% - 2rem)'
         adviceCard.style.right = '1rem'
-        recordPanel.style.width = 'min(20rem, 80%)'
       } else {
         practiceWrap.style.height = 'calc(100vh - 7rem)'
         practiceWrap.style.minHeight = '32rem'
         adviceCard.style.maxWidth = '28rem'
         adviceCard.style.right = ''
-        recordPanel.style.width = 'min(22rem, 45%)'
       }
     }
     applyResponsive()
@@ -581,34 +585,69 @@
     // come from opts.airtapActions (each caller supplies its own context:
     // practice advances within a chapter; skiptest/placement within the
     // attempt sequence). Start/Stop and getIsRecording are owned here so
-    // the click Record button and the air-tap stay in sync — recording
+    // air-tap and the keyboard shortcuts stay in sync — recording
     // remains idempotent (session.isActive() guards both entry points).
+    const airtapActions = opts.airtapActions || {}
+    const airtapOnBack = airtapActions.onBack || function() {}
+    const airtapOnNext = airtapActions.onNext || function() {}
+    function toggleRecording() {
+      if (app.session && app.session.isActive()) {
+        if (app.session.cancelAttempt) app.session.cancelAttempt()
+      } else {
+        runAttempt()
+      }
+    }
+
     let airtapHandle = null
     if (SP.airtap && typeof SP.airtap.mount === 'function') {
-      const airtapActions = opts.airtapActions || {}
       airtapHandle = SP.airtap.mount(practiceWrap, {
         subscribeTracking: (handler) => {
           app.on('tracking', handler)
           return () => app.off('tracking', handler)
         },
-        onBack:  airtapActions.onBack  || function() {},
-        onNext:  airtapActions.onNext  || function() {},
-        onStartStop: () => {
-          if (app.session && app.session.isActive()) {
-            if (app.session.cancelAttempt) app.session.cancelAttempt()
-          } else {
-            runAttempt()
-          }
-        },
+        onBack:  airtapOnBack,
+        onNext:  airtapOnNext,
+        onStartStop: toggleRecording,
         getIsRecording: () => !!(app.session && app.session.isActive()),
       })
     }
+
+    // Keyboard shortcuts — same three actions as air-tap plus a Ctrl+R
+    // fallback. Scoped to document so it works regardless of focus
+    // (the user is watching the camera, not focused on anything); detached
+    // on teardown so it only fires while a camera screen is mounted.
+    //   ArrowLeft  → Back
+    //   ArrowRight → Next
+    //   Space      → Start/Stop toggle
+    //   Ctrl+R     → Start/Stop toggle (hidden fallback; overrides browser reload)
+    domOn(document, 'keydown', function(e) {
+      const t = e.target
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return
+      // Ctrl+R first — it's a legitimate modifier combo we want to intercept.
+      if ((e.key === 'r' || e.key === 'R') && e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
+        e.preventDefault(); e.stopPropagation()
+        toggleRecording()
+        return
+      }
+      // Any other modifier → leave to the browser (Alt+Left = history back, etc.).
+      if (e.ctrlKey || e.altKey || e.shiftKey || e.metaKey) return
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); airtapOnBack(); return }
+      if (e.key === 'ArrowRight') { e.preventDefault(); airtapOnNext(); return }
+      if (e.key === ' ' || e.key === 'Spacebar') {
+        // preventDefault BEFORE calling the toggle so the browser can't
+        // fire its default page-scroll between the handler and our call.
+        e.preventDefault()
+        toggleRecording()
+        return
+      }
+    })
 
     function teardown() {
       clearInterval(streamPoller)
       if (degradedQuietTimer) clearTimeout(degradedQuietTimer)
       window.removeEventListener('resize', applyResponsive)
       detachAll()
+      detachAllDom()
       if (refFloaterHandle && refFloaterHandle.teardown) {
         try { refFloaterHandle.teardown() } catch(_) {}
       }

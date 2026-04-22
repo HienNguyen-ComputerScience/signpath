@@ -150,10 +150,16 @@
     root.appendChild(miniIcon)
 
     container.appendChild(root)
-    // Position after container is measurable. If no persisted x/y,
-    // resolve from legacy corner (if any) or default to bottom-right.
-    initialisePosition()
     applyMinimizedStyle()
+    // Practice builds its tree detached and only attaches to the DOM
+    // after mount returns, so getBoundingClientRect is 0×0 right now
+    // and any clamp collapses to INSET. Defer the first positioning
+    // one frame so layout has run and we clamp against real bounds.
+    if (typeof requestAnimationFrame === 'function') {
+      requestAnimationFrame(initialisePosition)
+    } else {
+      setTimeout(initialisePosition, 0)
+    }
 
     function initialisePosition() {
       if (posX == null || posY == null) {
@@ -188,10 +194,14 @@
     }
 
     function applyPosition() {
+      // Render the clamped position but keep posX/posY as the user's
+      // saved intent. If they saved on a wide screen and reload on a
+      // narrow one, we display an in-bounds position without silently
+      // rewriting storage — next time the container is wide enough,
+      // the original position comes back.
       const c = clampToContainer(posX, posY)
-      posX = c.x; posY = c.y
-      root.style.left = posX + 'px'
-      root.style.top  = posY + 'px'
+      root.style.left = c.x + 'px'
+      root.style.top  = c.y + 'px'
       root.style.right = ''
       root.style.bottom = ''
     }

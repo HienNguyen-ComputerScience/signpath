@@ -37,17 +37,6 @@
   const TRIGGER_FLASH_MS = 600
   const RADIUS = 38                 // px; 76px diameter
   const CIRCUMFERENCE = 2 * Math.PI * RADIUS
-  // Button rects as fractions of the container (x, y, w, h). These place
-  // the three buttons along the top edge, well clear of the back overlay
-  // and framing-guide pills rendered by buildAttemptUI.
-  // Positioned BELOW the top strip (sign-info card + framing pills) so
-  // the pills and the air-tap dwell rings never overlap. y is expressed
-  // as a fraction of the camera container height to scale with viewport.
-  const RECTS = {
-    back:  { x: 0.02,  y: 0.20, w: 0.11, h: 0.18 },
-    start: { x: 0.445, y: 0.20, w: 0.11, h: 0.18 },
-    next:  { x: 0.87,  y: 0.20, w: 0.11, h: 0.18 },
-  }
   // Hand landmark indices that count as fingertips.
   const FINGERTIP_IDS = [4, 8, 12, 16, 20]
 
@@ -78,6 +67,30 @@
       start: { hovered: false, startedAt: 0, fired: false, requireExit: true },
       next:  { hovered: false, startedAt: 0, fired: false, requireExit: true },
     }
+
+    // Hit rects in container-fraction space, derived from each button's
+    // actual DOM rect. The DOM is the source of truth — CSS controls
+    // where the buttons render, so hit-testing just measures where they
+    // landed. Cached on mount + window resize so we're not forcing a
+    // layout flush every tracking frame.
+    const rects = { back: null, start: null, next: null }
+    function recomputeRects() {
+      const conR = container.getBoundingClientRect()
+      if (!conR.width || !conR.height) return
+      for (const key of Object.keys(buttons)) {
+        const btnR = buttons[key].el.getBoundingClientRect()
+        rects[key] = {
+          x1: (btnR.left   - conR.left) / conR.width,
+          x2: (btnR.right  - conR.left) / conR.width,
+          y1: (btnR.top    - conR.top)  / conR.height,
+          y2: (btnR.bottom - conR.top)  / conR.height,
+        }
+      }
+    }
+    // Defer initial measurement a tick so any CSS transitions (sidebar
+    // collapse, responsive layout) have settled before we read.
+    setTimeout(recomputeRects, 0)
+    window.addEventListener('resize', recomputeRects)
 
     // Sync start/stop visuals against the live recording state so the
     // air-tap button mirrors the click Record button.
@@ -114,10 +127,13 @@
       for (const key of Object.keys(buttons)) {
         const btn = buttons[key]
         const st  = state[key]
-        const rect = RECTS[key]
+        const rect = rects[key]
+        if (!rect) continue
+        // Fingertip already mirrored (fx = 1 - lm.x) above; hit-test
+        // against the button's measured rect in the same fraction space.
         const inside = tips.some(t =>
-          t.x >= rect.x && t.x <= rect.x + rect.w &&
-          t.y >= rect.y && t.y <= rect.y + rect.h)
+          t.x >= rect.x1 && t.x <= rect.x2 &&
+          t.y >= rect.y1 && t.y <= rect.y2)
 
         if (!inside) {
           // Released — reset everything; next entry begins a fresh dwell.
@@ -127,8 +143,12 @@
             btn.el.classList.remove('hovering')
             // A fired button re-arms when the fingertip exits.
             st.fired = false
-            st.requireExit = false
           }
+          // Must clear the at-mount sentinel unconditionally — st.hovered
+          // can't become true while requireExit is still true (the "inside"
+          // branch short-circuits on requireExit before it can set hovered),
+          // so leaving this inside `if (st.hovered)` deadlocks every button.
+          st.requireExit = false
           continue
         }
 
@@ -160,6 +180,7 @@
     return {
       teardown() {
         clearInterval(recRefreshTimer)
+        window.removeEventListener('resize', recomputeRects)
         if (typeof unsubscribe === 'function') {
           try { unsubscribe() } catch(_) {}
         }
@@ -172,15 +193,11 @@
     const el = document.createElement('div')
     el.className = 'sp-airtap-btn sp-airtap-' + key
     el.dataset.key = key
-    const rect = RECTS[key]
-    Object.assign(el.style, {
-      position: 'absolute',
-      left: (rect.x * 100) + '%',
-      top:  (rect.y * 100) + '%',
-      width:  (rect.w * 100) + '%',
-      height: (rect.h * 100) + '%',
-      pointerEvents: 'none',
-    })
+    // Position is owned by CSS (see injectStylesOnce below). The hit
+    // test measures the resulting DOM rect each resize, so moving the
+    // buttons later only requires a CSS tweak — no JS coordinate sync.
+    el.style.position = 'absolute'
+    el.style.pointerEvents = 'none'
 
     // Inner circular pill — sized from min(width,height) so the visual
     // button stays circular across aspect ratios.
@@ -216,6 +233,14 @@
     if (_stylesInjected) return
     _stylesInjected = true
     const css = `
+      /* Button placement owned here so DOM rects and hit-testing cannot
+         drift apart — hit rects are measured from these elements at
+         runtime, no JS coordinate constants involved. Top value sits
+         the buttons just below the sign-info card + framing-pill row
+         at the top of the camera. */
+      .sp-airtap-back  { left:2%;   top:10%; width:11%; height:18%; }
+      .sp-airtap-start { left:44.5%; top:10%; width:11%; height:18%; }
+      .sp-airtap-next  { left:87%;  top:10%; width:11%; height:18%; }
       .sp-airtap-btn { display:flex; align-items:center; justify-content:center; }
       .sp-airtap-pill {
         position:relative; width:76px; height:76px; border-radius:9999px;
@@ -257,5 +282,5 @@
     document.head.appendChild(tag)
   }
 
-  SP.airtap = { mount, _RECTS: RECTS }
+  SP.airtap = { mount }
 })();
