@@ -5,64 +5,80 @@
  *   the record controls. A transparent <canvas> overlay draws hand +
  *   pose landmarks from every MediaPipe frame.
  * On record, runs a 4s attempt and shows the result modal.
+ *
+ * The per-attempt UI (camera surface, overlays, framing guide, right
+ * column, record controls + event wiring) is factored into
+ * SP.practiceUI.buildAttemptUI so the skip-test screen can reuse the
+ * exact same DOM + event plumbing without duplicating it. Practice's
+ * render is a thin wrapper that supplies the modal-based completion
+ * callback; skip-test supplies a different callback but gets the same
+ * camera chrome.
  */
 ;(function() {
   'use strict'
 
   const SP = window.SP
   SP.screens = SP.screens || {}
+  SP.practiceUI = SP.practiceUI || {}
 
-  // Event handler refs (for teardown)
-  let activeHandlers = []
-  let activeDurationMs = 0
+  /**
+   * Build the per-attempt practice UI: camera surface with framing guide,
+   * reference-video panel, coach panel, record controls, and all event
+   * wiring from the engine/session streams.
+   *
+   * @param {SignPathApp} app
+   * @param {Object} opts
+   * @param {Object} opts.signData     { key, vi, en, unitId, hasTemplate, ... }
+   * @param {string} [opts.backHref]   href for the top-left back link
+   * @param {string} [opts.backLabel]  text for the back link
+   * @param {string} [opts.stepBadge]  optional extra overlay line shown above the
+   *                                   back link — e.g. "Dấu 1 / 3".
+   * @param {number} [opts.durationMs] attempt duration (default 4000)
+   * @param {boolean} [opts.recordOnce] if true, record button stays disabled
+   *                                    after the first attempt resolves.
+   * @param {boolean} [opts.hideReferenceVideo] if true, the reference-video
+   *                                    panel is not rendered and the right
+   *                                    column shrinks so the camera feed
+   *                                    expands into the freed space.
+   * @param {Function} [opts.onAttemptComplete] async (result) => void.
+   *                                    If provided, helper skips the default
+   *                                    result-modal flow and hands the result
+   *                                    to the caller.
+   * @param {Object}   [opts.modalActions] used only when onAttemptComplete is
+   *                                    not provided — { onTryAgain, onNext, onBack }.
+   * @returns {{ root: Element, recordBtn: Element, runAttempt: Function, teardown: Function }}
+   */
+  function buildAttemptUI(app, opts) {
+    opts = opts || {}
+    const signData = opts.signData
+    if (!signData || !signData.key) throw new Error('buildAttemptUI requires opts.signData.key')
+    const signKey = signData.key
+    const hasTemplate = !!signData.hasTemplate
+    const durationMs = opts.durationMs || 4000
+    const defaultBackHref = '#lesson/' + encodeURIComponent(signData.unitId || '')
+    const backHref = opts.backHref || defaultBackHref
+    const backLabel = opts.backLabel || 'Về chương'
 
-  function on(eventName, handler) {
-    const app = SP.getApp()
-    app.on(eventName, handler)
-    activeHandlers.push([eventName, handler])
-  }
-  function detachAll() {
-    const app = SP.getApp()
-    if (!app) return
-    for (const [e, h] of activeHandlers) app.off(e, h)
-    activeHandlers = []
-  }
-
-  function render(signKeyRaw) {
-    const host = document.getElementById('sp-screen')
-    host.innerHTML = ''
-
-    const app = SP.getApp()
-    const ready = SP.isEngineReady()
-    if (!ready) {
-      host.innerHTML = '<div style="padding:4rem; text-align:center; color:var(--sp-on-surface-variant);">Đang khởi động engine…<br/><small>Camera + MediaPipe đang tải</small></div>'
-      return { teardown() {} }
+    // Closure-scoped handler registry so multiple instances (e.g. one per
+    // skip-test step) cleanly detach their own events.
+    const handlers = []
+    function on(eventName, handler) {
+      app.on(eventName, handler)
+      handlers.push([eventName, handler])
+    }
+    function detachAll() {
+      for (const [e, h] of handlers) { try { app.off(e, h) } catch(_) {} }
+      handlers.length = 0
     }
 
-    const signKey = signKeyRaw
-    const signData = app.getSignDetailData(signKey)
-    if (!signData) {
-      host.innerHTML = '<div style="padding:4rem; text-align:center;"><h2>Không tìm thấy dấu</h2><p>' + SP.escapeHTML(signKey) + '</p><a class="sp-btn sp-btn-primary" href="#home">Về trang chủ</a></div>'
-      return { teardown() {} }
-    }
+    // Eager select — ensures score events for this sign flow from the
+    // moment capture resumes.
+    try { app.engine.selectSign(signKey) } catch(e) { console.error('[practiceUI] selectSign failed:', e) }
 
-    const hasTemplate = signData.hasTemplate
-    app.engine.selectSign(signKey)
-    // Defer resumeCapture until after handler wiring (below) so camera /
-    // MediaPipe init errors route into the denied-state painter instead of
-    // being dropped on the floor before listeners attach.
+    // Root wrapper contains the degraded banner and the practice surface.
+    const root = SP.h('div', { class:'sp-practice-root' })
 
-    const homeData = app.getHomeScreenData()
-    const topbar = SP.topbar({
-      streak: homeData.streak.current,
-      xp: homeData.user.xp,
-      level: homeData.user.level,
-      rank: homeData.user.rank,
-    })
-    host.appendChild(topbar)
-
-    // Palm-fallback warning banner — hidden until engine emits
-    // 'tracking:degraded'. Auto-hides 5s after last degraded event.
+    // ── Palm-fallback warning banner (hidden until 'tracking:degraded') ─
     const degradedBanner = SP.h('div', { id: 'sp-degraded-banner', style:{
       display: 'none',
       margin: '.5rem 1rem 0',
@@ -92,7 +108,7 @@
     )
     let degradedManuallyDismissed = false
     let degradedQuietTimer = null
-    host.appendChild(degradedBanner)
+    root.appendChild(degradedBanner)
 
     // ── Practice surface: camera full-bleed with overlays ──────────────
     const practiceWrap = SP.h('div', { class:'sp-practice-wrap', style:{
@@ -105,7 +121,6 @@
       background:'#000',
     }})
 
-    // Webcam feed (mirror of the engine's hidden stream)
     const camVideo = SP.h('video', { autoplay:'', muted:'', playsinline:'',
       style:{
         position:'absolute', inset:0,
@@ -116,8 +131,6 @@
     })
     practiceWrap.appendChild(camVideo)
 
-    // Transparent landmark overlay — draws hand + pose connections every frame.
-    // Mirrored in-step with the video so skeleton lines up with the user.
     const landmarkCanvas = SP.h('canvas', { id:'sp-landmark-canvas',
       width: 1280, height: 720,
       style:{
@@ -130,7 +143,8 @@
     practiceWrap.appendChild(landmarkCanvas)
     const landmarkCtx = landmarkCanvas.getContext('2d')
 
-    // Stream: mirror engine's hidden <video>.srcObject onto the visible element
+    // Stream mirror: engine owns the hidden sp-engine-video; forward its
+    // srcObject onto our visible element.
     const engineVideo = document.getElementById('sp-engine-video')
     function syncStream() {
       try { camVideo.srcObject = engineVideo.srcObject } catch(_){}
@@ -141,7 +155,8 @@
       if (camVideo.srcObject !== engineVideo.srcObject) syncStream()
     }, 300)
 
-    // Sign title + back link (top-left overlay)
+    // Back overlay (top-left) — includes optional stepBadge line for
+    // multi-step flows like the skip-test.
     const backOverlay = SP.h('div', { style:{
       position:'absolute', top:'1rem', left:'1rem', zIndex:3,
       display:'flex', flexDirection:'column', gap:'.125rem',
@@ -149,16 +164,22 @@
       color:'#fff', padding:'.5rem .875rem',
       borderRadius:'.625rem',
       maxWidth:'20rem',
-    }},
-      SP.h('a', { href: '#lesson/' + encodeURIComponent(signData.unitId),
-        style:{ color:'rgba(255,255,255,.78)', textDecoration:'none',
-          display:'inline-flex', alignItems:'center', gap:'.25rem', fontSize:'.75rem' }},
-        SP.h('span', { class:'material-symbols-outlined', style:{ fontSize:'1rem' }}, 'arrow_back'),
-        SP.h('span', {}, 'Về chương'),
-      ),
-      SP.h('div', { style:{ fontSize:'1.125rem', fontWeight:800, lineHeight:1.1 }}, signData.vi),
-      SP.h('div', { style:{ fontSize:'.75rem', opacity:.75 }}, signData.en),
-    )
+    }})
+    if (opts.stepBadge) {
+      backOverlay.appendChild(SP.h('div', {
+        style:{ fontSize:'.625rem', letterSpacing:'.5px', textTransform:'uppercase',
+          fontWeight:700, opacity:.85 }}, opts.stepBadge))
+    }
+    backOverlay.appendChild(SP.h('a', { href: backHref,
+      style:{ color:'rgba(255,255,255,.78)', textDecoration:'none',
+        display:'inline-flex', alignItems:'center', gap:'.25rem', fontSize:'.75rem' }},
+      SP.h('span', { class:'material-symbols-outlined', style:{ fontSize:'1rem' }}, 'arrow_back'),
+      SP.h('span', {}, backLabel),
+    ))
+    backOverlay.appendChild(SP.h('div',
+      { style:{ fontSize:'1.125rem', fontWeight:800, lineHeight:1.1 }}, signData.vi))
+    backOverlay.appendChild(SP.h('div',
+      { style:{ fontSize:'.75rem', opacity:.75 }}, signData.en))
     practiceWrap.appendChild(backOverlay)
 
     // Hand detection indicator (bottom-left)
@@ -170,11 +191,6 @@
     practiceWrap.appendChild(handDot)
 
     // ── Framing guide (advisory, does NOT block recording) ────────────
-    // Three pre-attempt checks on the live camera feed: face centred,
-    // both shoulders visible, and adequate lighting. Green when OK, red
-    // with one-line Vietnamese guidance on fail. Updates are driven off
-    // the existing 'tracking' event; lighting is sampled every 5 frames
-    // via a detached (off-DOM) canvas.
     const framePill = (id, label) => SP.h('div', { id,
       'data-state': 'pending',
       style:{
@@ -196,7 +212,7 @@
       style:{
         position:'absolute', top:'1rem', left:'50%', transform:'translateX(-50%)', zIndex:3,
         display:'flex', flexWrap:'wrap', gap:'.375rem', justifyContent:'center',
-        pointerEvents:'none',   // advisory only — never intercept record clicks
+        pointerEvents:'none',
       }},
       framePillFace, framePillShoulders, framePillLight,
     )
@@ -225,12 +241,6 @@
       }
     }
 
-    // ── Framing checks (advisory, per-frame or per-5-frame) ───────────
-    // Exposed as named helpers so reviewers can locate them quickly.
-    // Face-centred: mean (x,y) of face landmarks in image-normalised coords
-    // (0..1). Shoulders-visible: reuses engine's SHOULDER_VIS_STRICT threshold
-    // via _internals — no duplicated constant. Lighting: mean luminance
-    // (Rec. 601 0.299R + 0.587G + 0.114B) sampled off a 64×48 canvas.
     const FACE_X_MIN = 0.30, FACE_X_MAX = 0.70
     const FACE_Y_MIN = 0.15, FACE_Y_MAX = 0.55
     const LIGHT_MIN = 0.20, LIGHT_MAX = 0.85
@@ -257,7 +267,6 @@
       }
       return { ok: true, tip: 'Thấy cả hai vai' }
     }
-    // Reusable 64×48 off-DOM canvas for the luminance sample.
     const lightCanvas = document.createElement('canvas')
     lightCanvas.width = 64; lightCanvas.height = 48
     const lightCtx = lightCanvas.getContext('2d', { willReadFrequently: true })
@@ -276,8 +285,6 @@
         if (mean > LIGHT_MAX) return { ok: false, tip: 'Giảm bớt ánh sáng', value: mean }
         return { ok: true, tip: 'Đủ ánh sáng', value: mean }
       } catch (_) {
-        // Canvas taint (unlikely with same-origin stream) or transient read
-        // failure — leave the pill in its previous state.
         return null
       }
     }
@@ -295,82 +302,94 @@
     practiceWrap.appendChild(scoreOverlay)
 
     // ── Right-column panels: reference thumb / advice / record ──────────
-    const rightCol = SP.h('div', { class:'sp-practice-rightcol', style:{
-      position:'absolute', top:'1rem', right:'1rem', zIndex:3,
-      width:'25%', minWidth:'15rem', maxWidth:'22rem',
-      display:'flex', flexDirection:'column', gap:'.625rem',
-    }})
-
-    // Reference video thumbnail
-    const refVideoEl = SP.videoEl(signKey, { preload:'auto' })
-    refVideoEl.style.aspectRatio = '1/1'
-    refVideoEl.style.borderRadius = '.5rem'
-    refVideoEl.style.overflow = 'hidden'
-
-    // Per-attempt hide/show toggle (in-memory only; resets on every render).
-    let refHidden = false
-    const eyeIcon = SP.h('span', { class:'material-symbols-outlined', style:{ fontSize:'1.125rem' }}, 'visibility')
-    const eyeBtn = SP.h('button', {
-      'aria-label': 'Ẩn video mẫu · Hide reference',
+    // When the caller opts out of the reference video (e.g. the skip
+    // test — no cheat-sheet during evaluation), the column shrinks so
+    // the camera feed reclaims the freed horizontal space.
+    const hideRef = !!opts.hideReferenceVideo
+    const rightColDesktopWidth = hideRef ? '20%' : '25%'
+    const rightColDesktopMinWidth = hideRef ? '13rem' : '15rem'
+    const rightColDesktopMaxWidth = hideRef ? '18rem' : '22rem'
+    const rightCol = SP.h('div', { class:'sp-practice-rightcol' + (hideRef ? ' sp-attempt-solo' : ''),
       style:{
-        background:'transparent', border:'none', cursor:'pointer',
-        color:'#fff', padding:'.125rem', marginLeft:'auto',
-        display:'inline-flex', alignItems:'center', fontFamily:'inherit',
-        opacity:.85,
-      },
-      onclick: (e) => { e.stopPropagation(); toggleRef() },
-    }, eyeIcon)
-    const headerText = SP.h('span', {}, 'Video mẫu · Reference')
-    const stripText = SP.h('span', { style:{ display:'none', alignItems:'center', gap:'.25rem' }},
-      SP.h('span', {}, 'Hiện video mẫu · Show reference'),
-      SP.h('span', { class:'material-symbols-outlined', style:{ fontSize:'1rem' }}, 'arrow_forward'),
-    )
-    const refHeader = SP.h('div', { style:{
-      display:'flex', alignItems:'center', gap:'.5rem',
-      fontSize:'.625rem',
-      fontWeight:700, textTransform:'uppercase', letterSpacing:'.5px',
-      padding:'.125rem 0 .375rem', opacity:.8,
-      cursor:'default',
-    }}, headerText, stripText, eyeBtn)
-    const speedRow = SP.h('div', { style:{ display:'flex', gap:'.25rem', justifyContent:'center', marginTop:'.5rem' }},
-      speedBtn(refVideoEl, 0.5, '0.5×'),
-      speedBtn(refVideoEl, 0.75, '0.75×', true),
-      speedBtn(refVideoEl, 1.0, '1×'),
-    )
-    function toggleRef() {
-      refHidden = !refHidden
-      if (refHidden) {
-        refVideoEl.style.display = 'none'
-        speedRow.style.display = 'none'
-        headerText.style.display = 'none'
-        stripText.style.display = 'inline-flex'
-        eyeIcon.textContent = 'visibility_off'
-        eyeBtn.setAttribute('aria-label', 'Hiện video mẫu · Show reference')
-        refHeader.style.cursor = 'pointer'
-      } else {
-        refVideoEl.style.display = ''
-        speedRow.style.display = 'flex'
-        headerText.style.display = ''
-        stripText.style.display = 'none'
-        eyeIcon.textContent = 'visibility'
-        eyeBtn.setAttribute('aria-label', 'Ẩn video mẫu · Hide reference')
-        refHeader.style.cursor = 'default'
-      }
-    }
-    refHeader.addEventListener('click', () => { if (refHidden) toggleRef() })
-    const refWrap = SP.h('div', { style:{
-      background:'rgba(28, 26, 22, 0.82)',
-      color:'#fff',
-      borderRadius:'.75rem',
-      padding:'.5rem .625rem .625rem',
-      boxShadow:'0 6px 18px rgba(0,0,0,.38)',
-    }},
-      refHeader,
-      refVideoEl,
-      speedRow,
-    )
+        position:'absolute', top:'1rem', right:'1rem', zIndex:3,
+        width: rightColDesktopWidth,
+        minWidth: rightColDesktopMinWidth,
+        maxWidth: rightColDesktopMaxWidth,
+        display:'flex', flexDirection:'column', gap:'.625rem',
+      }})
 
-    // Coach advice panel — shows the latest AI feedback text.
+    // Reference video thumbnail — only built when the caller wants it.
+    let refWrap = null
+    if (!hideRef) {
+      const refVideoEl = SP.videoEl(signKey, { preload:'auto' })
+      refVideoEl.style.aspectRatio = '1/1'
+      refVideoEl.style.borderRadius = '.5rem'
+      refVideoEl.style.overflow = 'hidden'
+
+      let refHidden = false
+      const eyeIcon = SP.h('span', { class:'material-symbols-outlined', style:{ fontSize:'1.125rem' }}, 'visibility')
+      const eyeBtn = SP.h('button', {
+        'aria-label': 'Ẩn video mẫu · Hide reference',
+        style:{
+          background:'transparent', border:'none', cursor:'pointer',
+          color:'#fff', padding:'.125rem', marginLeft:'auto',
+          display:'inline-flex', alignItems:'center', fontFamily:'inherit',
+          opacity:.85,
+        },
+        onclick: (e) => { e.stopPropagation(); toggleRef() },
+      }, eyeIcon)
+      const headerText = SP.h('span', {}, 'Video mẫu · Reference')
+      const stripText = SP.h('span', { style:{ display:'none', alignItems:'center', gap:'.25rem' }},
+        SP.h('span', {}, 'Hiện video mẫu · Show reference'),
+        SP.h('span', { class:'material-symbols-outlined', style:{ fontSize:'1rem' }}, 'arrow_forward'),
+      )
+      const refHeader = SP.h('div', { style:{
+        display:'flex', alignItems:'center', gap:'.5rem',
+        fontSize:'.625rem',
+        fontWeight:700, textTransform:'uppercase', letterSpacing:'.5px',
+        padding:'.125rem 0 .375rem', opacity:.8,
+        cursor:'default',
+      }}, headerText, stripText, eyeBtn)
+      const speedRow = SP.h('div', { style:{ display:'flex', gap:'.25rem', justifyContent:'center', marginTop:'.5rem' }},
+        speedBtn(refVideoEl, 0.5, '0.5×'),
+        speedBtn(refVideoEl, 0.75, '0.75×', true),
+        speedBtn(refVideoEl, 1.0, '1×'),
+      )
+      function toggleRef() {
+        refHidden = !refHidden
+        if (refHidden) {
+          refVideoEl.style.display = 'none'
+          speedRow.style.display = 'none'
+          headerText.style.display = 'none'
+          stripText.style.display = 'inline-flex'
+          eyeIcon.textContent = 'visibility_off'
+          eyeBtn.setAttribute('aria-label', 'Hiện video mẫu · Show reference')
+          refHeader.style.cursor = 'pointer'
+        } else {
+          refVideoEl.style.display = ''
+          speedRow.style.display = 'flex'
+          headerText.style.display = ''
+          stripText.style.display = 'none'
+          eyeIcon.textContent = 'visibility'
+          eyeBtn.setAttribute('aria-label', 'Ẩn video mẫu · Hide reference')
+          refHeader.style.cursor = 'default'
+        }
+      }
+      refHeader.addEventListener('click', () => { if (refHidden) toggleRef() })
+      refWrap = SP.h('div', { style:{
+        background:'rgba(28, 26, 22, 0.82)',
+        color:'#fff',
+        borderRadius:'.75rem',
+        padding:'.5rem .625rem .625rem',
+        boxShadow:'0 6px 18px rgba(0,0,0,.38)',
+      }},
+        refHeader,
+        refVideoEl,
+        speedRow,
+      )
+    }
+
+    // Coach advice panel
     const adviceCard = SP.h('div', { id:'sp-coach-box', style:{
       background:'rgba(28, 26, 22, 0.82)',
       color:'#fff',
@@ -414,11 +433,11 @@
       recordBtn, progressWrap,
     )
 
-    rightCol.appendChild(refWrap)
+    if (refWrap) rightCol.appendChild(refWrap)
     rightCol.appendChild(adviceCard)
     rightCol.appendChild(recordPanel)
     practiceWrap.appendChild(rightCol)
-    host.appendChild(practiceWrap)
+    root.appendChild(practiceWrap)
 
     // Responsive: on narrow viewports stack the right column BELOW the
     // camera instead of overlaying it. Spec: < 768px → stacked.
@@ -435,7 +454,6 @@
         rightCol.style.width = 'auto'
         rightCol.style.maxWidth = 'none'
         rightCol.style.padding = '.75rem 0 0'
-        // Give the camera a fixed aspect so it doesn't collapse to 0 in flex.
         camVideo.style.position = 'relative'
         camVideo.style.height = 'auto'
         camVideo.style.aspectRatio = '4/3'
@@ -447,8 +465,8 @@
         rightCol.style.position = 'absolute'
         rightCol.style.top = '1rem'
         rightCol.style.right = '1rem'
-        rightCol.style.width = '25%'
-        rightCol.style.maxWidth = '22rem'
+        rightCol.style.width = rightColDesktopWidth
+        rightCol.style.maxWidth = rightColDesktopMaxWidth
         rightCol.style.padding = '0'
         camVideo.style.position = 'absolute'
         camVideo.style.height = '100%'
@@ -459,38 +477,34 @@
     window.addEventListener('resize', applyResponsive)
 
     // ── Event wiring ─────────────────────────────────────────────────
-    detachAll()
-    const scoreEl = document.getElementById('sp-live-score')
-    const coachTextEl = document.getElementById('sp-coach-text')
-    const progEl  = document.getElementById('sp-rec-progress')
-
-    // Landmark rendering: fired every MediaPipe frame via 'tracking'.
+    // Refs for the DOM nodes the handlers mutate.
+    const scoreEl = scoreOverlay.querySelector('#sp-live-score')
+    const coachTextEl = adviceCard.querySelector('#sp-coach-text')
+    const progEl  = progressWrap.querySelector('#sp-rec-progress')
+    let activeDurationMs = 0
     let _lightFrameTick = 0
+    let _deniedPainted = false
+
     on('tracking', d => {
       handDot.textContent = d.detected ? '✓ Thấy tay' : 'Chưa thấy tay'
       handDot.style.background = d.detected ? 'rgba(27, 67, 50, 0.78)' : 'rgba(99, 95, 86, 0.78)'
 
-      // Framing-guide updates — advisory only; recording is never blocked.
       const face = checkFaceCentered(d.face)
       setPillState(framePillFace, face.ok ? 'ok' : 'bad', face.tip)
       const shoulders = checkShouldersVisible(d.pose)
       setPillState(framePillShoulders, shoulders.ok ? 'ok' : 'bad', shoulders.tip)
-      // Luminance sample: 1-in-5 frames is plenty for an ambient-light hint.
       _lightFrameTick = (_lightFrameTick + 1) % 5
       if (_lightFrameTick === 0) {
         const light = checkLighting(camVideo)
         if (light) setPillState(framePillLight, light.ok ? 'ok' : 'bad', light.tip)
       }
 
-      // Keep canvas sized to the video's native resolution so 0..1
-      // normalized landmark coords map pixel-correctly.
       const vw = camVideo.videoWidth, vh = camVideo.videoHeight
       if (vw && vh && (landmarkCanvas.width !== vw || landmarkCanvas.height !== vh)) {
         landmarkCanvas.width = vw
         landmarkCanvas.height = vh
       }
       landmarkCtx.clearRect(0, 0, landmarkCanvas.width, landmarkCanvas.height)
-      // Drawing utils aren't loaded → skip; no overlay rather than a crash.
       if (typeof window.drawConnectors !== 'function' || typeof window.drawLandmarks !== 'function') return
 
       const HAND = window.HAND_CONNECTIONS || []
@@ -509,11 +523,6 @@
       }
     })
 
-    // Camera/MediaPipe init failure (e.g. permission denied or blocked in
-    // browser settings). Swap the live surface for a styled explainer so
-    // the user isn't staring at a black box. Non-practice routes are
-    // unaffected because camera/MediaPipe is no longer acquired at boot.
-    let _deniedPainted = false
     on('error', d => {
       if (!d || (d.type !== 'camera' && d.type !== 'mediapipe')) return
       if (_deniedPainted) return
@@ -541,11 +550,9 @@
         ),
       )
       practiceWrap.appendChild(denied)
-      // Recording makes no sense without a camera.
       recordBtn.disabled = true
     })
 
-    // Palm-fallback warning: shoulders not reliably detected.
     on('tracking:degraded', d => {
       if (degradedManuallyDismissed) return
       degradedBanner.style.display = 'flex'
@@ -561,15 +568,13 @@
         scoreEl.textContent = '—'
         return
       }
-      // Engine emits raw scores; UI shows inflated. SP.inflateScore is
-      // the single source of the +20/clamp mapping (shared.js).
       const display = SP.inflateScore ? SP.inflateScore(d.score) : d.score
       scoreEl.textContent = display
       scoreEl.style.color = SP.scoreColor(display)
     })
 
     on('attempt:start', d => {
-      activeDurationMs = d.durationMs || 4000
+      activeDurationMs = d.durationMs || durationMs
       progEl.style.width = '0%'
       recordBtn.disabled = true
       recordBtn.innerHTML = '<span class="material-symbols-outlined">hourglass_top</span><span>Đang ghi…</span>'
@@ -596,56 +601,117 @@
     })
 
     // Start (or restart) the capture pipeline now that the error + tracking
-    // handlers are attached. Camera / MediaPipe init is deferred to this
-    // point so non-practice screens never trigger a permission prompt.
+    // handlers are attached. Idempotent — safe to call across UI instances.
     if (typeof app.engine.resumeCapture === 'function') {
-      app.engine.resumeCapture().catch(e => console.error('[practice] resumeCapture failed:', e))
+      app.engine.resumeCapture().catch(e => console.error('[practiceUI] resumeCapture failed:', e))
+    }
+
+    // Default modal completion flow (used when caller didn't provide
+    // onAttemptComplete). Encapsulated so that runAttempt's happy path
+    // has a single branching point.
+    function defaultModalFlow(result) {
+      SP.pushRecent(signKey)
+      const modalActions = opts.modalActions || {}
+      SP.modals.showResult(result, {
+        onTryAgain: modalActions.onTryAgain || (() => { runAttempt() }),
+        onNext:     modalActions.onNext     || (() => { location.hash = '#home' }),
+        onBack:     modalActions.onBack     || (() => { location.hash = backHref }),
+      })
     }
 
     async function runAttempt() {
       if (!hasTemplate || app.session.isActive()) return
       try {
-        const result = await app.practiceSign(signKey, 4000)
-        if (result.aborted) { /* abort handler already updated UI */ return }
-        SP.pushRecent(signKey)
-        SP.modals.showResult(result, {
-          onTryAgain: () => { runAttempt() },
-          onNext: () => {
-            // "Dấu tiếp theo" advances within the current chapter; once
-            // every sign has been attempted we drop the user back on the
-            // chapter-selection screen (#home) rather than the single
-            // chapter detail, per the v0.5 spec.
-            const lesson = app.getLessonScreenData(signData.unitId)
-            if (!lesson) { location.hash = '#home'; return }
-            const i = lesson.signs.findIndex(s => s.key === signKey)
-            const next = (i >= 0 && i + 1 < lesson.signs.length) ? lesson.signs[i + 1] : null
-            if (next) location.hash = '#practice/' + encodeURIComponent(next.key)
-            else      location.hash = '#home'
-          },
-          onBack: () => { location.hash = '#lesson/' + encodeURIComponent(signData.unitId) },
-        })
+        const result = await app.practiceSign(signKey, durationMs)
+        if (opts.onAttemptComplete) {
+          // Caller owns post-attempt flow — still handles aborted results.
+          try { await opts.onAttemptComplete(result) }
+          catch(e) { console.error('[practiceUI] onAttemptComplete threw:', e) }
+        } else {
+          if (result.aborted) return
+          defaultModalFlow(result)
+        }
       } catch (e) {
         SP.toast('Lỗi: ' + e.message)
         console.error(e)
       } finally {
-        recordBtn.disabled = !hasTemplate
+        // recordOnce freezes the button so the skip-test can't fire a
+        // second attempt on the same sign (task: "no retry, no re-record").
+        if (opts.recordOnce) {
+          recordBtn.disabled = true
+        } else {
+          recordBtn.disabled = !hasTemplate
+        }
         recordBtn.innerHTML = '<span class="material-symbols-outlined filled">fiber_manual_record</span><span>Quay · Record</span>'
       }
     }
 
+    function teardown() {
+      clearInterval(streamPoller)
+      if (degradedQuietTimer) clearTimeout(degradedQuietTimer)
+      window.removeEventListener('resize', applyResponsive)
+      detachAll()
+      if (landmarkCtx) landmarkCtx.clearRect(0, 0, landmarkCanvas.width, landmarkCanvas.height)
+      SP.modals.close()
+    }
+
+    return { root, recordBtn, runAttempt, teardown }
+  }
+
+  SP.practiceUI.buildAttemptUI = buildAttemptUI
+
+  // ── Screen render ────────────────────────────────────────────────────
+  function render(signKeyRaw) {
+    const host = document.getElementById('sp-screen')
+    host.innerHTML = ''
+
+    const app = SP.getApp()
+    const ready = SP.isEngineReady()
+    if (!ready) {
+      host.innerHTML = '<div style="padding:4rem; text-align:center; color:var(--sp-on-surface-variant);">Đang khởi động engine…<br/><small>Camera + MediaPipe đang tải</small></div>'
+      return { teardown() {} }
+    }
+
+    const signKey = signKeyRaw
+    const signData = app.getSignDetailData(signKey)
+    if (!signData) {
+      host.innerHTML = '<div style="padding:4rem; text-align:center;"><h2>Không tìm thấy dấu</h2><p>' + SP.escapeHTML(signKey) + '</p><a class="sp-btn sp-btn-primary" href="#home">Về trang chủ</a></div>'
+      return { teardown() {} }
+    }
+
+    const homeData = app.getHomeScreenData()
+    const topbar = SP.topbar({
+      streak: homeData.streak.current,
+      xp: homeData.user.xp,
+      level: homeData.user.level,
+      rank: homeData.user.rank,
+    })
+    host.appendChild(topbar)
+
+    const ui = buildAttemptUI(app, {
+      signData,
+      modalActions: {
+        onNext: () => {
+          // "Dấu tiếp theo" advances within the current chapter; once
+          // every sign has been attempted we drop the user back on the
+          // chapter-selection screen (#home) rather than the single
+          // chapter detail, per the v0.5 spec.
+          const lesson = app.getLessonScreenData(signData.unitId)
+          if (!lesson) { location.hash = '#home'; return }
+          const i = lesson.signs.findIndex(s => s.key === signKey)
+          const next = (i >= 0 && i + 1 < lesson.signs.length) ? lesson.signs[i + 1] : null
+          if (next) location.hash = '#practice/' + encodeURIComponent(next.key)
+          else      location.hash = '#home'
+        },
+        onBack: () => { location.hash = '#lesson/' + encodeURIComponent(signData.unitId) },
+      },
+    })
+    host.appendChild(ui.root)
+
     return {
       teardown() {
-        clearInterval(streamPoller)
-        if (degradedQuietTimer) clearTimeout(degradedQuietTimer)
-        window.removeEventListener('resize', applyResponsive)
-        detachAll()
-        // Overlay disappears when camera is off — clear the canvas.
-        if (landmarkCtx) landmarkCtx.clearRect(0, 0, landmarkCanvas.width, landmarkCanvas.height)
-        app.engine.clearSign()
-        SP.modals.close()
-        // Stop the camera + inference loop. Route guard on the modals
-        // handles the race where a pending attempt:end fires after we
-        // navigate off the practice route.
+        ui.teardown()
+        try { app.engine.clearSign() } catch(_) {}
         if (typeof app.engine.pauseCapture === 'function') {
           app.engine.pauseCapture().catch(e => console.error('[practice] pauseCapture failed:', e))
         }

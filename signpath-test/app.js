@@ -91,6 +91,7 @@
     let res = null
     if (p.name === 'lesson'   && p.params[0]) res = SP.screens.lesson.render(p.params[0])
     else if (p.name === 'practice' && p.params[0]) res = SP.screens.practice.render(p.params[0])
+    else if (p.name === 'skiptest' && p.params[0]) res = SP.screens.skiptest.render(p.params[0])
     else if (ROUTES[p.name + '/' + (p.params[0] || '')]) res = ROUTES[p.name + '/' + p.params[0]]()
     else if (ROUTES[p.name]) res = ROUTES[p.name]()
     else {
@@ -104,7 +105,7 @@
 
     // Sidebar highlight
     const topLevel = p.name
-    const simple = { onboarding: null, lesson: 'home', practice: 'home', home: 'home',
+    const simple = { onboarding: null, lesson: 'home', practice: 'home', skiptest: 'home', home: 'home',
                      dictionary: 'dictionary', progress: 'progress', about: 'about' }[topLevel]
     SP.setActiveRoute(simple)
 

@@ -189,7 +189,31 @@
         SP.h('div', { class:'vi' }, lesson.goal.vi),
         SP.h('div', { class:'en' }, lesson.goal.en),
         SP.h('div', { class:'stat' }, masteredCount + ' / ' + totalSigns + ' dấu'),
-      )
+      ),
+      // Skip-test entry point — only for locked units. Stops click
+      // propagation so tapping the button never triggers the parent
+      // node's "locked" toast.
+      kind === 'locked' ? SP.h('button', {
+        class:'sp-btn',
+        'aria-label':'Kiểm tra đầu vào · Skip test',
+        style:{
+          marginTop:'.5rem', padding:'.375rem .75rem',
+          fontSize:'.75rem', fontWeight:600,
+          border:'1px solid var(--sp-outline-variant)',
+          background:'var(--sp-surface-container-low)',
+          color:'var(--sp-on-surface)',
+          borderRadius:'9999px', cursor:'pointer',
+          display:'inline-flex', alignItems:'center', gap:'.25rem',
+          fontFamily:'inherit',
+        },
+        onclick: (e) => {
+          e.stopPropagation()
+          location.hash = '#skiptest/' + encodeURIComponent(lesson.id)
+        },
+      },
+        SP.h('span', { class:'material-symbols-outlined', style:{ fontSize:'1rem' }}, 'flash_on'),
+        SP.h('span', {}, 'Kiểm tra đầu vào'),
+      ) : null,
     )
     return node
   }

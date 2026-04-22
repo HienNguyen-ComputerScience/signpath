@@ -664,6 +664,35 @@ class SignPathProgression {
     }
   }
 
+  /**
+   * Force-complete a lesson as the result of a passed skip-evaluation.
+   * Adds the lesson to completedLessons and unlocks the next lesson in
+   * engine.getLessons() order. Does NOT stamp per-sign mastery (the three
+   * attempts the user took are already recorded via recordAttempt).
+   * No-op if the lesson is already completed.
+   * Emits 'lesson:completed' and, if applicable, 'lesson:unlocked'.
+   */
+  completeUnit(lessonId) {
+    if (this.isLessonCompleted(lessonId)) return { completed: false, newlyUnlocked: [] }
+    const lessons = (this._engine.getLessons && this._engine.getLessons()) || []
+    const idx = lessons.findIndex(l => l.id === lessonId)
+    if (idx < 0) return { completed: false, newlyUnlocked: [] }
+
+    this._state.completedLessons.push(lessonId)
+    const newlyUnlocked = []
+    const next = lessons[idx + 1]
+    if (next && !this.isLessonUnlocked(next.id)) {
+      this._state.unlockedLessons.push(next.id)
+      newlyUnlocked.push(next.id)
+    }
+    this._save()
+
+    newlyUnlocked.forEach(id => this._emit('lesson:unlocked', { lessonId: id }))
+    this._emit('lesson:completed', { lessonId })
+
+    return { completed: true, lessonId, newlyUnlocked }
+  }
+
   // ─── INTERNAL ────────────────────────────────────────────────────────
 
   _noOpResult(duplicate) {
