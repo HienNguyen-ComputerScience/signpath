@@ -195,6 +195,58 @@
     refVideoEl.style.aspectRatio = '1/1'
     refVideoEl.style.borderRadius = '.5rem'
     refVideoEl.style.overflow = 'hidden'
+
+    // Per-attempt hide/show toggle (in-memory only; resets on every render).
+    let refHidden = false
+    const eyeIcon = SP.h('span', { class:'material-symbols-outlined', style:{ fontSize:'1.125rem' }}, 'visibility')
+    const eyeBtn = SP.h('button', {
+      'aria-label': 'Ẩn video mẫu · Hide reference',
+      style:{
+        background:'transparent', border:'none', cursor:'pointer',
+        color:'#fff', padding:'.125rem', marginLeft:'auto',
+        display:'inline-flex', alignItems:'center', fontFamily:'inherit',
+        opacity:.85,
+      },
+      onclick: (e) => { e.stopPropagation(); toggleRef() },
+    }, eyeIcon)
+    const headerText = SP.h('span', {}, 'Video mẫu · Reference')
+    const stripText = SP.h('span', { style:{ display:'none', alignItems:'center', gap:'.25rem' }},
+      SP.h('span', {}, 'Hiện video mẫu · Show reference'),
+      SP.h('span', { class:'material-symbols-outlined', style:{ fontSize:'1rem' }}, 'arrow_forward'),
+    )
+    const refHeader = SP.h('div', { style:{
+      display:'flex', alignItems:'center', gap:'.5rem',
+      fontSize:'.625rem',
+      fontWeight:700, textTransform:'uppercase', letterSpacing:'.5px',
+      padding:'.125rem 0 .375rem', opacity:.8,
+      cursor:'default',
+    }}, headerText, stripText, eyeBtn)
+    const speedRow = SP.h('div', { style:{ display:'flex', gap:'.25rem', justifyContent:'center', marginTop:'.5rem' }},
+      speedBtn(refVideoEl, 0.5, '0.5×'),
+      speedBtn(refVideoEl, 0.75, '0.75×', true),
+      speedBtn(refVideoEl, 1.0, '1×'),
+    )
+    function toggleRef() {
+      refHidden = !refHidden
+      if (refHidden) {
+        refVideoEl.style.display = 'none'
+        speedRow.style.display = 'none'
+        headerText.style.display = 'none'
+        stripText.style.display = 'inline-flex'
+        eyeIcon.textContent = 'visibility_off'
+        eyeBtn.setAttribute('aria-label', 'Hiện video mẫu · Show reference')
+        refHeader.style.cursor = 'pointer'
+      } else {
+        refVideoEl.style.display = ''
+        speedRow.style.display = 'flex'
+        headerText.style.display = ''
+        stripText.style.display = 'none'
+        eyeIcon.textContent = 'visibility'
+        eyeBtn.setAttribute('aria-label', 'Ẩn video mẫu · Hide reference')
+        refHeader.style.cursor = 'default'
+      }
+    }
+    refHeader.addEventListener('click', () => { if (refHidden) toggleRef() })
     const refWrap = SP.h('div', { style:{
       background:'rgba(28, 26, 22, 0.82)',
       color:'#fff',
@@ -202,17 +254,9 @@
       padding:'.5rem .625rem .625rem',
       boxShadow:'0 6px 18px rgba(0,0,0,.38)',
     }},
-      SP.h('div', { style:{
-        fontSize:'.625rem',
-        fontWeight:700, textTransform:'uppercase', letterSpacing:'.5px',
-        padding:'.125rem 0 .375rem', opacity:.8,
-      }}, 'Video mẫu · Reference'),
+      refHeader,
       refVideoEl,
-      SP.h('div', { style:{ display:'flex', gap:'.25rem', justifyContent:'center', marginTop:'.5rem' }},
-        speedBtn(refVideoEl, 0.5, '0.5×'),
-        speedBtn(refVideoEl, 0.75, '0.75×', true),
-        speedBtn(refVideoEl, 1.0, '1×'),
-      ),
+      speedRow,
     )
 
     // Coach advice panel — shows the latest AI feedback text.
