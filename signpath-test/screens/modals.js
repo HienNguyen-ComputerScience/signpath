@@ -23,6 +23,16 @@
    * Fail state renders a stripped-down "Chưa đạt" modal with retry only.
    */
   SP.modals.showResult = function(result, actions) {
+    // Route guard — if the user has navigated away from #practice/<sign>
+    // while an attempt was in flight, drop the result on the floor rather
+    // than popping a modal over whatever screen they're on now. The
+    // attempt payload still goes through progression/review via
+    // api.practiceSign's normal path — this guard is strictly a render
+    // suppressor, not a state mutator.
+    const currentHash = (typeof location !== 'undefined' && location.hash) || ''
+    const onPractice = (SP.isPracticeRoute && SP.isPracticeRoute(currentHash))
+      || (currentHash === '#practice' || currentHash.indexOf('#practice/') === 0)
+    if (!onPractice) return
     const mount = document.getElementById('sp-modal-mount')
     if (!mount) return
     mount.innerHTML = ''
