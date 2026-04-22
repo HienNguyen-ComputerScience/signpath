@@ -75,12 +75,20 @@
     )
     header.appendChild(progress)
 
-    // ── Mode toggle: Luyện tập (default) vs Thẻ ghi nhớ ────────────────
+    // ── Mode toggle: Luyện tập (default) · Thẻ ghi nhớ · Trắc nghiệm ───
     // Local state only; flipping does not route, re-fetch data, or touch
     // the camera. Default 'practice' preserves the pre-toggle behaviour.
     let mode = 'practice'
     let flashIndex = 0
     let flashFlipped = false
+
+    // Quiz state (Trắc nghiệm). Lives per-render; switching away and
+    // back resets the quiz to its setup phase.
+    let quizPhase = 'setup'          // 'setup' | 'playing' | 'results'
+    let quizQuestions = []           // [{ sign, options:[{vi,correct}], answeredIdx, correct }]
+    let quizIdx = 0
+    let quizXpEarned = 0
+    let quizFeedbackTimer = null
 
     const modeBar = SP.h('section', { style:{ padding:'1.25rem 3rem 0' }})
     const toggleWrap = SP.h('div', { role:'tablist', 'aria-label':'Chế độ học',
@@ -113,6 +121,7 @@
     }
     toggleWrap.appendChild(modeBtn('practice', 'Luyện tập', 'Practice', 'fitness_center'))
     toggleWrap.appendChild(modeBtn('flashcard', 'Thẻ ghi nhớ', 'Flashcards', 'style'))
+    toggleWrap.appendChild(modeBtn('quiz', 'Trắc nghiệm', 'Quiz', 'quiz'))
     modeBar.appendChild(toggleWrap)
     function refreshToggle() {
       Array.from(toggleWrap.querySelectorAll('button[data-mode]')).forEach(b => {
@@ -127,9 +136,13 @@
     const contentHost = SP.h('section', { style:{ padding:'1.5rem 3rem 4rem' }})
 
     function renderContent() {
+      // Any pending quiz feedback timer must clear on mode change so a
+      // stale setTimeout doesn't write to a torn-down DOM.
+      if (quizFeedbackTimer) { clearTimeout(quizFeedbackTimer); quizFeedbackTimer = null }
       contentHost.innerHTML = ''
-      if (mode === 'flashcard') renderFlashcards()
-      else renderSignGrid()
+      if (mode === 'flashcard')      renderFlashcards()
+      else if (mode === 'quiz')      renderQuiz()
+      else                           renderSignGrid()
     }
 
     function renderSignGrid() {
@@ -248,13 +261,343 @@
       contentHost.appendChild(nav)
     }
 
+    // ── Quiz (Trắc nghiệm) ────────────────────────────────────────────
+    // Click-based MCQ — no camera, no MediaPipe, no session lifecycle.
+    // Each answer logs a synthetic attempt through progression.recordAttempt
+    // (the same API practice/skiptest/placement route through) so XP,
+    // streak, history, and weighting all behave uniformly. Correct =
+    // raw 55 / 1★ → inflated 75 (well past SP.PASS_GATE). Wrong = 0 / 0★.
+    function renderQuiz() {
+      const templated = data.signs.filter(s =>
+        app.engine.getTemplate && !!app.engine.getTemplate(s.key))
+
+      // Empty state mirrors skiptest's "Chưa thể kiểm tra" when a 4-option
+      // MCQ isn't even formable — need 1 correct + 3 distractors.
+      if (templated.length < 4) {
+        const distractorPool = collectDistractorPool([])
+        if (templated.length < 1 || (templated.length + distractorPool.length) < 4) {
+          contentHost.appendChild(SP.h('div', { style:{
+            padding:'3rem 1rem', textAlign:'center',
+          }},
+            SP.h('h2', { style:{ fontSize:'1.5rem', fontWeight:800, color:'var(--sp-primary)' }},
+              'Chưa thể kiểm tra'),
+            SP.h('p', { style:{ color:'var(--sp-on-surface-variant)', maxWidth:'28rem', margin:'.5rem auto', lineHeight:1.5 }},
+              'Chương này chưa có đủ dấu để làm trắc nghiệm.'),
+          ))
+          return
+        }
+      }
+
+      if (quizPhase === 'setup')   return renderQuizSetup(templated)
+      if (quizPhase === 'playing') return renderQuizQuestion()
+      return renderQuizResults()
+    }
+
+    function renderQuizSetup(templated) {
+      const wrap = SP.h('div', { style:{
+        maxWidth:'36rem', display:'flex', flexDirection:'column', gap:'1rem',
+      }})
+      wrap.appendChild(SP.h('h2', { style:{ fontSize:'1.25rem', fontWeight:700, color:'var(--sp-on-surface)' }},
+        'Trắc nghiệm · Chọn độ dài'))
+
+      let chosen = templated.length >= 10 ? 10 : templated.length >= 5 ? 5 : templated.length
+      const optRow = SP.h('div', { style:{ display:'flex', gap:'.5rem', flexWrap:'wrap' }})
+      const buildOpt = (label, value, enabled) => {
+        const btn = SP.h('button', {
+          'data-qlen': String(value),
+          disabled: !enabled,
+          style:{
+            padding:'.625rem 1.25rem', borderRadius:'9999px',
+            border: '2px solid var(--sp-outline-variant)',
+            background: chosen === value ? 'var(--sp-primary)' : 'transparent',
+            color: chosen === value ? 'var(--sp-on-primary)' : 'var(--sp-on-surface)',
+            fontWeight:600, fontSize:'.875rem', cursor: enabled ? 'pointer' : 'not-allowed',
+            fontFamily:'inherit', opacity: enabled ? 1 : .45,
+          },
+          onclick: () => {
+            if (!enabled) return
+            chosen = value
+            optRow.querySelectorAll('button[data-qlen]').forEach(b => {
+              const v = Number(b.dataset.qlen)
+              const active = v === chosen
+              b.style.background = active ? 'var(--sp-primary)' : 'transparent'
+              b.style.color      = active ? 'var(--sp-on-primary)' : 'var(--sp-on-surface)'
+            })
+          },
+        }, label)
+        return btn
+      }
+      const has5  = templated.length >= 5
+      const has10 = templated.length >= 10
+      optRow.appendChild(buildOpt('5 câu',  5,  has5))
+      optRow.appendChild(buildOpt('10 câu', 10, has10))
+      optRow.appendChild(buildOpt('Tất cả', templated.length, templated.length >= 1))
+      wrap.appendChild(optRow)
+
+      if (!has5) {
+        wrap.appendChild(SP.h('div', { style:{
+          fontSize:'.8125rem', color:'var(--sp-on-surface-variant)',
+          background:'var(--sp-surface-container-low)',
+          padding:'.625rem .75rem', borderRadius:'.5rem',
+        }}, 'Chương này chỉ có ' + templated.length + ' dấu có dữ liệu — dùng "Tất cả".'))
+      }
+
+      wrap.appendChild(SP.h('button', {
+        class:'sp-btn sp-btn-primary sp-btn-lg',
+        style:{ alignSelf:'flex-start', marginTop:'.5rem' },
+        onclick: () => {
+          quizQuestions = buildQuizQueue(templated, chosen)
+          if (!quizQuestions.length) {
+            SP.toast('Không tạo được trắc nghiệm', 2500)
+            return
+          }
+          quizPhase = 'playing'
+          quizIdx = 0
+          quizXpEarned = 0
+          renderContent()
+        },
+      },
+        SP.h('span', { class:'material-symbols-outlined filled' }, 'play_arrow'),
+        SP.h('span', {}, 'Bắt đầu'),
+      ))
+
+      contentHost.appendChild(wrap)
+    }
+
+    function renderQuizQuestion() {
+      if (quizIdx >= quizQuestions.length) { quizPhase = 'results'; renderContent(); return }
+      const q = quizQuestions[quizIdx]
+      const total = quizQuestions.length
+
+      const wrap = SP.h('div', { style:{ maxWidth:'36rem' }})
+
+      wrap.appendChild(SP.h('div', { style:{
+        display:'flex', justifyContent:'space-between', alignItems:'center',
+        marginBottom:'1rem',
+      }},
+        SP.h('div', { style:{ fontSize:'.8125rem', fontWeight:700, color:'var(--sp-on-surface-variant)' }},
+          'Câu ' + (quizIdx + 1) + ' / ' + total),
+        SP.h('div', { style:{ fontSize:'.8125rem', color:'var(--sp-on-surface-variant)' }},
+          'Chọn từ đúng với video'),
+      ))
+
+      // Video (reference video only — no camera).
+      const video = SP.videoEl(q.sign.key)
+      video.style.aspectRatio = '4/3'
+      video.style.borderRadius = 'var(--sp-r-md)'
+      video.style.overflow = 'hidden'
+      wrap.appendChild(video)
+
+      const optGrid = SP.h('div', { style:{
+        display:'grid', gridTemplateColumns:'repeat(2, 1fr)', gap:'.625rem',
+        marginTop:'1rem',
+      }})
+      q.options.forEach((opt, i) => {
+        const btn = SP.h('button', {
+          'data-qopt': String(i),
+          style:{
+            padding:'.875rem 1rem', borderRadius:'.75rem',
+            border:'2px solid var(--sp-outline-variant)',
+            background:'var(--sp-surface-container-low)',
+            color:'var(--sp-on-surface)',
+            fontSize:'1rem', fontWeight:600, cursor:'pointer',
+            fontFamily:'inherit', textAlign:'left',
+            transition:'background .15s, border-color .15s',
+          },
+          onclick: () => handleAnswer(i),
+        }, opt.vi)
+        optGrid.appendChild(btn)
+      })
+      wrap.appendChild(optGrid)
+
+      contentHost.appendChild(wrap)
+
+      function handleAnswer(answeredIdx) {
+        if (q.answeredIdx != null) return // already answered, ignore
+        q.answeredIdx = answeredIdx
+        const correct = q.options[answeredIdx].correct
+        q.correct = correct
+
+        // Log the attempt via the normal progression pipeline. Synthetic
+        // score: raw 55 / 1★ for correct (inflated 75 — clears PASS_GATE),
+        // 0 / 0★ for wrong (registers attempt, no XP). attemptId prefixed
+        // so it never collides with real practice attempts in the dedupe
+        // ring buffer.
+        try {
+          const progResult = app.progression.recordAttempt({
+            signKey: q.sign.key,
+            finalScore: correct ? 55 : 0,
+            stars: correct ? 1 : 0,
+            attemptId: 'quiz_' + Date.now() + '_' + quizIdx,
+            timestamp: Date.now(),
+          })
+          if (progResult && progResult.xpGained) quizXpEarned += progResult.xpGained
+        } catch(e) {
+          console.error('[quiz] recordAttempt failed:', e)
+        }
+
+        // Paint feedback: chosen red or green; correct option also green.
+        const buttons = optGrid.querySelectorAll('button[data-qopt]')
+        buttons.forEach((b, bi) => {
+          b.disabled = true
+          b.style.cursor = 'default'
+          if (q.options[bi].correct) {
+            b.style.background = 'var(--sp-tertiary-fixed)'
+            b.style.borderColor = 'var(--sp-tertiary)'
+            b.style.color = 'var(--sp-on-tertiary-container)'
+          } else if (bi === answeredIdx) {
+            b.style.background = 'var(--sp-error-container, #f7d6d0)'
+            b.style.borderColor = 'var(--sp-error, #c0392b)'
+            b.style.color = 'var(--sp-on-error-container, #c0392b)'
+          } else {
+            b.style.opacity = '.55'
+          }
+        })
+
+        quizFeedbackTimer = setTimeout(() => {
+          quizFeedbackTimer = null
+          quizIdx++
+          renderContent()
+        }, 1200)
+      }
+    }
+
+    function renderQuizResults() {
+      const total = quizQuestions.length
+      const correctCount = quizQuestions.filter(q => q.correct).length
+      const pct = total ? Math.round(100 * correctCount / total) : 0
+      const message =
+        pct >= 90 ? 'Tuyệt vời!' :
+        pct >= 70 ? 'Rất tốt!' :
+        pct >= 50 ? 'Tiếp tục cố gắng!' :
+        'Hãy xem lại video mẫu rồi thử lại.'
+
+      const wrap = SP.h('div', { style:{ maxWidth:'42rem' }})
+      wrap.appendChild(SP.h('div', { style:{
+        padding:'1.25rem 1.5rem', background:'var(--sp-tertiary-fixed)',
+        borderRadius:'var(--sp-r-md)', marginBottom:'1.25rem',
+      }},
+        SP.h('div', { style:{ fontSize:'.75rem', fontWeight:700, letterSpacing:'.5px',
+          textTransform:'uppercase', color:'var(--sp-on-surface-variant)' }}, 'Kết quả trắc nghiệm'),
+        SP.h('div', { style:{ fontSize:'2rem', fontWeight:800, color:'var(--sp-primary)', marginTop:'.25rem' }},
+          correctCount + ' / ' + total + ' đúng'),
+        SP.h('div', { style:{ fontSize:'.9375rem', color:'var(--sp-on-surface)', marginTop:'.25rem' }},
+          pct + '% · ' + message),
+        SP.h('div', { style:{ fontSize:'.8125rem', color:'var(--sp-on-surface-variant)', marginTop:'.25rem' }},
+          'XP nhận được: +' + quizXpEarned),
+      ))
+
+      const list = SP.h('div', { style:{
+        display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(12rem, 1fr))',
+        gap:'.5rem', marginBottom:'1.25rem',
+      }})
+      quizQuestions.forEach((q, i) => {
+        const ok = q.correct
+        list.appendChild(SP.h('div', { style:{
+          display:'flex', alignItems:'center', gap:'.5rem',
+          padding:'.5rem .75rem', borderRadius:'.5rem',
+          background:'var(--sp-surface-container-low)',
+          borderLeft: '4px solid ' + (ok ? 'var(--sp-tertiary)' : 'var(--sp-error)'),
+        }},
+          SP.h('span', { style:{ fontSize:'1.125rem', color: ok ? 'var(--sp-tertiary)' : 'var(--sp-error)' }},
+            ok ? '✓' : '✗'),
+          SP.h('div', { style:{ minWidth:0, flex:1 }},
+            SP.h('div', { style:{ fontSize:'.6875rem', color:'var(--sp-on-surface-variant)' }},
+              'Câu ' + (i + 1)),
+            SP.h('div', { style:{ fontSize:'.875rem', fontWeight:700, color:'var(--sp-on-surface)',
+              whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}, q.sign.vi),
+          ),
+        ))
+      })
+      wrap.appendChild(list)
+
+      wrap.appendChild(SP.h('div', { style:{ display:'flex', gap:'.625rem', flexWrap:'wrap' }},
+        SP.h('button', { class:'sp-btn',
+          onclick: () => {
+            // "Học lại" — back to Luyện tập mode for this chapter.
+            quizPhase = 'setup'; quizQuestions = []; quizIdx = 0; quizXpEarned = 0
+            mode = 'practice'
+            renderContent(); refreshToggle()
+          }
+        },
+          SP.h('span', { class:'material-symbols-outlined' }, 'fitness_center'),
+          SP.h('span', {}, 'Học lại'),
+        ),
+        SP.h('a', { class:'sp-btn sp-btn-primary', href:'#home' },
+          SP.h('span', {}, 'Về trang chủ'),
+          SP.h('span', { class:'material-symbols-outlined' }, 'home'),
+        ),
+      ))
+
+      contentHost.appendChild(wrap)
+    }
+
+    /**
+     * Build the question queue from a templated sign list + chosen count.
+     * Each question = one correct answer + three distractors drawn first
+     * from the same chapter and then (if needed) from other chapters.
+     */
+    function buildQuizQueue(templated, count) {
+      const chosenSigns = shuffle(templated.slice()).slice(0, count)
+      const questions = []
+      for (const sign of chosenSigns) {
+        const distractors = collectDistractorPool([sign.key])
+          .filter(d => templated.some(t => t.key === d.key))
+        shuffle(distractors)
+        let picked = distractors.slice(0, 3)
+        if (picked.length < 3) {
+          const cross = collectDistractorPool([sign.key, ...picked.map(p => p.key)])
+            .filter(d => !templated.some(t => t.key === d.key))
+          shuffle(cross)
+          picked = picked.concat(cross.slice(0, 3 - picked.length))
+        }
+        const options = [{ vi: sign.vi, correct: true }]
+          .concat(picked.slice(0, 3).map(d => ({ vi: d.vi, correct: false })))
+        shuffle(options)
+        questions.push({ sign, options, answeredIdx: null, correct: false })
+      }
+      return questions
+    }
+
+    /**
+     * Collect distractor candidates: every templated sign across all
+     * lessons, excluded by an exclude-key list. Returns [{ key, vi }, ...].
+     * De-duplicated on `vi` so visually identical options don't appear.
+     */
+    function collectDistractorPool(excludeKeys) {
+      const excluded = new Set(excludeKeys)
+      const pool = []
+      const seenVi = new Set()
+      const lessons = app.engine.getLessons ? app.engine.getLessons() : []
+      for (const lesson of lessons) {
+        for (const s of (lesson.signs || [])) {
+          if (excluded.has(s.key)) continue
+          if (seenVi.has(s.vi)) continue
+          if (!app.engine.getTemplate || !app.engine.getTemplate(s.key)) continue
+          seenVi.add(s.vi)
+          pool.push({ key: s.key, vi: s.vi })
+        }
+      }
+      return pool
+    }
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        const t = arr[i]; arr[i] = arr[j]; arr[j] = t
+      }
+      return arr
+    }
+
     renderContent()
 
     host.appendChild(topbar)
     host.appendChild(header)
     host.appendChild(modeBar)
     host.appendChild(contentHost)
-    return { teardown() {} }
+    return { teardown() {
+      if (quizFeedbackTimer) { clearTimeout(quizFeedbackTimer); quizFeedbackTimer = null }
+    } }
   }
 
   function renderSignCard(sign, lessonId, app) {
